@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\HomeController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -43,6 +43,16 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/gioi-thieu-chung', function () {
     return Inertia::render("About/GeneralInfo");
 })->name('general_info');
+
+Route::group(['prefix' => 'quan-tri', 'middleware' => 'auth'], function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/test', function () {
+        return Inertia::render("Admin/Test");
+    })->name('admin.test');
+    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
 
 
 require __DIR__.'/auth.php';

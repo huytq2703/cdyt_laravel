@@ -6,6 +6,7 @@ import "primevue/resources/themes/saga-green/theme.css"    //theme
 import "primevue/resources/primevue.min.css "                //core css
 import "primeicons/primeicons.css"
 import "/node_modules/primeflex/primeflex.css"
+import "../assets/scss/styles/layout.scss"
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';
@@ -14,6 +15,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
 import PrimeVue from 'primevue/config';
+import ConfirmationService from "primevue/confirmationservice";
 
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
@@ -26,6 +28,7 @@ createInertiaApp({
             vApp.use(PrimeVue);
             vApp.use(plugin);
             vApp.use(ZiggyVue, Ziggy);
+            vApp.use(ConfirmationService);
             vApp.mount(el);
 
         return vApp;
@@ -33,4 +36,18 @@ createInertiaApp({
     },
 });
 
-InertiaProgress.init({ color: '#4B5563' });
+InertiaProgress.init({
+    // The delay after which the progress bar will
+    // appear during navigation, in milliseconds.
+    delay: 250,
+
+    // The color of the progress bar.
+    color: '#10af7e',
+
+    // Whether to include the default NProgress styles.
+    includeCSS: true, //this
+
+    // Whether the NProgress spinner will be shown.
+    showSpinner: true,
+  })
+

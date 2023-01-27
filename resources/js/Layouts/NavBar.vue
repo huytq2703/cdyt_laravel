@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import Sidebar from "primevue/sidebar";
 import Button from "primevue/button";
+import { Link } from "@inertiajs/inertia-vue3";
 
 const menu = [
   {
@@ -39,22 +40,22 @@ const menuFullVisible = ref(false);
           {{ item.label }}<i class="pi pi-caret-down"></i>
         </button>
         <div class="dropdown2-content">
-          <a
+          <Link
             v-for="subMenu in item.child"
             class="white-space-nowrap"
             :key="subMenu.label"
             :href="route(subMenu.name)"
           >
             {{ subMenu.label }}
-          </a>
+          </Link>
         </div>
       </div>
 
-      <a
+      <Link
         v-else
         :href="route(item.name)"
         class="flex nav-link flex-nowrap white-space-nowrap"
-        >{{ item.label }}</a
+        >{{ item.label }}</Link
       >
     </div>
   </div>
@@ -137,7 +138,7 @@ const menuFullVisible = ref(false);
   &-content {
     display: none;
     position: absolute;
-    background-color: #10af7e;
+    background-color: #2a8b6c;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 99999;

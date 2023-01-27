@@ -9,7 +9,7 @@ const activityImages = ["7.jpg", "5.jpg", "6.jpg", "8.jpg"];
 </script>
 
 <template>
-  <Head><title>Trang chủ</title></Head>
+  <Head title="Trang chủ" />
   <App>
     <template #header>
       <HeaderSlider />
@@ -36,7 +36,9 @@ const activityImages = ["7.jpg", "5.jpg", "6.jpg", "8.jpg"];
                 >
                   2022-07-17
                 </div>
-                <a href="" class="flex-1 h-5rem border-bottom-1 text-justify font-bold"
+                <a
+                  href=""
+                  class="flex-1 h-5rem border-bottom-1 text-justify font-bold hover-custom-2"
                   >Thông báo tuyển sinh: Cao đẳng chính quy khoá học 2022 - 2025</a
                 >
               </div>

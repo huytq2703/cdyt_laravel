@@ -1,9 +1,10 @@
 <script setup>
 import { ref } from "vue";
-import Button from "primevue/button";
+// import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import NavBar from "./NavBar.vue";
 import moment from "moment";
+import { Link } from "@inertiajs/inertia-vue3";
 
 const toDate = moment().format("DD/MM/YYYY");
 const marqueeText = ref(
@@ -22,9 +23,12 @@ const marqueeText = ref(
         <a href="#" class="flex align-items-center hover-custom gap-1 font-bold">
           <i class="pi pi-sitemap"></i><span class="sm:inline hidden">Sitemap</span>
         </a>
-        <a href="#" class="flex align-items-center hover-custom gap-1 font-bold">
+        <Link
+          :href="route('admin.dashboard')"
+          class="flex align-items-center hover-custom gap-1 font-bold"
+        >
           <i class="pi pi-book"></i><span class="sm:inline hidden">Quản lý đào tạo</span>
-        </a>
+        </Link>
       </div>
     </div>
   </div>
@@ -33,14 +37,14 @@ const marqueeText = ref(
     <div
       class="flex md:justify-content-between md:flex-row flex-column align-items-center xl:px-0 px-3"
     >
-      <a :href="route('test')" class="">
+      <Link :href="route('home')" class="">
         <img src="../../assets/images/logo/logo-01.png" alt="" class="w-15rem" />
-      </a>
+      </Link>
 
       <div class="flex align-items-center gap-3">
         <span class="p-input-icon-right">
           <i class="pi pi-search" />
-          <InputText type="text" v-model="value4" />
+          <InputText type="text" />
         </span>
         <a href="#" class="hover-custom-2">
           <i class="pi pi-facebook" style="font-size: 1.5rem"></i>
@@ -67,7 +71,7 @@ const marqueeText = ref(
 
   <div class="container mx-auto">
     <div class="flex border-bottom-1 py-2 bg-title bg-title-right font-bold">
-      <marquee style="color: #10af7e">{{ marqueeText }}</marquee>
+      <marquee style="color: #2a8b6c">{{ marqueeText }}</marquee>
       <span class="flex-shrink-0 px-2">Ngày {{ toDate }}</span>
     </div>
   </div>
@@ -118,7 +122,7 @@ const marqueeText = ref(
 
 <style lang="scss">
 .hover-custom {
-  color: #10af7e;
+  color: #2a8b6c;
   transition: all 0.3s ease;
   &:hover {
     color: #b83234;
@@ -126,14 +130,23 @@ const marqueeText = ref(
 
   &-2 {
     transition: all 0.3s ease;
+    color: var(--text-color);
     &:hover {
-      color: #10af7e;
+      color: #2a8b6c;
+    }
+  }
+
+  &-3 {
+    transition: all 0.3s ease;
+    color: var(--text-color);
+    &:hover {
+      color: #b83234;
     }
   }
 }
 
 .bg-default {
-  background-color: #10af7e;
+  background-color: #2a8b6c;
 }
 
 .bg-title {
@@ -145,14 +158,14 @@ const marqueeText = ref(
 }
 
 .border-top {
-  border-top: 5px solid #10af7e !important;
+  border-top: 5px solid #2a8b6c !important;
 }
 .text-primary {
-  color: #10af7e !important;
+  color: #2a8b6c !important;
 }
 
 .bg-primary {
-  background-color: #10af7e !important;
+  background-color: #2a8b6c !important;
 }
 
 .text-red {
@@ -167,10 +180,17 @@ const marqueeText = ref(
   background-color: white;
 }
 .bg-green {
-  background-color: #10af7e;
+  background-color: #2a8b6c;
 }
 
 .bg-opacity {
   background-color: rgba(128, 128, 128, 0.267);
+}
+a {
+  transition: all 0.3s ease;
+  color: var(--text-color);
+  &:hover {
+    color: #b83234;
+  }
 }
 </style>
