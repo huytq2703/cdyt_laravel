@@ -61,7 +61,7 @@ const marqueeText = ref(
     <NavBar />
   </div>
 
-  <div v-if="$slots.header" class="w-full">
+  <div v-if="$slots.header" class="w-full fadein animation-duration-1000">
     <slot name="header" />
   </div>
 
@@ -72,11 +72,11 @@ const marqueeText = ref(
     </div>
   </div>
 
-  <div>
+  <div class="min-h-screen">
     <slot />
   </div>
 
-  <div class="bg-green w-full">
+  <footer class="bg-green w-full bottom-0 slideup animation-duration-1000">
     <div class="container py-5">
       <div class="flex justify-content-between flex-wrap gap-3">
         <div class="flex flex-column text-white font-bold">
@@ -113,7 +113,7 @@ const marqueeText = ref(
     </div>
 
     <div class="bg-opacity flex justify-content-center">Copyright 2022</div>
-  </div>
+  </footer>
 </template>
 
 <style lang="scss">

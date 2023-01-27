@@ -3,11 +3,13 @@ import App from "@/Layouts/App.vue";
 import HeaderSlider from "@/Components/HeaderSlider.vue";
 import BlogsCarousel from "./Components/BlogsCarousel.vue";
 import Carousel from "primevue/carousel";
+import { Head } from "@inertiajs/inertia-vue3";
 
 const activityImages = ["7.jpg", "5.jpg", "6.jpg", "8.jpg"];
 </script>
 
 <template>
+  <Head><title>Trang chủ</title></Head>
   <App>
     <template #header>
       <HeaderSlider />
