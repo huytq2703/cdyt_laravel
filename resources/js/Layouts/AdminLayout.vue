@@ -73,12 +73,11 @@ const signOut = () => {
       class="w-full p-button-text p-button-plain"
       @click="
         () => {
-          Inertia.get(route('admin.test'));
+          Inertia.get(route('admin.posts'));
         }
       "
-      >Test</Button
+      >Quản lý bài viết</Button
     >
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
     <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
     <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
     <Button class="w-full p-button-text p-button-plain">Dashboard</Button>

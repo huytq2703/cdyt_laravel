@@ -41,4 +41,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getAll (Array $params = null)
+    {
+        $builder = new $this();
+        if (isset($params['keySearch'])) {
+            $keySearch = $params['keySearch'];
+
+            $builder = $builder->where('name', 'like', "%$keySearch%");
+        }
+
+        return $builder->get();
+    }
 }

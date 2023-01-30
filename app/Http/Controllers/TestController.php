@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Validator;
+
+use App\Models\User;
 
 class TestController extends Controller
 {
@@ -15,11 +18,12 @@ class TestController extends Controller
      */
     public function index(Request $request) : response
     {
-        //
-        return Inertia::render('Test', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => session('status'),
-        ]);
+
+        $inputs     = $request->all();
+        $userModel  = new User();
+        $users      = $userModel->getAll($inputs);
+        // sleep(1);
+        return Inertia::render("Admin/Test", ['users' => $users, 'params' => $inputs]);
     }
 
     /**
@@ -27,9 +31,19 @@ class TestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        Validator::make($request->all(), [
+            'email' => ['required'],
+        ], [
+            'email' => [
+                'required' => "Bắt buộc nhập email"
+            ]
+        ])->validate();
+
+
+        return redirect()->route('admin.test');
+
     }
 
     /**

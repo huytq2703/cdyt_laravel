@@ -44,14 +44,13 @@ Route::get('/gioi-thieu-chung', function () {
     return Inertia::render("About/GeneralInfo");
 })->name('general_info');
 
-Route::group(['prefix' => 'quan-tri', 'middleware' => 'auth'], function () {
-    Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/test', function () {
-        return Inertia::render("Admin/Test");
-    })->name('admin.test');
-    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Route::group(['prefix' => 'quan-tri', 'middleware' => 'auth'], function () {
+//     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+//     Route::get('/test', [TestController::class, 'index'])->name('admin.test');
+//     Route::post('/post-test', [TestController::class, 'create'])->name('admin.post_test');
+
+//     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
 
 
 

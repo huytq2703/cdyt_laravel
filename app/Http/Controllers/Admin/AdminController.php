@@ -16,7 +16,6 @@ class AdminController extends Controller
      */
     public function index() : Response
     {
-        sleep(1);
         return Inertia::render('Admin/Dashboard/Dashboard');
     }
 

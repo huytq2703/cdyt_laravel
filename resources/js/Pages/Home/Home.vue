@@ -112,7 +112,7 @@ const activityImages = ["7.jpg", "5.jpg", "6.jpg", "8.jpg"];
 
           <div class="flex flex-column gap-3 py-3">
             <div class="">
-              <img src="storage/activities/6.jpg" alt="" />
+              <img src="storage/images/activities/6.jpg" alt="" />
               <a href="#">
                 <h3 class="font-bold text-xl text-justify py-2">
                   TRƯỜNG CDYT TỔ CHỨC HỘI THẢO TƯ VẤN GIỚI THIỆU NGÀNH ĐIỀU DƯỠNG TẠI NHẬT
@@ -127,7 +127,7 @@ const activityImages = ["7.jpg", "5.jpg", "6.jpg", "8.jpg"];
             </div>
 
             <div class="">
-              <img src="storage/activities/6.jpg" alt="" />
+              <img src="storage/images/activities/6.jpg" alt="" />
               <a href="#">
                 <h3 class="font-bold text-xl text-justify py-2">
                   TRƯỜNG CDYT TỔ CHỨC HỘI THẢO TƯ VẤN GIỚI THIỆU NGÀNH ĐIỀU DƯỠNG TẠI NHẬT
@@ -151,7 +151,7 @@ const activityImages = ["7.jpg", "5.jpg", "6.jpg", "8.jpg"];
 
           <div class="flex flex-column gap-3 py-3">
             <div class="">
-              <img src="storage/activities/6.jpg" alt="" />
+              <img src="storage/images/activities/6.jpg" alt="" />
               <a href="#">
                 <h3 class="font-bold text-xl text-justify py-2">
                   TRƯỜNG CDYT TỔ CHỨC HỘI THẢO TƯ VẤN GIỚI THIỆU NGÀNH ĐIỀU DƯỠNG TẠI NHẬT
@@ -166,7 +166,7 @@ const activityImages = ["7.jpg", "5.jpg", "6.jpg", "8.jpg"];
             </div>
 
             <div class="">
-              <img src="storage/activities/6.jpg" alt="" />
+              <img src="storage/images/activities/6.jpg" alt="" />
               <a href="#">
                 <h3 class="font-bold text-xl text-justify py-2">
                   TRƯỜNG CDYT TỔ CHỨC HỘI THẢO TƯ VẤN GIỚI THIỆU NGÀNH ĐIỀU DƯỠNG TẠI NHẬT
@@ -190,7 +190,7 @@ const activityImages = ["7.jpg", "5.jpg", "6.jpg", "8.jpg"];
 
           <div class="flex flex-column gap-3 py-3">
             <div class="">
-              <img src="storage/activities/6.jpg" alt="" />
+              <img src="storage/images/activities/6.jpg" alt="" />
               <a href="#">
                 <h3 class="font-bold text-xl text-justify py-2">
                   TRƯỜNG CDYT TỔ CHỨC HỘI THẢO TƯ VẤN GIỚI THIỆU NGÀNH ĐIỀU DƯỠNG TẠI NHẬT
@@ -205,7 +205,7 @@ const activityImages = ["7.jpg", "5.jpg", "6.jpg", "8.jpg"];
             </div>
 
             <div class="">
-              <img src="storage/activities/6.jpg" alt="" />
+              <img src="storage/images/activities/6.jpg" alt="" />
               <a href="#">
                 <h3 class="font-bold text-xl text-justify py-2">
                   TRƯỜNG CDYT TỔ CHỨC HỘI THẢO TƯ VẤN GIỚI THIỆU NGÀNH ĐIỀU DƯỠNG TẠI NHẬT
@@ -319,7 +319,7 @@ const activityImages = ["7.jpg", "5.jpg", "6.jpg", "8.jpg"];
         >
           <template #item="slotProps">
             <img
-              :src="`storage/activities/${slotProps.data}`"
+              :src="`storage/images/activities/${slotProps.data}`"
               style="width: 100%; height: 200px; object-fit: cover"
               alt=""
             />
@@ -337,32 +337,32 @@ const activityImages = ["7.jpg", "5.jpg", "6.jpg", "8.jpg"];
 
       <div class="flex align-items-center flex-wrap justify-content-center py-5 gap-2">
         <img
-          src="storage/brands/link-01.png"
+          src="storage/images/brands/link-01.png"
           style="width: 150px; object-fit: contain"
           alt=""
         />
         <img
-          src="storage/brands/link-02.png"
+          src="storage/images/brands/link-02.png"
           style="width: 150px; object-fit: contain"
           alt=""
         />
         <img
-          src="storage/brands/link-03.png"
+          src="storage/images/brands/link-03.png"
           style="width: 150px; object-fit: contain"
           alt=""
         />
         <img
-          src="storage/brands/link-04.png"
+          src="storage/images/brands/link-04.png"
           style="width: 150px; object-fit: contain"
           alt=""
         />
         <img
-          src="storage/brands/link-05.png"
+          src="storage/images/brands/link-05.png"
           style="width: 150px; object-fit: contain"
           alt=""
         />
         <img
-          src="storage/brands/link-06.jpg"
+          src="storage/images/brands/link-06.jpg"
           style="width: 150px; object-fit: contain"
           alt=""
         />

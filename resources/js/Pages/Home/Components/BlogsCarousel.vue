@@ -42,7 +42,7 @@ const blogs = ref([
       <template #item="slotProps">
         <a href="#">
           <img
-            :src="`storage/activities/${slotProps.data.image}`"
+            :src="`storage/images/activities/${slotProps.data.image}`"
             style="height: 350px; width: 100%; object-fit: cover"
           />
           <div class="w-full h-13rem p-3">
