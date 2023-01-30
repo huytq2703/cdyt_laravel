@@ -18,11 +18,15 @@ const menu = [
       },
       {
         label: "Chức năng nhiệm vụ",
-        name: "general_info",
+        name: "task_function",
+      },
+      {
+        label: "Cơ cấu tổ chức",
+        name: "organizational_structure",
       },
       {
         label: "Công khai chất lượng",
-        name: "general_info",
+        name: "public_quality",
       },
     ],
   },
