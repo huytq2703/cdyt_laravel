@@ -15,8 +15,6 @@ use Inertia\Inertia;
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
-|
-*/
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -26,6 +24,8 @@ use Inertia\Inertia;
 //         'phpVersion' => PHP_VERSION,
 //     ]);
 // });
+|
+*/
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -43,15 +43,5 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/gioi-thieu-chung', function () {
     return Inertia::render("About/GeneralInfo");
 })->name('general_info');
-
-// Route::group(['prefix' => 'quan-tri', 'middleware' => 'auth'], function () {
-//     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
-//     Route::get('/test', [TestController::class, 'index'])->name('admin.test');
-//     Route::post('/post-test', [TestController::class, 'create'])->name('admin.post_test');
-
-//     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
-
-
 
 require __DIR__.'/auth.php';
