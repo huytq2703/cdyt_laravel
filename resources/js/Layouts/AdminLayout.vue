@@ -6,6 +6,7 @@ import { ref } from "vue";
 import { Inertia } from "@inertiajs/inertia";
 import { useConfirm } from "primevue/useconfirm";
 import ConfirmDialog from "primevue/confirmdialog";
+import ToastList from "@/Components/Toast/ToastList.vue";
 
 const confirm = useConfirm();
 const visibleLeft = ref(false);
@@ -109,6 +110,7 @@ const signOut = () => {
   <!-- END: Sidebar -->
   <div class="layout-main-container pl-5">
     <div class="layout-main">
+      <ToastList />
       <slot />
     </div>
     <!-- <AppFooter /> -->

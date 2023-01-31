@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->integer('parent_id')->nullable();
             $table->string('title', 75)->unique();
-            $table->string('meta_title');
+            $table->string('meta_title')->nullable();
             $table->string('slug');
             $table->tinyText('summary')->nullable();
             $table->longText('content');

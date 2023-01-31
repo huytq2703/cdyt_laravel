@@ -17,22 +17,19 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import PrimeVue from 'primevue/config';
 import ConfirmationService from "primevue/confirmationservice";
 
-
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 createInertiaApp({
     title: (title) => `${title}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, app, props, plugin }) {
-        const vApp =  createApp({ render: () => h(app, props) });
+        const vApp = createApp({ render: () => h(app, props) });
             vApp.use(PrimeVue);
             vApp.use(plugin);
             vApp.use(ZiggyVue, Ziggy);
             vApp.use(ConfirmationService);
             vApp.mount(el);
-
         return vApp;
-
     },
 });
 

@@ -1,1 +1,6 @@
 // Suggested location to add your overrides so that migration would be easy by just updating the SASS folder in the future
+
+.p-invalid-editor{
+    border: 1px solid #f44336;
+    border-radius: 5px;
+}

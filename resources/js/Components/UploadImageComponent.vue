@@ -1,11 +1,18 @@
 <script setup>
+import Button from "primevue/button";
 import { ref, computed, watch } from "vue";
-const emits = defineEmits(["update:image"]);
+import NProgress from "nprogress";
+const emits = defineEmits(["update:image", "update:base64"]);
 const props = defineProps({
   image: {
-    type: Object,
+    type: [Object, String],
     required: false,
     default: null,
+  },
+  base64: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
   classes: {
     type: String,
@@ -30,15 +37,22 @@ const props = defineProps({
 });
 
 const previewPath = ref(props.src);
+const reader = new FileReader();
 
 const onPreviewImage = (e) => {
   const file = e.target?.files?.[0];
+  NProgress.start();
   if (file) {
-    const path = URL.createObjectURL(file);
-    previewPath.value = path;
+    let rawImg;
+    reader.onloadend = () => {
+      rawImg = reader.result;
+      previewPath.value = rawImg;
+      if (props.base64) emits("update:image", rawImg);
+      NProgress.done();
+    };
+    reader.readAsDataURL(file);
   }
-
-  emits("update:image", file);
+  if (!props.base64) emits("update:image", file);
 };
 
 const onClickRemoveImage = () => {
@@ -69,23 +83,14 @@ const isUploadImage = computed(() => {
       :class="classes"
     >
       <i class="pi pi-camera" style="font-size: 1.5rem"></i>
-      <input
-        @change="onPreviewImage"
-        :id="id"
-        type="file"
-        accept="image/*"
-        hidden
-      />
+      <input @change="onPreviewImage" :id="id" type="file" accept="image/*" hidden />
       Thêm ảnh
     </label>
   </div>
 
   <div
     v-show="!isUploadImage"
-    :class="[
-      classes,
-      !isUploadImage && 'flex justify-content-center align-items-center',
-    ]"
+    :class="[classes, !isUploadImage && 'flex justify-content-center align-items-center']"
   >
     <div
       :class="`relative flex justify-content-center align-items-center ${
