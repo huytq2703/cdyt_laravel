@@ -40,8 +40,20 @@ Route::middleware('auth')->group(function () {
 Route::get('/test', [TestController::class, 'index'])->name('test');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/gioi-thieu-chung', function () {
-    return Inertia::render("About/GeneralInfo");
-})->name('general_info');
 
-require __DIR__.'/auth.php';
+Route::group(['prefix' => 'gioi-thieu'], function () {
+    Route::get('/gioi-thieu-chung', function () {
+        return Inertia::render("About/GeneralInfo");
+    })->name('general_info');
+    Route::get('/chuc-nang-nhiem-vu', function () {
+        return Inertia::render("About/TaskFunction");
+    })->name('task_function');
+    Route::get('/co-cau-to-chuc', function () {
+        return Inertia::render("About/OrganizationalStructure");
+    })->name('organizational_structure');
+    Route::get('/cong-khai-chat-luong', function () {
+        return Inertia::render("About/PublicQuality");
+    })->name('public_quality');
+});
+
+require __DIR__ . '/auth.php';
