@@ -30,6 +30,72 @@ const menu = [
       },
     ],
   },
+  {
+    label: "Phòng khoa",
+    child: [
+      {
+        label: "Phòng tổ chức hành chính",
+        name: "administrative_affairs_room",
+      },
+      {
+        label: "Phòng đào tạo",
+        name: "training_room",
+      },
+      {
+        label: "Phòng tài chính kế toán",
+        name: "finance_accounting_room",
+      },
+      {
+        label: "Phòng công tác HSSV",
+        name: "student_affairs_room",
+      },
+      {
+        label: "Phòng khảo thí và KĐCL",
+        name: "examination_room",
+      },
+      {
+        label: "Khoa cơ bản",
+        name: "basic_department",
+      },
+      {
+        label: "Khoa Y",
+        name: "medical_department",
+      },
+      {
+        label: "Khoa điều dưỡng",
+        name: "nursing_department",
+      },
+      {
+        label: "Khoa dược",
+        name: "pharmacy_department",
+      },
+    ],
+  },
+  {
+    label: "Hoạt động nội bộ",
+    child: [
+      {
+        label: "Hoạt động đảng",
+        name: "general_info",
+      },
+      {
+        label: "Hoạt động chuyên môn",
+        name: "task_function",
+      },
+      {
+        label: "Đoàn thanh niên",
+        name: "organizational_structure",
+      },
+      {
+        label: "Hoạt động công đoàn",
+        name: "public_quality",
+      },
+      {
+        label: "Thi và tuyển sinh",
+        name: "public_quality",
+      },
+    ],
+  },
 ];
 
 const menuFullVisible = ref(false);
