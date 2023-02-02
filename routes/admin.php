@@ -13,7 +13,7 @@ Route::middleware('auth')->group(function () {
         Route::get('', [PostController::class, 'index'])->name('admin.posts');
         Route::post('/tao-bai-viet', [PostController::class, 'createPost'])->name('admin.posts.create');
         Route::get('/{id}/preview', [PostController::class, 'preview'])->name('admin.posts.preview');
-        // Route::get('/{id}/update', [PostController::class, 'update'])->name('admin.posts.details');
+        Route::delete('/{id}/delete', [PostController::class, 'deletePost'])->name('admin.posts.delete');
         Route::post('/cap-nhat-bai-viet', [PostController::class, 'update'])->name('admin.posts.update');
 
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\Categories;
@@ -12,7 +13,7 @@ use Log;
 
 class Posts extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
      /**
      * The table associated with the model.
@@ -72,6 +73,8 @@ class Posts extends Model
 
     public function getAll(Array $filters)
     {
+        $pagination = config('constants.pagination');
+        $pageSize = $pagination['pageSize'];
         $builder = $this->with(['user', 'categories']);
 
         if (isset($filters['search'])) {
@@ -85,7 +88,15 @@ class Posts extends Model
                     ->orWhereIn('posts.id', $catIds);
             });
         }
-        return $builder->get();
+
+        if (isset($filters['sortField'])) {
+            $sortField = $filters['sortField'];
+            $sortOrder = isset($filters['sortOrder']) && $filters['sortOrder'] == -1 ? 'desc' : 'asc';
+            // dump($sortOrder);
+            $builder = $builder->orderBy($sortField, $sortOrder);
+        }
+        // return $this->paginate(2, ['*'], 'page', 2);
+        return $builder->latest('posts.created_at')->paginate($pageSize);
     }
 
     public function findById(String $postId)

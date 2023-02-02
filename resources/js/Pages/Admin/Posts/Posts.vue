@@ -10,9 +10,11 @@ import { onMounted, ref, computed, reactive } from "vue";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import CreateOrUpdateModal from "./components/CreateOrUpdateModal.vue";
+import ConfirmDialog from "primevue/confirmdialog";
+import { useConfirm } from "primevue/useconfirm";
 
+const confirm = useConfirm();
 const user = computed(() => usePage().props.test);
-
 const page = usePage();
 const props = defineProps({
   posts: {
@@ -27,9 +29,11 @@ const props = defineProps({
   },
   errors: Object,
   categories: Array,
+  pagination: Object,
+  sort: Object,
 });
 const filtersForm = useForm({
-  search: "",
+  search: props?.params?.search,
 });
 const createOrUpdateModelVisible = ref(false);
 const postDetails = ref({});
@@ -55,12 +59,38 @@ const getPostDetails = async (details) => {
   createOrUpdateModelVisible.value = true;
 };
 
-onMounted(() => {
-  //   window.addEventListener("beforeunload", function (event) {
-  //     Inertia.get(route("admin.posts"));
-  //     // event.returnValue = "Write something";
-  //   });
-});
+const deletePost = (details) => {
+  confirm.require({
+    message: "Bạn có chắc chắn muốn xoá bài viết không?",
+    header: "Thông báo",
+    icon: "pi pi-info-circle",
+    acceptClass: "p-button-danger",
+    acceptLabel: "Xoá",
+    rejectLabel: "Huỷ",
+    accept: () => {
+      Inertia.delete(route("admin.posts.delete", { id: details.id }));
+    },
+    reject: () => {},
+  });
+};
+
+const onPageChange = ({ page }) => {
+  Inertia.get(route("admin.posts"), { page: page + 1, search: props?.params?.search });
+};
+
+const onSort = ({ sortField, sortOrder }) => {
+  console.log(sortField, sortOrder);
+  Inertia.get(route("admin.posts"), {
+    search: props?.params?.search,
+    sortField: sortField,
+    sortOrder: sortOrder,
+  });
+};
+
+const refreshPage = () => {
+  Inertia.get(route("admin.posts"));
+};
+onMounted(() => {});
 </script>
 
 <template>
@@ -69,9 +99,15 @@ onMounted(() => {
 
     <div class="card">
       <h5 class="font-bold">Danh sách bài viết</h5>
-      <div class="flex justify-content-between mb-4">
-        <div>
-          <Button label="Tạo mới" @click="onClickAddNew" />
+      <div class="flex justify-content-between mb-4 flex-wrap gap-3">
+        <div class="flex gap-2 flex-wrap">
+          <Button
+            icon="pi pi-refresh"
+            label="Làm mới"
+            class="p-button-outlined"
+            @click="refreshPage"
+          />
+          <Button icon="pi pi-plus" label="Tạo mới" @click="onClickAddNew" />
         </div>
 
         <span class="p-input-icon-left w-20rem">
@@ -88,17 +124,23 @@ onMounted(() => {
       <DataTable
         :value="posts"
         :paginator="true"
-        :rows="10"
+        :rows="pagination.perPage"
+        :totalRecords="pagination.totalRecords"
+        :first="pagination.first"
+        :sortField="params?.sortField"
+        :sortOrder="Number(params?.sortOrder)"
         dataKey="id"
         :rowHover="true"
-        lazy
-        :totalRecords="20"
+        :lazy="true"
+        :autoLayout="true"
         responsiveLayout="scroll"
+        @page="onPageChange"
+        @sort="onSort"
       >
-        <Column field="id" header="id" :sortable="true"></Column>
+        <Column field="id" header="id" :sortable="true" class="w-3rem"></Column>
         <Column field="title" header="Tiêu đề" :sortable="true"></Column>
         <Column field="slug" header="Slug" :sortable="true"></Column>
-        <Column field="categories" header="Danh mục">
+        <Column field="categories" header="Danh mục" class="w-12rem">
           <template #body="slotProps">
             <span v-for="cat in slotProps.data.categories" :key="cat.id">
               {{ cat.title }},
@@ -106,7 +148,7 @@ onMounted(() => {
           </template>
         </Column>
 
-        <Column header="Chức năng" class="w-8rem">
+        <Column header="Chức năng" class="w-10rem">
           <template #body="slotProps">
             <Button
               icon="pi pi-eye"
@@ -118,6 +160,12 @@ onMounted(() => {
               icon="pi pi-file-edit"
               class="p-button-rounded p-button-text"
               @click="getPostDetails(slotProps.data)"
+            />
+
+            <Button
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-text p-button-danger"
+              @click="deletePost(slotProps.data)"
             />
           </template>
         </Column>

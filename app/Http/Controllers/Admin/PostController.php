@@ -19,10 +19,18 @@ class PostController extends Controller
         $postModel          = new Posts();
         $categoriesModel    = new Categories();
 
-        $posts = $postModel->getAll($request->all());
+        $posts = $postModel->getAll($request->all())->toArray();
 
         return Inertia::render('Admin/Posts/Posts', [
-            'posts'         => $posts,
+            'posts'         => $posts['data'],
+            'pagination'    => [
+                'perPage'       => $posts['per_page'],
+                'currentPage'   => $posts['current_page'],
+                'totalPages'    => $posts['last_page'],
+                'totalRecords'  => $posts['total'],
+                'first'         => $posts['from']
+            ],
+            'params'        => $request->all(),
             'categories'    => $categoriesModel->get(),
         ]);
     }
@@ -32,20 +40,7 @@ class PostController extends Controller
      */
     public function createPost (Request $request)
     {
-        Validator::make($request->all(), [
-            'title'         => ['required', 'unique:posts'],
-            'slug'          => ['required', 'unique:posts'],
-            'content'       => ['required'],
-            'categoryIds'   => ['required']
-        ],
-        [
-            'title' => [
-                'required'  => "Vui lòng nhập tiêu đề",
-                'unique'    => 'Bài viết đã tồn tại'
-            ],
-            'content'       => ['required' => 'Vui lòng nhập nội dung'],
-            'categoryIds'   => ['required' => 'Vui lòng chọn danh mục']
-        ])->validate();
+        $this->validatePost($request->all());
 
         $inputs     = $request->all();
         $postModel  = new Posts();
@@ -69,20 +64,7 @@ class PostController extends Controller
 
     public function update(Request $request)
     {
-        Validator::make($request->all(), [
-            'title'         => ['required', 'unique:posts,title,'.$request->get('id')],
-            'slug'          => ['required', 'unique:posts,slug,'.$request->get('id')],
-            'content'       => ['required'],
-            'categoryIds'   => ['required']
-        ],
-        [
-            'title' => [
-                'required'  => "Vui lòng nhập tiêu đề",
-                'unique'    => 'Bài viết đã tồn tại'
-            ],
-            'content'       => ['required' => 'Vui lòng nhập nội dung'],
-            'categoryIds'   => ['required' => 'Vui lòng chọn danh mục']
-        ])->validate();
+        $this->validatePost($request->all());
 
         $inputs     = $request->all();
         $postModel  = new Posts();
@@ -95,5 +77,34 @@ class PostController extends Controller
 
         if (!$result) return redirect()->route('admin.posts')->with('toast.error', 'Cập nhật bài viết thất bại');
         return redirect()->route('admin.posts')->with('toast.success', 'Cập nhật bài viết thành công');
+    }
+
+    public function deletePost(Request $request, String $postId)
+    {
+        $postModel  = new Posts();
+
+        $post = $postModel->findById($postId);
+        $result = $post->delete();
+
+        if (!$result) return redirect()->route('admin.posts')->with('toast.error', 'Xoá bài viết thất bại');
+        return redirect()->route('admin.posts')->with('toast.success', 'Xoá bài viết thành công');
+    }
+
+    public function validatePost (Array $inputs)
+    {
+        Validator::make($inputs, [
+            'title'         => ['required', 'unique:posts,title,'.$inputs['id']],
+            'slug'          => ['required', 'unique:posts,slug,'.$inputs['id']],
+            'content'       => ['required'],
+            'categoryIds'   => ['required']
+        ],
+        [
+            'title' => [
+                'required'  => "Vui lòng nhập tiêu đề",
+                'unique'    => 'Bài viết đã tồn tại'
+            ],
+            'content'       => ['required' => 'Vui lòng nhập nội dung'],
+            'categoryIds'   => ['required' => 'Vui lòng chọn danh mục']
+        ])->validate();
     }
 }
