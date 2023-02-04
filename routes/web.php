@@ -88,4 +88,24 @@ Route::group(['prefix' => 'phong-khoa'], function () {
     })->name('pharmacy_department');
 });
 
+// Module Hoạt động nội bộ
+Route::group(['prefix' => 'tin-tuc'], function () {
+    Route::get('/hoat-dong-dang', function () {
+        return Inertia::render("InternalActivities/PartyActivities");
+    })->name('party_activities');
+    Route::get('/hoat-dong-chuyen-mon', function () {
+        return Inertia::render("InternalActivities/ProfessionalActivities");
+    })->name('professional_activities');
+    Route::get('/doan-thanh-nien', function () {
+        return Inertia::render("InternalActivities/YouthUnion");
+    })->name('youth_union');
+    Route::get('/hoat-dong-cong-doan', function () {
+        return Inertia::render("InternalActivities/TradeUnionActivities");
+    })->name('trade_union_activities');
+    Route::get('/thi-va-tuyen-sinh', function () {
+        return Inertia::render("InternalActivities/ExaminationsAndAdmissions");
+    })->name('examinations_and_admissions');
+});
+
+
 require __DIR__ . '/auth.php';

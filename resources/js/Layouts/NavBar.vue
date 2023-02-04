@@ -76,23 +76,23 @@ const menu = [
     child: [
       {
         label: "Hoạt động đảng",
-        name: "general_info",
+        name: "party_activities",
       },
       {
         label: "Hoạt động chuyên môn",
-        name: "task_function",
+        name: "professional_activities",
       },
       {
         label: "Đoàn thanh niên",
-        name: "organizational_structure",
+        name: "youth_union",
       },
       {
         label: "Hoạt động công đoàn",
-        name: "public_quality",
+        name: "trade_union_activities",
       },
       {
         label: "Thi và tuyển sinh",
-        name: "public_quality",
+        name: "examinations_and_admissions",
       },
     ],
   },
