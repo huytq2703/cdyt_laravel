@@ -105,6 +105,10 @@ const menu = [
     label: "Liên hệ",
     name: "contact",
   },
+  {
+        label: "Hướng nghiệp",
+        name: "career_direction",
+    },
 ];
 
 const menuFullVisible = ref(false);

@@ -114,5 +114,10 @@ Route::post('/tao-cau-hoi', [QAController::class, 'createQuestion'])->name('qafo
 Route::get('/lien-he', [ContactController::class, 'index'])->name('contact');
 Route::post('/tao-lien-he', [ContactController::class, 'createContact'])->name('contact.create');
 
+// Hướng nghiệp
+Route::get('/huong-nghiep', function () {
+    return Inertia::render("CareerDirection/CareerDirection");
+})->name('career_direction');
+
 
 require __DIR__ . '/auth.php';
