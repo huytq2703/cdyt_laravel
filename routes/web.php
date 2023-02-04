@@ -116,13 +116,13 @@ Route::group(['prefix' => 'dao-tao'], function () {
     })->name('training_program');
     Route::get('/lich-giang-vien', function () {
         return Inertia::render("Training/LecturerSchedule");
-    })->name('lecturer_schedule');
+    })->middleware(['auth', 'verified'])->name('lecturer_schedule');
     Route::get('/lich-thi-het-mon', function () {
         return Inertia::render("Training/FinalExamSchedule");
-    })->name('final_exam_schedule');
+    })->middleware(['auth', 'verified'])->name('final_exam_schedule');
     Route::get('/van-ban-dao-tao', function () {
         return Inertia::render("Training/TrainingDocument");
-    })->name('training_document');
+    })->middleware(['auth', 'verified'])->name('training_document');
 });
 
 Route::get('/hoi-dap', [QAController::class, 'index'])->name('qaform');
@@ -150,19 +150,21 @@ Route::group(['prefix' => 'tuyen-sinh'], function () {
 });
 
 // Module Sinh viên
-Route::group(['prefix' => 'sinh-vien'], function () {
-    Route::get('/tra-cuu-diem', function () {
-        return Inertia::render("Student/ScoreLookup");
-    })->name('score_lookup');
-    Route::get('/tra-cuu-lich-hoc', function () {
-        return Inertia::render("Student/ClassTimetableLookup");
-    })->name('class_timetable_lookup');
-    Route::get('/tai-lieu-hoc-tap', function () {
-        return Inertia::render("Student/LearningResources");
-    })->name('learning_resources');
-    Route::get('/thu-vien-bai-giang', function () {
-        return Inertia::render("Student/LectureLibrary");
-    })->name('lecture_library');
+Route::middleware('auth')->group(function () {
+    Route::group(['prefix' => 'sinh-vien'], function () {
+        Route::get('/tra-cuu-diem', function () {
+            return Inertia::render("Student/ScoreLookup");
+        })->name('score_lookup');
+        Route::get('/tra-cuu-lich-hoc', function () {
+            return Inertia::render("Student/ClassTimetableLookup");
+        })->name('class_timetable_lookup');
+        Route::get('/tai-lieu-hoc-tap', function () {
+            return Inertia::render("Student/LearningResources");
+        })->name('learning_resources');
+        Route::get('/thu-vien-bai-giang', function () {
+            return Inertia::render("Student/LectureLibrary");
+        })->name('lecture_library');
+    });
 });
 
 require __DIR__ . '/auth.php';

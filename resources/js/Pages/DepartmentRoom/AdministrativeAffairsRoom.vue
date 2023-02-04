@@ -154,24 +154,7 @@ import MenuSideBar from "./Components/MenuSideBar.vue";
     </App>
 </template>
 
-<style lang="scss" scoped>
-.nav-link {
-    color: white;
-    padding: 7px;
-    &:hover {
-        background-color: #b83234;
-        font-weight: bold;
-    }
-}
-.nav-link {
-    color: white;
-    font-size: 1rem;
-    padding: 0.5rem;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
+<style lang="scss">
 .side-menu {
     height: calc(100vh - 130px);
 }
