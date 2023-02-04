@@ -4,7 +4,11 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MailController;
 use Inertia\Inertia;
+
+
+Route::put('/test-mai', [MailController::class, 'test'])->name('admin.test_mail');
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
