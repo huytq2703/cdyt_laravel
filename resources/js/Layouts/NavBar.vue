@@ -98,12 +98,12 @@ const menu = [
   },
 
   {
-    label: "Liên hệ",
-    name: "home",
+    label: "Hỏi đáp",
+    name: "qaform",
   },
   {
-    label: "Hỏi đáp",
-    name: "home",
+    label: "Liên hệ",
+    name: "contact",
   },
 ];
 

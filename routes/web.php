@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\QAController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -106,22 +108,11 @@ Route::group(['prefix' => 'tin-tuc'], function () {
         return Inertia::render("InternalActivities/ExaminationsAndAdmissions");
     })->name('examinations_and_admissions');
 });
+Route::get('/hoi-dap', [QAController::class, 'index'])->name('qaform');
+Route::post('/tao-cau-hoi', [QAController::class, 'createQuestion'])->name('qaform.createQuestion');
 
-// Module Đào tạo
-Route::group(['prefix' => 'dao-tao'], function () {
-    Route::get('/chuong-trinh-dao-tao', function () {
-        return Inertia::render("Training/TrainingProgram");
-    })->name('training_program');
-    Route::get('/lich-giang-vien', function () {
-        return Inertia::render("Training/LecturerSchedule");
-    })->name('lecturer_schedule');
-    Route::get('/lich-thi-het-mon', function () {
-        return Inertia::render("Training/FinalExamSchedule");
-    })->name('final_exam_schedule');
-    Route::get('/van-ban-dao-tao', function () {
-        return Inertia::render("Training/TrainingDocument");
-    })->name('training_document');
-});
+Route::get('/lien-he', [ContactController::class, 'index'])->name('contact');
+Route::post('/tao-lien-he', [ContactController::class, 'createContact'])->name('contact.create');
 
 
 require __DIR__ . '/auth.php';
