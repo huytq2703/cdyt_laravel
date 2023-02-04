@@ -107,5 +107,21 @@ Route::group(['prefix' => 'tin-tuc'], function () {
     })->name('examinations_and_admissions');
 });
 
+// Module Đào tạo
+Route::group(['prefix' => 'dao-tao'], function () {
+    Route::get('/chuong-trinh-dao-tao', function () {
+        return Inertia::render("Training/TrainingProgram");
+    })->name('training_program');
+    Route::get('/lich-giang-vien', function () {
+        return Inertia::render("Training/LecturerSchedule");
+    })->name('lecturer_schedule');
+    Route::get('/lich-thi-het-mon', function () {
+        return Inertia::render("Training/FinalExamSchedule");
+    })->name('final_exam_schedule');
+    Route::get('/van-ban-dao-tao', function () {
+        return Inertia::render("Training/TrainingDocument");
+    })->name('training_document');
+});
+
 
 require __DIR__ . '/auth.php';

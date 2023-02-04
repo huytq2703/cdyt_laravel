@@ -147,14 +147,14 @@ import MenuSideBar from "./Components/MenuSideBar.vue";
                     </div>
                 </div>
                 <div class="col-12 xl:col-3">
-                    <MenuSideBar />
+                    <MenuSideBar class="menusidebar-custom" />
                 </div>
             </div>
         </div>
     </App>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .nav-link {
     color: white;
     padding: 7px;
