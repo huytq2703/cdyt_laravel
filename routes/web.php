@@ -108,6 +108,23 @@ Route::group(['prefix' => 'tin-tuc'], function () {
         return Inertia::render("InternalActivities/ExaminationsAndAdmissions");
     })->name('examinations_and_admissions');
 });
+
+// Module Đào tạo
+Route::group(['prefix' => 'dao-tao'], function () {
+    Route::get('/chuong-trinh-dao-tao', function () {
+        return Inertia::render("Training/TrainingProgram");
+    })->name('training_program');
+    Route::get('/lich-giang-vien', function () {
+        return Inertia::render("Training/LecturerSchedule");
+    })->name('lecturer_schedule');
+    Route::get('/lich-thi-het-mon', function () {
+        return Inertia::render("Training/FinalExamSchedule");
+    })->name('final_exam_schedule');
+    Route::get('/van-ban-dao-tao', function () {
+        return Inertia::render("Training/TrainingDocument");
+    })->name('training_document');
+});
+
 Route::get('/hoi-dap', [QAController::class, 'index'])->name('qaform');
 Route::post('/tao-cau-hoi', [QAController::class, 'createQuestion'])->name('qaform.createQuestion');
 
@@ -119,5 +136,33 @@ Route::get('/huong-nghiep', function () {
     return Inertia::render("CareerDirection/CareerDirection");
 })->name('career_direction');
 
+// Module Tuyển sinh
+Route::group(['prefix' => 'tuyen-sinh'], function () {
+    Route::get('/thong-bao-tuyen-sinh', function () {
+        return Inertia::render("Enrollment/EnrollmentNotice");
+    })->name('enrollment_notice');
+    Route::get('/dang-ky-tuyen-sinh', function () {
+        return Inertia::render("Enrollment/OnlineEnrollmentRegistration");
+    })->name('online_enrollment_registration');
+    Route::get('/ket-qua-tuyen-sinh', function () {
+        return Inertia::render("Enrollment/EnrollmentResult");
+    })->name('enrollment_result');
+});
+
+// Module Sinh viên
+Route::group(['prefix' => 'sinh-vien'], function () {
+    Route::get('/tra-cuu-diem', function () {
+        return Inertia::render("Student/ScoreLookup");
+    })->name('score_lookup');
+    Route::get('/tra-cuu-lich-hoc', function () {
+        return Inertia::render("Student/ClassTimetableLookup");
+    })->name('class_timetable_lookup');
+    Route::get('/tai-lieu-hoc-tap', function () {
+        return Inertia::render("Student/LearningResources");
+    })->name('learning_resources');
+    Route::get('/thu-vien-bai-giang', function () {
+        return Inertia::render("Student/LectureLibrary");
+    })->name('lecture_library');
+});
 
 require __DIR__ . '/auth.php';

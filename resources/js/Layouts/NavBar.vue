@@ -96,7 +96,69 @@ const menu = [
       },
     ],
   },
-
+  {
+    label: "Đào tạo",
+    child: [
+      {
+        label: "Chương trình đào tạo",
+        name: "training_program",
+      },
+      {
+        label: "Lịch giảng viên",
+        name: "lecturer_schedule",
+      },
+      {
+        label: "Lịch thi hết môn",
+        name: "final_exam_schedule",
+      },
+      {
+        label: "Văn bản đào tạo",
+        name: "training_document",
+      },
+    ],
+  },
+  {
+        label: "Hướng nghiệp",
+        name: "career_direction",
+  },
+  {
+        label: "Tuyển sinh",
+        child: [
+            {
+                label: "Thông báo tuyển sinh",
+                name: "enrollment_notice",
+            },
+            {
+                label: "Đăng kí tuyển sinh trực tuyến",
+                name: "online_enrollment_registration",
+            },
+            {
+                label: "Kết quả tuyển sinh",
+                name: "enrollment_result",
+            },
+        ],
+  },
+  {
+        label: "Sinh viên",
+        child: [
+            {
+                label: "Tra cứu điểm",
+                name: "score_lookup",
+            },
+            {
+                label: "Tra cứu lịch học",
+                name: "class_timetable_lookup",
+            },
+            {
+                label: "Tài liệu học tập",
+                name: "learning_resources",
+            },
+            {
+                label: "Thư viện bài giảng",
+                name: "lecture_library",
+            },
+        ],
+  },
   {
     label: "Hỏi đáp",
     name: "qaform",
@@ -105,10 +167,6 @@ const menu = [
     label: "Liên hệ",
     name: "contact",
   },
-  {
-        label: "Hướng nghiệp",
-        name: "career_direction",
-    },
 ];
 
 const menuFullVisible = ref(false);
