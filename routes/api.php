@@ -21,3 +21,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::get('/test', [ApiController::class, 'test']);
+
+Route::group([
+    'prefix' => 'v1'
+], function () {
+    Route::prefix('locations')->group(function () {
+        Route::get('provinces', [ApiController::class, 'getProvinces']);
+        Route::get('districts/{province_id}', [ApiController::class, 'getDistricts']);
+        Route::get('wards/{district_id}', [ApiController::class, 'getWards']);
+    });
+});

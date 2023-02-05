@@ -1,8 +1,8 @@
 <script setup>
 import App from "@/Layouts/App.vue";
 import { Head } from "@inertiajs/inertia-vue3";
-import axios from "axios";
 import { onMounted, ref } from "vue";
+import { AxiosInstance } from "@/libs/axios";
 
 const selectedProvince = ref("");
 const selectedDistrict = ref("");
@@ -10,6 +10,55 @@ const selectedWard = ref("");
 const provinces = ref([]);
 const districts = ref([]);
 const wards = ref([]);
+
+const getProvinces = () => {
+    AxiosInstance({
+        url: "/v1/locations/provinces",
+        method: "get",
+    })
+        .then((response) => response)
+        .then(({ data: res }) => {
+            if (res.success) {
+                provinces.value = res.data.provinces;
+            }
+        })
+        .catch()
+        .finally();
+};
+
+const getDistricts = () => {
+    AxiosInstance({
+        url: `/v1/locations/districts/${selectedProvince.value.id}`,
+        method: "get",
+    })
+        .then((response) => response)
+        .then(({ data: res }) => {
+            if (res.success) {
+                districts.value = res.data.districts;
+            }
+        })
+        .catch()
+        .finally();
+};
+
+const getWards = () => {
+    AxiosInstance({
+        url: `/v1/locations/wards/${selectedDistrict.value.id}`,
+        method: "get",
+    })
+        .then((response) => response)
+        .then(({ data: res }) => {
+            if (res.success) {
+                wards.value = res.data.wards;
+            }
+        })
+        .catch()
+        .finally();
+};
+
+onMounted(() => {
+    getProvinces();
+});
 
 const blogs = [
     {
@@ -31,47 +80,6 @@ const blogs = [
             "Nhân ngày Điều dưỡng Việt Nam 26/10, Trường Cao đẳng Y tế Đắk Lắk xin gửi đến tất cả Điều dưỡng viên ngàn lời tri ân, những lời chúc tốt đẹp nhất đến những ai đã đang và sẽ chọn co ...",
     },
 ];
-
-const getProvinces = () => {
-    axios
-        .get("https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1")
-        .then((response) => {
-            provinces.value = response.data.data.data;
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-};
-
-const getDistricts = () => {
-    axios
-        .get(
-            `https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${selectedProvince.value.code}&limit=-1`
-        )
-        .then((response) => {
-            districts.value = response.data.data.data;
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-};
-
-const getWards = () => {
-    axios
-        .get(
-            `https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${selectedDistrict.value.code}&limit=-1`
-        )
-        .then((response) => {
-            wards.value = response.data.data.data;
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-};
-
-onMounted(() => {
-    getProvinces();
-});
 </script>
 
 <template>

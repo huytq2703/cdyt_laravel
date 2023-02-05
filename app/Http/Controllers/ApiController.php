@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Province;
+use App\Models\District;
+use App\Models\Ward;
 
 class ApiController extends Controller
 {
@@ -21,6 +23,42 @@ class ApiController extends Controller
 
         return response()->json([
             'data' => ['posts' => $posts, 'user' => $user],
+            'statusValue' => 'Gọi api thành công!',
+            'statusCode' => 200,
+            'success'  => true
+        ]);
+    }
+
+    public function getProvinces()
+    {
+        $provinces = Province::all();
+
+        return response()->json([
+            'data' => ['provinces' => $provinces],
+            'statusValue' => 'Gọi api thành công!',
+            'statusCode' => 200,
+            'success'  => true
+        ]);
+    }
+
+    public function getDistricts($province_id)
+    {
+        $districts = District::whereProvinceId($province_id)->get();
+
+        return response()->json([
+            'data' => ['districts' => $districts],
+            'statusValue' => 'Gọi api thành công!',
+            'statusCode' => 200,
+            'success'  => true
+        ]);
+    }
+
+    public function getWards($district_id)
+    {
+        $wards = Ward::whereDistrictId($district_id)->get();
+
+        return response()->json([
+            'data' => ['wards' => $wards],
             'statusValue' => 'Gọi api thành công!',
             'statusCode' => 200,
             'success'  => true
