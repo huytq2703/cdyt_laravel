@@ -1,6 +1,15 @@
 <script setup>
 import App from "@/Layouts/App.vue";
 import { Head } from "@inertiajs/inertia-vue3";
+import axios from "axios";
+import { onMounted, ref } from "vue";
+
+const selectedProvince = ref("");
+const selectedDistrict = ref("");
+const selectedWard = ref("");
+const provinces = ref([]);
+const districts = ref([]);
+const wards = ref([]);
 
 const blogs = [
     {
@@ -22,6 +31,47 @@ const blogs = [
             "Nhân ngày Điều dưỡng Việt Nam 26/10, Trường Cao đẳng Y tế Đắk Lắk xin gửi đến tất cả Điều dưỡng viên ngàn lời tri ân, những lời chúc tốt đẹp nhất đến những ai đã đang và sẽ chọn co ...",
     },
 ];
+
+const getProvinces = () => {
+    axios
+        .get("https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1")
+        .then((response) => {
+            provinces.value = response.data.data.data;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
+
+const getDistricts = () => {
+    axios
+        .get(
+            `https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${selectedProvince.value.code}&limit=-1`
+        )
+        .then((response) => {
+            districts.value = response.data.data.data;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
+
+const getWards = () => {
+    axios
+        .get(
+            `https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${selectedDistrict.value.code}&limit=-1`
+        )
+        .then((response) => {
+            wards.value = response.data.data.data;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
+
+onMounted(() => {
+    getProvinces();
+});
 </script>
 
 <template>
@@ -127,6 +177,7 @@ const blogs = [
                                         id="ho_va_ten"
                                         type="text"
                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                                        placeholder="Họ và tên"
                                     />
                                 </div>
                             </div>
@@ -139,6 +190,7 @@ const blogs = [
                                         id="so_dien_thoai"
                                         type="tel"
                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                                        placeholder="Số điện thoại"
                                     />
                                 </div>
                             </div>
@@ -151,30 +203,59 @@ const blogs = [
                                         id="dia_chi"
                                         type="text"
                                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                                        placeholder="Nhập số nhà"
                                     />
                                 </div>
                                 <div class="field">
                                     <select
-                                        id="thanh_pho"
+                                        id="tinh"
                                         class="w-full text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round outline-none focus:border-primary"
+                                        v-model="selectedProvince"
+                                        @change="getDistricts"
                                     >
-                                        <option>Tỉnh</option>
+                                        <option value="">Chọn Tỉnh</option>
+                                        <option
+                                            v-for="province in provinces"
+                                            :key="province._id"
+                                            :value="province"
+                                        >
+                                            {{ province.name }}
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="field">
                                     <select
                                         id="thanh_pho"
                                         class="w-full text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round outline-none focus:border-primary"
+                                        v-model="selectedDistrict"
+                                        @change="getWards"
                                     >
-                                        <option>TP, Quận, Huyện</option>
+                                        <option value="">
+                                            Chọn TP, Quận, Huyện
+                                        </option>
+                                        <option
+                                            v-for="district in districts"
+                                            :key="district.id"
+                                            :value="district"
+                                        >
+                                            {{ district.name }}
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="field">
                                     <select
-                                        id="thanh_pho"
+                                        id="xa"
                                         class="w-full text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round outline-none focus:border-primary"
+                                        v-model="selectedWard"
                                     >
-                                        <option>Xã, Phường</option>
+                                        <option value="">Chọn Xã Phường</option>
+                                        <option
+                                            v-for="ward in wards"
+                                            :key="ward.id"
+                                            :value="ward"
+                                        >
+                                            {{ ward.name }}
+                                        </option>
                                     </select>
                                 </div>
                             </div>
