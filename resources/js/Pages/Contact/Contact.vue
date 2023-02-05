@@ -26,7 +26,7 @@ const onClickSendInfo = () => {
 <template>
   <Head title="Hỏi đáp" />
   <App>
-    <div class="container mx-auto">
+    <div class="container mx-auto py-3">
       <h3
         class="border-top bg-title bg-title-right text-2xl font-bold text-primary py-2 border-bottom-1 mb-0"
       >
@@ -38,7 +38,7 @@ const onClickSendInfo = () => {
       </p>
       <!-- Here content -->
       <div class="grid">
-        <div class="xl:col-9 col-12">
+        <div class="xl:col-8 col-12">
           <div class="border flex flex-column p-5">
             <!-- Row -->
             <div class="flex flex-row w-full gap-5">
@@ -134,12 +134,12 @@ const onClickSendInfo = () => {
           </div>
         </div>
 
-        <div class="xl:col-3 col-12">
+        <div class="xl:col-4 col-12">
           <img
             src="/storage/images/sinhvien.jpg"
             alt="SINH VIEN"
             class="card-img"
-            style="width: 100%; height: 100%"
+            style="width: 100%; height: 100%; object-fit: cover"
           />
         </div>
       </div>

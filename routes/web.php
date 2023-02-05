@@ -145,26 +145,8 @@ Route::group(['prefix' => 'tuyen-sinh'], function () {
         return Inertia::render("Enrollment/OnlineEnrollmentRegistration");
     })->name('online_enrollment_registration');
     Route::get('/ket-qua-tuyen-sinh', function () {
-        return Inertia::render("Enrollment/EnrollmentResult");
+        return Inertia::render("Enrollment/OnlineEnrollmentRegistration");
     })->name('enrollment_result');
-});
-
-// Module Sinh viên
-Route::middleware('auth')->group(function () {
-    Route::group(['prefix' => 'sinh-vien'], function () {
-        Route::get('/tra-cuu-diem', function () {
-            return Inertia::render("Student/ScoreLookup");
-        })->name('score_lookup');
-        Route::get('/tra-cuu-lich-hoc', function () {
-            return Inertia::render("Student/ClassTimetableLookup");
-        })->name('class_timetable_lookup');
-        Route::get('/tai-lieu-hoc-tap', function () {
-            return Inertia::render("Student/LearningResources");
-        })->name('learning_resources');
-        Route::get('/thu-vien-bai-giang', function () {
-            return Inertia::render("Student/LectureLibrary");
-        })->name('lecture_library');
-    });
 });
 
 require __DIR__ . '/auth.php';
