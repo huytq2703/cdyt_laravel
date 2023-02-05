@@ -15,6 +15,17 @@ const onMenuToggle = () => {
   visibleLeft.value = !visibleLeft.value;
 };
 
+const menu = [
+  {
+    label: "Dashboard",
+    route: "admin.dashboard",
+  },
+  {
+    label: "Quản lý bài viết",
+    route: "admin.posts",
+  },
+];
+
 const signOut = () => {
   confirm.require({
     message: "Bạn có chắc chắn muốn đăng xuất không?",
@@ -62,15 +73,17 @@ const signOut = () => {
   <Sidebar v-model:visible="visibleLeft" position="left">
     <h3>Menu</h3>
     <Button
+      v-for="item in menu"
+      :key="item.route"
       class="w-full p-button-text p-button-plain"
       @click="
         () => {
-          Inertia.get(route('admin.dashboard'));
+          Inertia.get(route(item.route));
         }
       "
-      >Dashboard</Button
+      >{{ item.label }}</Button
     >
-    <Button
+    <!-- <Button
       class="w-full p-button-text p-button-plain"
       @click="
         () => {
@@ -78,7 +91,9 @@ const signOut = () => {
         }
       "
       >Quản lý bài viết</Button
-    >
+    > -->
+    <!-- <Button class="w-full p-button-text p-button-plain">Dashboard</Button> -->
+    <!--
     <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
     <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
     <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
@@ -104,8 +119,7 @@ const signOut = () => {
     <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
     <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
     <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
+    <Button class="w-full p-button-text p-button-plain">Dashboard</Button> -->
   </Sidebar>
   <!-- END: Sidebar -->
   <div class="layout-main-container pl-5">
