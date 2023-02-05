@@ -24,6 +24,10 @@ const menu = [
     label: "Quản lý bài viết",
     route: "admin.posts",
   },
+  {
+    label: "Quản lý địa điểm",
+    route: "admin.locations.provinces",
+  },
 ];
 
 const signOut = () => {

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\LocationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MailController;
 use Inertia\Inertia;
@@ -31,7 +32,9 @@ Route::middleware('auth')->group(function () {
         // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
-
+    Route::group(['prefix' => 'dia-diem'], function () {
+        Route::get('/tinh', [LocationController::class, 'getProvinces'])->name('admin.locations.provinces');
+    });
 });
 // Route::group(['', 'middleware' => 'auth'], function () {
 //     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
