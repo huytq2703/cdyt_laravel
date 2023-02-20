@@ -1,34 +1,28 @@
 <script setup>
-import { Link } from "@inertiajs/inertia-vue3";
+import { Link, usePage } from "@inertiajs/inertia-vue3";
 import Button from "primevue/button";
 import Sidebar from "primevue/sidebar";
-import { ref } from "vue";
+import { ref, onMounted, computed, onUnmounted } from "vue";
 import { Inertia } from "@inertiajs/inertia";
 import { useConfirm } from "primevue/useconfirm";
 import ConfirmDialog from "primevue/confirmdialog";
-import ToastList from "@/Components/Toast/ToastList.vue";
-
+import { adminMenu } from "@/commons/menu";
+import Toast from "primevue/toast";
+import { useToast } from "primevue/usetoast";
+const page = usePage();
 const confirm = useConfirm();
 const visibleLeft = ref(false);
-
 const onMenuToggle = () => {
   visibleLeft.value = !visibleLeft.value;
 };
 
-const menu = [
-  {
-    label: "Dashboard",
-    route: "admin.dashboard",
-  },
-  {
-    label: "Quản lý bài viết",
-    route: "admin.posts",
-  },
-  {
-    label: "Quản lý địa điểm",
-    route: "admin.locations.provinces",
-  },
-];
+const toast = useToast();
+const user = computed(() => page?.props?.value?.auth?.user);
+const currentRoute = route().current();
+const menu = computed(() => {
+  if (page?.props?.value?.menu) return page?.props?.value?.menu;
+  return [];
+});
 
 const signOut = () => {
   confirm.require({
@@ -44,26 +38,57 @@ const signOut = () => {
     reject: () => {},
   });
 };
+
+let removeFinishEventListener = Inertia.on("finish", () => {
+  const t = page.props.value?.toast;
+  if (!t) return;
+  const severities = Object.keys(t)[0];
+  const message = t[severities];
+  const title = t?.title;
+
+  if (message) {
+    toast.add({
+      severity: severities,
+      summary: title ?? "Thông báo",
+      detail: message,
+      life: 3000,
+    });
+  }
+});
+
+const onMouseEnterMenu = () => {
+  visibleLeft.value = true;
+};
+
+onUnmounted(() => {
+  removeFinishEventListener();
+});
 </script>
 
 <template>
   <ConfirmDialog></ConfirmDialog>
+  <div
+    class="absolute h-full w-2rem top-0 flex align-items-center"
+    @mouseenter="onMouseEnterMenu"
+    style="z-index: 999"
+  >
+    <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
+  </div>
   <!-- START: Header -->
   <div class="layout-topbar">
+    <button
+      class="p-link layout-menu-button layout-topbar-button ml-0 mr-2"
+      @click="onMenuToggle"
+    >
+      <i class="pi pi-bars"></i>
+    </button>
+
     <Link :href="route('admin.dashboard')" class="layout-topbar-logo">
       <!-- <img alt="Logo" src="../../assets/images/logo/logo-01.png" /> -->
       <span>Hệ thống quản lý</span>
     </Link>
-    <button class="p-link layout-menu-button layout-topbar-button" @click="onMenuToggle">
-      <i class="pi pi-bars"></i>
-    </button>
 
     <div class="lg:flex lg:flex-1 lg:justify-content-end layout-topbar-menu-button">
-      <!-- <button class="p-link layout-topbar-menu-button lg:flex layout-topbar-button">
-        <i class="pi pi-ellipsis-v"></i>
-        <i class="pi pi-calendar"></i>
-        <span>Events</span>
-      </button> -->
       <Button
         icon="pi pi-sign-out"
         class="p-button-rounded p-button-text p-button-plain"
@@ -75,60 +100,29 @@ const signOut = () => {
 
   <!-- START: Sidebar -->
   <Sidebar v-model:visible="visibleLeft" position="left">
-    <h3>Menu</h3>
-    <Button
-      v-for="item in menu"
-      :key="item.route"
-      class="w-full p-button-text p-button-plain"
-      @click="
-        () => {
-          Inertia.get(route(item.route));
-        }
-      "
-      >{{ item.label }}</Button
-    >
-    <!-- <Button
-      class="w-full p-button-text p-button-plain"
-      @click="
-        () => {
-          Inertia.get(route('admin.posts'));
-        }
-      "
-      >Quản lý bài viết</Button
-    > -->
-    <!-- <Button class="w-full p-button-text p-button-plain">Dashboard</Button> -->
-    <!--
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button>
-    <Button class="w-full p-button-text p-button-plain">Dashboard</Button> -->
+    <template #header><h3 class="p-0 m-0">Menu</h3></template>
+    <template v-for="item in menu" :key="item.route">
+      <h5 class="m-0 text-base">{{ item.name }}</h5>
+      <Button
+        v-for="link in item.child"
+        :class="[
+          'w-full p-button-text p-button-plain',
+          currentRoute === link.route && 'active-link',
+        ]"
+        @click="
+          () => {
+            Inertia.get(route(link.route));
+          }
+        "
+        >{{ link.name }}</Button
+      >
+    </template>
   </Sidebar>
   <!-- END: Sidebar -->
   <div class="layout-main-container pl-5">
     <div class="layout-main">
-      <ToastList />
+      <Toast />
+      <!-- <ToastList /> -->
       <slot />
     </div>
     <!-- <AppFooter /> -->
@@ -138,24 +132,5 @@ const signOut = () => {
 <style lang="scss">
 body {
   background-color: #f8f9fa;
-}
-
-#nprogress {
-  .spinner {
-    top: 0;
-    right: 0;
-    background-color: #0000001f;
-    width: 100%;
-    height: 100vh;
-    margin: 0px;
-    padding: 0px;
-    position: absolute;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    pointer-events: visible;
-    cursor: progress;
-    z-index: 99999999;
-  }
 }
 </style>

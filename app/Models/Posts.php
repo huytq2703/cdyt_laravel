@@ -46,20 +46,12 @@ class Posts extends Model
         'published',
         'cover_image',
         'published_at',
+        'type'
     ];
 
-    // /**
-    //  * The attributes that should be mutated to dates.
-    //  *
-    //  * @var array
-    //  */
-    // protected $timestamps = [
-    //     'created_at',
-    //     'updated_at',
-    //     'deleted_at'
-    // ];
+    const status_created = 0;
+    const status_published = 1;
 
-    // protected $timestamp = true;
 
     public function categories ()
     {
@@ -71,11 +63,11 @@ class Posts extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
-    public function getAll(Array $filters)
+    public function getAll(Array $filters, String $type = 'post')
     {
         $pagination = config('constants.pagination');
         $pageSize = $pagination['pageSize'];
-        $builder = $this->with(['user', 'categories']);
+        $builder = $this->with(['user', 'categories'])->whereType($type);
 
         if (isset($filters['search'])) {
             $search = $filters['search'];
@@ -89,14 +81,28 @@ class Posts extends Model
             });
         }
 
+        // Search by key words
         if (isset($filters['sortField'])) {
-            $sortField = $filters['sortField'];
-            $sortOrder = isset($filters['sortOrder']) && $filters['sortOrder'] == -1 ? 'desc' : 'asc';
-            // dump($sortOrder);
-            $builder = $builder->orderBy($sortField, $sortOrder);
+            $sortField  = $filters['sortField'];
+            $sortOrder  = isset($filters['sortOrder']) && $filters['sortOrder'] == -1 ? 'desc' : 'asc';
+            $builder    = $builder->orderBy($sortField, $sortOrder);
         }
-        // return $this->paginate(2, ['*'], 'page', 2);
-        return $builder->latest('posts.created_at')->paginate($pageSize);
+
+        if (isset($filters['categoryIds'])) {
+            $ids = $filters['categoryIds'];
+
+            $builder = $builder->whereHas('categories', function ($cat) use($ids) {
+                $cat->whereIn('categories.id', $ids);
+            });
+        }
+
+        if (isset($filters['published'])) $builder->wherePublished($filters['published']);
+
+        // $builder = $builder->whereHas('categories', function ($cat) {
+        //     $cat->whereIn('categories.id', [1,2]);
+        // });
+
+        return $builder->latest('created_at')->paginate($pageSize);
     }
 
     public function findById(String $postId)
@@ -116,6 +122,7 @@ class Posts extends Model
             // Insert categories_posts table
             $postId         = $this->id;
 
+            if (isset($postData['categoryIds']) && count($postData['categoryIds']) > 0)
             foreach ($postData['categoryIds'] as $key => $value) {
                 $categoryPostModel = new CategoryPost();
 
@@ -165,5 +172,12 @@ class Posts extends Model
             DB::rollback();
             return null;
         }
+    }
+
+    public function postsByCategory (String $categorySlug)
+    {
+        return $this->join('categories_posts AS cp', 'cp.post_id', 'posts.id')
+            ->join('categories AS c', 'cp.category_id', 'c.id')
+            ->where('c.slug', $categorySlug);
     }
 }

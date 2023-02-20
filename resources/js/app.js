@@ -13,9 +13,12 @@ import { createInertiaApp } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
+import AdminLayout from './Layouts/AdminLayout.vue';
+import AppVue from './Layouts/App.vue';
 
 import PrimeVue from 'primevue/config';
 import ConfirmationService from "primevue/confirmationservice";
+import ToastService from 'primevue/toastservice';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Trường cao đẳng Y tế';
 
@@ -28,6 +31,10 @@ createInertiaApp({
             vApp.use(plugin);
             vApp.use(ZiggyVue, Ziggy);
             vApp.use(ConfirmationService);
+            vApp.use(ToastService);
+
+            vApp.component('AdminLayout', AdminLayout);
+            vApp.component('AppLayout', AppVue);
             vApp.mount(el);
         return vApp;
     },

@@ -9,9 +9,10 @@ import { Head, useForm, usePage } from "@inertiajs/inertia-vue3";
 import { onMounted, ref, computed, reactive } from "vue";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
-import CreateOrUpdateModal from "./components/CreateOrUpdateModal.vue";
+// import CreateOrUpdateModal from "./components/CreateOrUpdateModal.vue";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
+import Badge from "primevue/badge";
 
 const confirm = useConfirm();
 const user = computed(() => usePage().props.test);
@@ -31,6 +32,11 @@ const props = defineProps({
   categories: Array,
   pagination: Object,
   sort: Object,
+  rc_Post: String,
+  ru_Post: String,
+  rl_Post: String,
+  rad_Post: String,
+  rpv_Post: String,
 });
 const filtersForm = useForm({
   search: props?.params?.search,
@@ -39,24 +45,26 @@ const createOrUpdateModelVisible = ref(false);
 const postDetails = ref({});
 
 const onClickAddNew = () => {
-  postDetails.value = {};
-  createOrUpdateModelVisible.value = true;
+  Inertia.get(route(props.rc_Post));
 };
 
 const onClickPreviewPost = (postId) => {
-  window.open(route("admin.posts.preview", { id: postId }), "_blank");
+  window.open(route(props.rpv_Post, { id: postId }), "_blank");
 };
 
 const onSearch = () => {
-  filtersForm.get(route("admin.posts"), {
+  filtersForm.get(route(props.rl_Post), {
     preserveState: true,
     replace: true,
   });
 };
 
-const getPostDetails = async (details) => {
-  postDetails.value = details;
-  createOrUpdateModelVisible.value = true;
+const onClickPostDetails = (id) => {
+  Inertia.get(
+    route(props.ru_Post, {
+      id: id,
+    })
+  );
 };
 
 const deletePost = (details) => {
@@ -68,7 +76,7 @@ const deletePost = (details) => {
     acceptLabel: "Xoá",
     rejectLabel: "Huỷ",
     accept: () => {
-      Inertia.delete(route("admin.posts.delete", { id: details.id }));
+      Inertia.delete(route(props.rad_Post, { id: details.id }));
     },
     reject: () => {},
   });
@@ -79,7 +87,6 @@ const onPageChange = ({ page }) => {
 };
 
 const onSort = ({ sortField, sortOrder }) => {
-  console.log(sortField, sortOrder);
   Inertia.get(route("admin.posts"), {
     search: props?.params?.search,
     sortField: sortField,
@@ -99,28 +106,7 @@ onMounted(() => {});
 
     <div class="card">
       <h5 class="font-bold">Danh sách bài viết</h5>
-      <div class="flex justify-content-between mb-4 flex-wrap gap-3">
-        <div class="flex gap-2 flex-wrap">
-          <Button
-            icon="pi pi-refresh"
-            label="Làm mới"
-            class="p-button-outlined"
-            @click="refreshPage"
-          />
-          <Button icon="pi pi-plus" label="Tạo mới" @click="onClickAddNew" />
-        </div>
 
-        <span class="p-input-icon-left w-20rem">
-          <i class="pi pi-search" />
-          <InputText
-            v-model="filtersForm.search"
-            type="text"
-            class="w-full"
-            placeholder="Tìm kiếm"
-            @keyup.enter="onSearch"
-          />
-        </span>
-      </div>
       <DataTable
         :value="posts"
         :paginator="true"
@@ -137,6 +123,33 @@ onMounted(() => {});
         @page="onPageChange"
         @sort="onSort"
       >
+        <template #header>
+          <div class="flex justify-content-between flex-wrap gap-3">
+            <div class="flex gap-2 flex-wrap">
+              <Button
+                icon="pi pi-refresh"
+                label="Làm mới"
+                class="p-button-outlined"
+                @click="refreshPage"
+              />
+              <Button icon="pi pi-plus" label="Tạo mới" @click="onClickAddNew" />
+            </div>
+
+            <span class="p-input-icon-left w-20rem">
+              <i class="pi pi-search" />
+              <InputText
+                v-model="filtersForm.search"
+                type="text"
+                class="w-full"
+                placeholder="Nhập và enter để tìm kiếm"
+                @keyup.enter="onSearch"
+              />
+            </span>
+          </div>
+        </template>
+        <template #empty>
+          <p class="text-center">Không tìm thấy dữ liệu</p>
+        </template>
         <Column field="id" header="id" :sortable="true" class="w-3rem"></Column>
         <Column field="title" header="Tiêu đề" :sortable="true"></Column>
         <Column field="slug" header="Slug" :sortable="true"></Column>
@@ -148,6 +161,11 @@ onMounted(() => {});
           </template>
         </Column>
 
+        <Column field="published" header="Trạng thái" class="w-12rem">
+          <template #body="slotProps">
+            <Badge value="'Chưa duyệt" />
+          </template>
+        </Column>
         <Column header="Chức năng" class="w-10rem">
           <template #body="slotProps">
             <Button
@@ -159,7 +177,7 @@ onMounted(() => {});
             <Button
               icon="pi pi-file-edit"
               class="p-button-rounded p-button-text"
-              @click="getPostDetails(slotProps.data)"
+              @click="onClickPostDetails(slotProps.data.id)"
             />
 
             <Button
@@ -173,10 +191,10 @@ onMounted(() => {});
     </div>
   </AdminLayout>
 
-  <CreateOrUpdateModal
+  <!-- <CreateOrUpdateModal
     v-model="createOrUpdateModelVisible"
     :errors="errors"
     :categories="categories"
     :details="postDetails"
-  />
+  /> -->
 </template>

@@ -1,3 +1,5 @@
+import moment from "moment"
+
 export const formatURLParams = obj => {
     // eslint-disable-next-line no-restricted-syntax
     for (const propName in obj) {
@@ -30,3 +32,36 @@ export const slugify = (string) =>{
         .replace(/^-+/, '')
         .replace(/-+$/, '')
     }
+
+// Format 2022-11-01T00:00:00.00Z to 11/01/2022 07:00:00
+export const formatStringDateHour = (value) => {
+    if (value) {
+      return moment(value).format("DD/MM/YYYY HH:mm:ss");
+    }
+    return value;
+  };
+
+// Format 2022-11-01T00:00:00.00Z to 11/01/2022
+export const formatStringDate = (value) => {
+if (value) {
+    return moment(value).format("DD/MM/YYYY");
+}
+return value;
+};
+
+// Format 2022-11-01T00:00:00.00Z to format (d-M-y | y-m-d)
+export const stringDateTimeByFormat = (value, format) => {
+    if (value) {
+        return moment(value).format(format);
+    }
+    return value;
+};
+
+// convert sang không dấu
+export const stringWithoutAccents = (value) => {
+    if (!value) return value;
+    return value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[đĐ]/g, "d");
+  };

@@ -34,7 +34,7 @@ class ApiController extends Controller
         $provinces = Province::all();
 
         return response()->json([
-            'data' => ['provinces' => $provinces],
+            'data' => $provinces,
             'statusValue' => 'Gọi api thành công!',
             'statusCode' => 200,
             'success'  => true
@@ -46,7 +46,7 @@ class ApiController extends Controller
         $districts = District::whereProvinceId($province_id)->get();
 
         return response()->json([
-            'data' => ['districts' => $districts],
+            'data' => $districts,
             'statusValue' => 'Gọi api thành công!',
             'statusCode' => 200,
             'success'  => true
@@ -56,9 +56,9 @@ class ApiController extends Controller
     public function getWards($district_id)
     {
         $wards = Ward::whereDistrictId($district_id)->get();
-
+        // dd($wards);
         return response()->json([
-            'data' => ['wards' => $wards],
+            'data' => $wards,
             'statusValue' => 'Gọi api thành công!',
             'statusCode' => 200,
             'success'  => true

@@ -23,3 +23,63 @@
 .p-button-web {
     background-color: var(--primary-color);
 }
+
+.p-button {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+
+    &.p-button-outlined{
+        color: var(--primary-color);;
+    }
+}
+
+.fixed-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &.clamp-2 {
+      -webkit-line-clamp: 2;
+    }
+    &.clamp-3 {
+      -webkit-line-clamp: 3;
+    }
+    &.clamp-4 {
+      -webkit-line-clamp: 4;
+    }
+    &.clamp-5 {
+      -webkit-line-clamp: 5;
+    }
+  }
+  #nprogress {
+    .spinner {
+      top: 0!important;
+      right: 0!important;
+      left: 0!important;
+      bottom: 0!important;
+      background-color: #0000001f;
+    // background-color: #f44336;
+      width: 100%!important;
+      height: 100vh!important;
+      margin: 0px!important;
+      padding: 0px!important;
+      position: absolute!important;
+      justify-content: center!important;
+      align-items: center!important;
+      display: flex!important;
+      pointer-events: visible!important;
+      cursor: progress;
+      z-index: 99999999;
+    }
+  }
+
+  .active-link {
+    background-color: rgba(0, 0, 0, 0.17) !important;
+    font-weight: bold !important;
+    color: rgb(0, 0, 0) !important;
+  }
+
+  .p-sidebar-header {
+    justify-content: space-between;
+  }

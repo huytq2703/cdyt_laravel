@@ -4,7 +4,7 @@ import AdminLayout from "@/Layouts/AdminLayout.vue";
 import Button from "primevue/button";
 import { Inertia } from "@inertiajs/inertia";
 import { AxiosInstance } from "@/libs/axios";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 const testSendMail = () => {
   Inertia.put(route("admin.test_mail"));
@@ -40,6 +40,8 @@ const testAxios = () => {
     </div>
     <div class="card h-30rem flex justify-content-center text-center">
       <h1>HỆ THỐNG QUẢN LÝ GIÁO DỤC</h1>
+
+      {{ $page.props.auth }}
     </div>
   </AdminLayout>
 </template>

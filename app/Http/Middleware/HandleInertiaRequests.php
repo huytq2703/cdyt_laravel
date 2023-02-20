@@ -5,6 +5,9 @@ namespace App\Http\Middleware;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
+use App\Models\Menu;
+use App\Models\SystemDefine;
+use App\Models\Categories;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -30,6 +33,12 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $catModel = Menu::with(['post', 'category', 'subMenus' => function ($sub) {
+            $sub->with(['post', 'category']);
+        }])->whereNull('parent_id')->get();
+
+        // $webMenu = SystemDefine::where('name', 'menu')->first()?->values;
+        $menu = config("menu.admin.{$request->user()?->role_code}") ?? [];
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
@@ -39,7 +48,10 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
-            'toast' => session('toast')
+            'toast' => session('toast'),
+            'menu' => $menu,
+            // 'webMenu' => $webMenu,
+            'webMenu2' => $catModel
         ]);
     }
 }

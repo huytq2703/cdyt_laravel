@@ -4,8 +4,24 @@ import HeaderSlider from "@/Components/HeaderSlider.vue";
 import BlogsCarousel from "./Components/BlogsCarousel.vue";
 import Carousel from "primevue/carousel";
 import { Head } from "@inertiajs/inertia-vue3";
+import { onMounted } from "vue";
+import PostItemsHomePage from "./Components/PostItemsHomePage.vue";
+import Notifications from "../../Components/NotificationsComponent.vue";
+
+const props = defineProps({
+  postsTab1: Object,
+  postsTab2: Object,
+  postsTab3: Object,
+  postHeaderSlider: Array,
+  notifications: Array,
+  v_NotifyDetails: String,
+});
 
 const activityImages = ["7.jpg", "5.jpg", "6.jpg", "8.jpg"];
+
+onMounted(() => {
+  //   console.log(props.notifications);
+});
 </script>
 
 <template>
@@ -18,208 +34,80 @@ const activityImages = ["7.jpg", "5.jpg", "6.jpg", "8.jpg"];
     <div class="container mx-auto">
       <div class="grid py-3">
         <div class="col-12 xl:col-8">
-          <BlogsCarousel />
+          <BlogsCarousel :posts="postHeaderSlider" />
         </div>
 
         <div class="col-12 xl:col-4">
-          <div class="border-1 border-round-xl px-2 py-0 h-full overflow-scroll">
-            <h3
-              class="border-top bg-title bg-title-right text-2xl font-bold text-primary py-2 border-bottom-1"
-            >
-              THÔNG BÁO
-            </h3>
-
-            <div class="flex flex-column gap-2 my-2">
-              <div class="flex gap-2">
-                <div
-                  class="flex flex-shrink-0 w-5rem h-5rem bg-primary font-bold text-xl text-center align-items-center"
-                >
-                  2022-07-17
-                </div>
-                <a
-                  href=""
-                  class="flex-1 h-5rem border-bottom-1 text-justify font-bold hover-custom-2"
-                  >Thông báo tuyển sinh: Cao đẳng chính quy khoá học 2022 - 2025</a
-                >
-              </div>
-
-              <div class="flex gap-2">
-                <div
-                  class="flex flex-shrink-0 w-5rem h-5rem bg-primary font-bold text-xl text-center align-items-center"
-                >
-                  2022-07-17
-                </div>
-                <a href="" class="flex-1 h-5rem border-bottom-1 text-justify font-bold"
-                  >Thông báo tuyển sinh: Cao đẳng chính quy khoá học 2022 - 2025</a
-                >
-              </div>
-
-              <div class="flex gap-2">
-                <div
-                  class="flex flex-shrink-0 w-5rem h-5rem bg-primary font-bold text-xl text-center align-items-center"
-                >
-                  2022-07-17
-                </div>
-                <a href="" class="flex-1 h-5rem border-bottom-1 text-justify font-bold"
-                  >Thông báo tuyển sinh: Cao đẳng chính quy khoá học 2022 - 2025</a
-                >
-              </div>
-
-              <div class="flex gap-2">
-                <div
-                  class="flex flex-shrink-0 w-5rem h-5rem bg-primary font-bold text-xl text-center align-items-center"
-                >
-                  2022-07-17
-                </div>
-                <a href="" class="flex-1 h-5rem border-bottom-1 text-justify font-bold"
-                  >Thông báo tuyển sinh: Cao đẳng chính quy khoá học 2022 - 2025</a
-                >
-              </div>
-
-              <div class="flex gap-2">
-                <div
-                  class="flex flex-shrink-0 w-5rem h-5rem bg-primary font-bold text-xl text-center align-items-center"
-                >
-                  2022-07-17
-                </div>
-                <a href="" class="flex-1 h-5rem border-bottom-1 text-justify font-bold"
-                  >Thông báo tuyển sinh: Cao đẳng chính quy khoá học 2022 - 2025</a
-                >
-              </div>
-
-              <div class="flex gap-2">
-                <div
-                  class="flex flex-shrink-0 w-5rem h-5rem bg-primary font-bold text-xl text-center align-items-center"
-                >
-                  2022-07-17
-                </div>
-                <a href="" class="flex-1 h-5rem border-bottom-1 text-justify font-bold"
-                  >Thông báo tuyển sinh: Cao đẳng chính quy khoá học 2022 - 2025</a
-                >
-              </div>
-            </div>
-          </div>
+          <Notifications
+            :notifications="notifications"
+            :v_NotifyDetails="v_NotifyDetails"
+          />
         </div>
       </div>
 
       <div class="grid">
+        <!-- START: Category tab 1-->
         <div class="col-12 xl:col-4">
           <h3
-            class="border-top bg-title bg-title-right text-2xl font-bold text-primary py-2 border-bottom-1"
+            class="border-top bg-title bg-title-right text-2xl font-bold text-primary py-2 border-bottom-1 text-uppercase"
           >
-            HOẠT ĐỘNG CHUYÊN MÔN
+            {{ postsTab1?.meta_title ?? postsTab1?.title }}
           </h3>
 
           <div class="flex flex-column gap-3 py-3">
-            <div class="">
-              <img src="storage/images/activities/6.jpg" alt="" />
-              <a href="#">
-                <h3 class="font-bold text-xl text-justify py-2">
-                  TRƯỜNG CDYT TỔ CHỨC HỘI THẢO TƯ VẤN GIỚI THIỆU NGÀNH ĐIỀU DƯỠNG TẠI NHẬT
-                  BẢN
-                </h3>
-
-                <p>
-                  🇻🇳 Sáng ngày 6/9/2022 tại Hội trường A Trường Cao đẳng Y tế Đắk Lắk đã
-                  tổ chức thành công hội thảo ngành Điều dưỡng tại Nhật Bản. 🎌🎌🎌 ...
-                </p>
-              </a>
-            </div>
-
-            <div class="">
-              <img src="storage/images/activities/6.jpg" alt="" />
-              <a href="#">
-                <h3 class="font-bold text-xl text-justify py-2">
-                  TRƯỜNG CDYT TỔ CHỨC HỘI THẢO TƯ VẤN GIỚI THIỆU NGÀNH ĐIỀU DƯỠNG TẠI NHẬT
-                  BẢN
-                </h3>
-
-                <p>
-                  🇻🇳 Sáng ngày 6/9/2022 tại Hội trường A Trường Cao đẳng Y tế Đắk Lắk đã
-                  tổ chức thành công hội thảo ngành Điều dưỡng tại Nhật Bản. 🎌🎌🎌 ...
-                </p>
-              </a>
-            </div>
+            <!-- START: Posts -->
+            <PostItemsHomePage
+              v-for="post in postsTab1?.posts"
+              :key="post.id"
+              :categorySlug="postsTab1?.slug"
+              :post="post"
+            />
+            <!-- END: Posts -->
           </div>
         </div>
+        <!-- END: Category -->
+
+        <!-- START: Category tab 2-->
         <div class="col-12 xl:col-4">
           <h3
-            class="border-top bg-title bg-title-right text-2xl font-bold text-primary py-2 border-bottom-1"
+            class="border-top bg-title bg-title-right text-2xl font-bold text-primary py-2 border-bottom-1 text-uppercase"
           >
-            HOẠT ĐỘNG THI VÀ TUYỂN SINH
+            {{ postsTab2?.meta_title ?? postsTab2?.title }}
           </h3>
 
           <div class="flex flex-column gap-3 py-3">
-            <div class="">
-              <img src="storage/images/activities/6.jpg" alt="" />
-              <a href="#">
-                <h3 class="font-bold text-xl text-justify py-2">
-                  TRƯỜNG CDYT TỔ CHỨC HỘI THẢO TƯ VẤN GIỚI THIỆU NGÀNH ĐIỀU DƯỠNG TẠI NHẬT
-                  BẢN
-                </h3>
-
-                <p>
-                  🇻🇳 Sáng ngày 6/9/2022 tại Hội trường A Trường Cao đẳng Y tế Đắk Lắk đã
-                  tổ chức thành công hội thảo ngành Điều dưỡng tại Nhật Bản. 🎌🎌🎌 ...
-                </p>
-              </a>
-            </div>
-
-            <div class="">
-              <img src="storage/images/activities/6.jpg" alt="" />
-              <a href="#">
-                <h3 class="font-bold text-xl text-justify py-2">
-                  TRƯỜNG CDYT TỔ CHỨC HỘI THẢO TƯ VẤN GIỚI THIỆU NGÀNH ĐIỀU DƯỠNG TẠI NHẬT
-                  BẢN
-                </h3>
-
-                <p>
-                  🇻🇳 Sáng ngày 6/9/2022 tại Hội trường A Trường Cao đẳng Y tế Đắk Lắk đã
-                  tổ chức thành công hội thảo ngành Điều dưỡng tại Nhật Bản. 🎌🎌🎌 ...
-                </p>
-              </a>
-            </div>
+            <!-- START: Posts -->
+            <PostItemsHomePage
+              v-for="post in postsTab2?.posts"
+              :key="post.id"
+              :categorySlug="postsTab2?.slug"
+              :post="post"
+            />
+            <!-- END: Posts -->
           </div>
         </div>
+        <!-- END: Category -->
+
+        <!-- START: Category tab 3 -->
         <div class="col-12 xl:col-4">
           <h3
-            class="border-top bg-title bg-title-right text-2xl font-bold text-primary py-2 border-bottom-1"
+            class="border-top bg-title bg-title-right text-2xl font-bold text-primary py-2 border-bottom-1 text-uppercase"
           >
-            HOẠT ĐỘNG ĐOÀN THANH NIÊN
+            {{ postsTab3?.meta_title ?? postsTab3?.title }}
           </h3>
 
           <div class="flex flex-column gap-3 py-3">
-            <div class="">
-              <img src="storage/images/activities/6.jpg" alt="" />
-              <a href="#">
-                <h3 class="font-bold text-xl text-justify py-2">
-                  TRƯỜNG CDYT TỔ CHỨC HỘI THẢO TƯ VẤN GIỚI THIỆU NGÀNH ĐIỀU DƯỠNG TẠI NHẬT
-                  BẢN
-                </h3>
-
-                <p>
-                  🇻🇳 Sáng ngày 6/9/2022 tại Hội trường A Trường Cao đẳng Y tế Đắk Lắk đã
-                  tổ chức thành công hội thảo ngành Điều dưỡng tại Nhật Bản. 🎌🎌🎌 ...
-                </p>
-              </a>
-            </div>
-
-            <div class="">
-              <img src="storage/images/activities/6.jpg" alt="" />
-              <a href="#">
-                <h3 class="font-bold text-xl text-justify py-2">
-                  TRƯỜNG CDYT TỔ CHỨC HỘI THẢO TƯ VẤN GIỚI THIỆU NGÀNH ĐIỀU DƯỠNG TẠI NHẬT
-                  BẢN
-                </h3>
-
-                <p>
-                  🇻🇳 Sáng ngày 6/9/2022 tại Hội trường A Trường Cao đẳng Y tế Đắk Lắk đã
-                  tổ chức thành công hội thảo ngành Điều dưỡng tại Nhật Bản. 🎌🎌🎌 ...
-                </p>
-              </a>
-            </div>
+            <!-- START: Posts -->
+            <PostItemsHomePage
+              v-for="post in postsTab3?.posts"
+              :key="post.id"
+              :categorySlug="postsTab3?.slug"
+              :post="post"
+            />
+            <!-- END: Posts -->
           </div>
         </div>
+        <!-- END: Category -->
       </div>
 
       <h3

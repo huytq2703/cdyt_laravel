@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\Roles;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,11 +17,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $roleModel = new Roles();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $roleModel->fill([
+            'name' => 'Quản trị hệ thống',
+            'code' => 'SUPER_ADMIN',
+            'description' => 'Toàn quyền trên hệ thống',
+        ]);
+
+        $roleModel->save();
+
+        $userModel = new User();
+
+        $userModel->fill([
+            'username' => 'superadmin',
+            'email' => 'superadmin@gmail.com',
+            'password' => Hash::make('admin123'),
+            'role_code' => 'SUPER_ADMIN'
+        ]);
+
+        $userModel->save();
     }
 }

@@ -4,16 +4,17 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Models\Roles;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class AuthenticatedSessionController extends Controller
 {
+
     /**
      * Display the login view.
      */
@@ -28,13 +29,37 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request)
     {
-        $request->authenticate();
+        $credentials = $request->getCredentials();
 
-        $request->session()->regenerate();
+        if(!Auth::validate($credentials)):
+            return redirect()->to('login')->withErrors(['password' => "Mật khẩu không đúng"]);
+        endif;
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        $user = Auth::getProvider()->retrieveByCredentials($credentials);
+
+        Auth::login($user);
+
+        return $this->authenticated($request, $user);
+    }
+
+    /**
+     * Handle response after user authenticated
+     *
+     * @param Request $request
+     * @param Auth $user
+     *
+     * @return \Illuminate\Http\Response
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        if ($user->role_code === "POST_WRITER") return redirect()->route('admin.posts');
+
+        return redirect()->intended()->with('toast', [
+            'info' => "Xin chào {$user->username}!",
+            'title' => "Đăng nhập thành công"
+        ]);
     }
 
     /**
