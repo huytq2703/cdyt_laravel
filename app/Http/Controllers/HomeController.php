@@ -28,9 +28,9 @@ class HomeController extends Controller
         $hoatDongThiVaTuyenSinh = $this->_getPostsByCategorySlug($hoatDongThiVaTuyenSinhSlug, 3);
         $hoatDongDoanThanhNien  = $this->_getPostsByCategorySlug($hoatDongDoanThanhNienSlug, 3);
 
-        $postHeaderSlider = Posts::with('categories')->whereType('post')->whereHas('categories')->latest('created_at')->get();
+        $postHeaderSlider = Posts::with('categories')->whereType('post')->wherePublished(Posts::status_published)->whereHas('categories')->latest('created_at')->get();
 
-        $notifications = Posts::whereType('notice')->latest('created_at')->get();
+        $notifications = Posts::whereType('notice')->wherePublished(Posts::status_published)->latest('created_at')->get();
 
         return Inertia::render('Home/Home', [
             'postsTab1' =>  $hoatDongChuyenMon,
@@ -61,7 +61,7 @@ class HomeController extends Controller
                 'post'  => Posts::whereSlug($post_slug)->wherePublished(Posts::status_published)->latest('created_at')->first(),
                 'category' => Categories::whereSlug($parent_slug)->first(),
                 'highlightPosts' => Categories::whereSlug($highlightSlug)->with('posts', function ($posts) {
-                    $posts->wherePublished(Posts::status_published)->latest('post.created_at');
+                    $posts->wherePublished(Posts::status_published)->latest('posts.created_at');
                 })->first(),
             ]);
         }
@@ -90,14 +90,16 @@ class HomeController extends Controller
             }
         }
 
-        $categoryModel  = Categories::with(['posts', 'childs'])->whereSlug($parent_slug)->first();
+        $categoryModel  = Categories::with(['posts' => function ($posts) {
+            $posts->wherePublished(Posts::status_published)->latest('posts.created_at');
+        }, 'childs'])->whereSlug($parent_slug)->first();
         // Nếu là danh mục
 
         if ($categoryModel?->slug === 'thong-bao') {
             return Inertia::render('Posts/Notifications', [
                 'notifications'  => Posts::whereType('notice')->wherePublished(Posts::status_published)->latest('created_at')->get(),
                 'highlightPosts' => Categories::whereSlug($highlightSlug)->with('posts', function ($posts) {
-                    $posts->wherePublished(Posts::status_published)->latest('post.created_at');
+                    $posts->wherePublished(Posts::status_published)->latest('posts.created_at');
                 })->first(),
             ]);
         }
@@ -106,7 +108,7 @@ class HomeController extends Controller
             return Inertia::render('Posts/Category', [
                 'category'  => $categoryModel,
                 'highlightPosts' => Categories::whereSlug($highlightSlug)->with('posts', function ($posts) {
-                    $posts->wherePublished(Posts::status_published)->latest('post.created_at');
+                    $posts->wherePublished(Posts::status_published)->latest('posts.created_at');
                 })->first(),
             ]);
         }
