@@ -10,17 +10,35 @@ use Inertia\Response;
 use App\Models\Categories;
 use App\Models\Posts;
 use App\Models\Menu;
+use App\Models\SystemDefine;
 
 class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response ||
      */
-    public function index() : Response
+    public function index(Request $request)
     {
-        return Inertia::render('Admin/Dashboard/Dashboard');
+        if ($request->isMethod('GET')) {
+            $task = SystemDefine::whereName('task')->first();
+
+            return Inertia::render('Admin/Dashboard/Dashboard', [
+                'task'  => $task
+            ]);
+        }
+
+        if ($request->isMethod('PUT')) {
+            $task = SystemDefine::whereName('task')->first();
+            $task->values = [
+                'content' => $request->content
+            ];
+
+            $task->save();
+            return redirect()->back()->with('toast.success',  "Đã cập nhật");
+        }
+
     }
 
     /**

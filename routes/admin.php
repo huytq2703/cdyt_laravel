@@ -12,12 +12,15 @@ use App\Http\Controllers\Admin\NotificationsController;
 use App\Http\Controllers\Admin\AdmissionsController;
 use App\Http\Controllers\Admin\PagesController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CareerDirectionController;
+use App\Http\Controllers\Admin\MajorController;
 
 use Inertia\Inertia;
 
 Route::put('/test-mai', [MailController::class, 'test'])->name('admin.test_mail');
 Route::middleware('auth')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::put('/luu-noi-dun-cong-viec', [AdminController::class, 'index'])->name('admin.dashboard.save_task');
 
     // Students
     Route::group(['prefix' => 'sinh-vien'], function () {
@@ -64,6 +67,7 @@ Route::middleware('auth')->group(function () {
         Route::get('{id}/preview', [PostController::class, 'preview'])->name('admin.posts.preview');
 
         Route::delete('{id}/delete', [PostController::class, 'deletePost'])->name('admin.posts.delete');
+        Route::put('{id}/reject', [PostController::class, 'rejectPosts'])->name('admin.posts.reject');
 
         Route::middleware('role_reject:POST_WRITER')->get('kiem-duyet-noi-dung', [PostController::class, 'postsCreated'])->name('admin.posts.verify.list');
         Route::middleware('role_reject:POST_WRITER')->put('duyet-noi-dung', [PostController::class, 'publishedPosts'])->name('admin.posts.approved');
@@ -92,18 +96,29 @@ Route::middleware('auth')->group(function () {
         Route::delete('{id}/delete', [NotificationsController::class, 'delete'])->name('admin.notice.delete');
     });
 
+    // Career direction
+    Route::group(['prefix' => 'huong-nghiep', 'middleware' => 'role_reject'], function () {
+        Route::get('', [CareerDirectionController::class, 'index'])->name('admin.career_direction');
+        Route::post('', [CareerDirectionController::class, 'createTimeSlots'])->name('admin.time_slots.create');
+
+        Route::get('chi-tiet/{id}', [CareerDirectionController::class, 'show'])->name('admin.time_slots.show');
+        Route::put('chi-tiet/{id}', [CareerDirectionController::class, 'update'])->name('admin.time_slots.update');
+    });
+
     // Admissions
     Route::group(['prefix' => 'tuyen-sinh', 'middleware' => 'role_reject'], function () {
         Route::get('', [AdmissionsController::class, 'index'])->name('admin.admissions');
 
         Route::get('chi-tiet/{id}', [AdmissionsController::class, 'show'])->name('admin.admissions.show');
-        // Route::get('them-moi', [NotificationsController::class, 'create'])->name('admin.notification.create.index');
-        // Route::post('them-moi', [NotificationsController::class, 'create'])->name('admin.notification.create');
+    });
 
-        // Route::get('chinh-sua/{id}', [NotificationsController::class, 'update'])->name('admin.notification.update.index');
-        // Route::put('chinh-sua', [NotificationsController::class, 'update'])->name('admin.notification.update');
+    // Majors
+    Route::group(['prefix' => 'nganh-hoc', 'middleware' => 'role_reject'], function () {
+        Route::get('', [MajorController::class, 'index'])->name('admin.majors');
+        Route::post('', [MajorController::class, 'save'])->name('admin.majors.save');
+        Route::put('{id}/cap-nhat', [MajorController::class, 'save'])->name('admin.majors.update');
 
-        // Route::delete('xoa/{id}', [NotificationsController::class, 'delete'])->name('admin.notification.delete');
+        Route::delete('{id}/xoa', [MajorController::class, 'delete'])->name('admin.majors.delete');
     });
 
     // Static pages
@@ -121,7 +136,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('{id}/delete', [PagesController::class, 'delete'])->name('admin.pages.delete');
 
     });
-
 
     // System
     Route::middleware('role_accept:SUPER_ADMIN,ADMIN')->group(function () {

@@ -73,7 +73,7 @@ watch(display, (value) => {
 
     <div class="flex flex-column gap-3">
       <!-- Name -->
-      <div class="flex flex-column">
+      <!-- <div class="flex flex-column">
         <label for="name">Họ và tên</label>
         <InputText
           id="name"
@@ -84,7 +84,7 @@ watch(display, (value) => {
         <small v-if="userInfo?.errors?.name" id="name-help" class="p-error">{{
           userInfo?.errors.name
         }}</small>
-      </div>
+      </div> -->
 
       <!-- Username -->
       <div class="flex flex-column">
@@ -122,6 +122,8 @@ watch(display, (value) => {
         <Dropdown
           v-model="userInfo.roleCode"
           :options="roles"
+          optionLabel="name"
+          optionValue="code"
           placeholder="Chọn nhóm quyền"
         />
         <small v-if="userInfo?.errors?.roleCode" id="roleCode-help" class="p-error">{{

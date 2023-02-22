@@ -27,7 +27,7 @@ class HomeController extends Controller
         $hoatDongChuyenMon      = $this->_getPostsByCategorySlug($hoatDongChuyenMonSlug, 3);
         $hoatDongThiVaTuyenSinh = $this->_getPostsByCategorySlug($hoatDongThiVaTuyenSinhSlug, 3);
         $hoatDongDoanThanhNien  = $this->_getPostsByCategorySlug($hoatDongDoanThanhNienSlug, 3);
-
+// dd($hoatDongDoanThanhNien->toArray());
         $postHeaderSlider = Posts::with('categories')->whereType('post')->wherePublished(Posts::status_published)->whereHas('categories')->latest('created_at')->get();
 
         $notifications = Posts::whereType('notice')->wherePublished(Posts::status_published)->latest('created_at')->get();

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CareerDirectionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\HomeController;
@@ -59,6 +60,7 @@ Route::get('/trang-chu', [HomeController::class, 'index']);
 Route::get('/huong-nghiep', function () {
     return Inertia::render("CareerDirection/CareerDirection");
 })->name('career_direction');
+Route::post('/huong-nghiep/dang-ky',[CareerDirectionController::class, 'create'])->name('career_direction.register');
 
 // Module Tuyển sinh
 Route::group(['prefix' => ''], function () {

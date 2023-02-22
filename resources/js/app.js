@@ -19,6 +19,8 @@ import AppVue from './Layouts/App.vue';
 import PrimeVue from 'primevue/config';
 import ConfirmationService from "primevue/confirmationservice";
 import ToastService from 'primevue/toastservice';
+import locale from './utils/locale';
+import VueSocialSharing from 'vue-social-sharing'
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Trường cao đẳng Y tế';
 
@@ -27,11 +29,12 @@ createInertiaApp({
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, app, props, plugin }) {
         const vApp = createApp({ render: () => h(app, props) });
-            vApp.use(PrimeVue);
+            vApp.use(PrimeVue, { ripple: true, inputStyle: "outlined", locale: locale });
             vApp.use(plugin);
             vApp.use(ZiggyVue, Ziggy);
             vApp.use(ConfirmationService);
             vApp.use(ToastService);
+            vApp.use(VueSocialSharing);
 
             vApp.component('AdminLayout', AdminLayout);
             vApp.component('AppLayout', AppVue);

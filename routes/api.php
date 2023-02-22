@@ -30,4 +30,6 @@ Route::group([
         Route::get('districts/{province_id}', [ApiController::class, 'getDistricts']);
         Route::get('wards/{district_id}', [ApiController::class, 'getWards']);
     });
+
+    Route::get('time-slot', [ApiController::class, 'getTimeSlots']);
 });

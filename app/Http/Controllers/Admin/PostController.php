@@ -25,6 +25,7 @@ class PostController extends Controller
     const rpv_Post          = 'admin.posts.preview';
     const rl_PostsCreated   = 'admin.posts.verify.list';
     const rau_PostsPublished = 'admin.posts.approved';
+    const rau_PostReject    = 'admin.posts.reject';
 
 
     public function index (Request $request)
@@ -49,7 +50,8 @@ class PostController extends Controller
             'ru_Post'       => self::ru_Post,
             'rad_Post'      => self::rad_Post,
             'rl_Post'       => self::rl_Post,
-            'rpv_Post'      => self::rpv_Post
+            'rpv_Post'      => self::rpv_Post,
+            'rau_PostReject'    => self::rau_PostReject
         ]);
     }
 
@@ -138,6 +140,18 @@ class PostController extends Controller
 
         if (!$result) return redirect()->route('admin.posts')->with('toast.error', 'Xoá bài viết thất bại');
         return redirect()->route('admin.posts')->with('toast.success', 'Xoá bài viết thành công');
+    }
+
+    public function rejectPosts(Request $request, String $postId)
+    {
+        $postModel  = new Posts();
+
+        $post = $postModel->find($postId);
+        $post->published = 0;
+        $result = $post->save();
+
+        if (!$result) return redirect()->back()->with('toast.error', 'Đã xãy ra lỗi. Chưa thực hiện được');
+        return redirect()->back()->with('toast.success', 'Đã ẩn');
     }
 
     public function saveCategory (Request $request)

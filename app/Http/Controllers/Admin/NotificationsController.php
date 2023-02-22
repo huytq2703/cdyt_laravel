@@ -20,6 +20,7 @@ class NotificationsController extends Controller
     const rau_Notice          = 'admin.notice.update';
     const rad_Notice          = 'admin.notice.delete';
     const rl_Notice           = 'admin.notice';
+    const rau_PostReject      = 'admin.posts.reject';
     public function index(Request $request)
     {
 
@@ -43,7 +44,8 @@ class NotificationsController extends Controller
             'ru_Notice'       => self::ru_Notice,
             'rau_Notice'      => self::rau_Notice,
             'rl_Notice'       => self::rl_Notice,
-            'rad_Notice'      => self::rad_Notice
+            'rad_Notice'      => self::rad_Notice,
+            'rau_PostReject'    => self::rau_PostReject
         ]);
     }
 

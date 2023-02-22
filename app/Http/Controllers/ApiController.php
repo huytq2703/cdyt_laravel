@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Province;
 use App\Models\District;
 use App\Models\Ward;
+use App\Models\TimeSlot;
 
 class ApiController extends Controller
 {
@@ -53,10 +54,22 @@ class ApiController extends Controller
         ]);
     }
 
+    public function getTimeSlots()
+    {
+        $timeSlots = TimeSlot::get();
+
+        return response()->json([
+            'data' => $timeSlots,
+            'statusValue' => 'Thành công',
+            'statusCode' => 200,
+            'success'  => true
+        ]);
+    }
+
     public function getWards($district_id)
     {
         $wards = Ward::whereDistrictId($district_id)->get();
-        // dd($wards);
+
         return response()->json([
             'data' => $wards,
             'statusValue' => 'Gọi api thành công!',

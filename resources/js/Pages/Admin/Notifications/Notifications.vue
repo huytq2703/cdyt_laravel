@@ -37,6 +37,7 @@ const props = defineProps({
   rl_Notice: String,
   rad_Notice: String,
   rpv_Page: String,
+  rau_PostReject: String,
 });
 const filtersForm = useForm({
   search: props?.params?.search,
@@ -94,6 +95,21 @@ const onSort = ({ sortField, sortOrder }) => {
 
 const refreshPage = () => {
   Inertia.get(route(props.rl_Notice));
+};
+
+const onClickRejectPosts = (postId) => {
+  confirm.require({
+    message: "Bạn có chắc chắn muốn ẩn bài viết không?",
+    header: "Thông báo",
+    icon: "pi pi-info-circle",
+    acceptClass: "p-button-danger",
+    acceptLabel: "Đồng ý",
+    rejectLabel: "Huỷ",
+    accept: () => {
+      Inertia.put(route(props.rau_PostReject, { id: postId }));
+    },
+    reject: () => {},
+  });
 };
 onMounted(() => {});
 </script>
@@ -161,7 +177,10 @@ onMounted(() => {});
 
         <Column field="published" header="Trạng thái" class="w-12rem">
           <template #body="slotProps">
-            <Badge value="'Chưa duyệt" />
+            <Badge
+              :severity="`${slotProps.data.published === 0 ? 'danger' : ''}`"
+              :value="`${slotProps.data.published === 0 ? 'Chưa duyệt' : 'Đã duyệt'}`"
+            />
           </template>
         </Column>
         <Column header="Chức năng" class="w-10rem">
@@ -170,6 +189,12 @@ onMounted(() => {});
               icon="pi pi-file-edit"
               class="p-button-rounded p-button-text"
               @click="onClickPostDetails(slotProps.data.id)"
+            />
+
+            <Button
+              icon="pi pi-eye-slash"
+              class="p-button-rounded p-button-text p-button-warning"
+              @click="onClickRejectPosts(slotProps.data.id)"
             />
 
             <Button

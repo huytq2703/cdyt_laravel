@@ -22,6 +22,7 @@ class PagesController extends Controller
     const rad_Page          = 'admin.pages.delete';
     const rl_Page           = 'admin.pages';
     const rpv_Page          = 'admin.pages.preview';
+    const rau_PostReject    = 'admin.posts.reject';
 
     public function index(Request $request)
     {
@@ -46,7 +47,8 @@ class PagesController extends Controller
             'rau_Page'      => self::rau_Page,
             'rl_Page'       => self::rl_Page,
             'rpv_Page'      => self::rpv_Page,
-            'rad_Page'      => self::rad_Page
+            'rad_Page'      => self::rad_Page,
+            'rau_PostReject'    => self::rau_PostReject
         ]);
     }
 

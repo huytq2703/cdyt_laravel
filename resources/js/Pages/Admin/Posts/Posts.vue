@@ -3,13 +3,10 @@ import AdminLayout from "@/Layouts/AdminLayout.vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { Inertia } from "@inertiajs/inertia";
-// import ColumnGroup from "primevue/columngroup"; //optional for column grouping
-// import Row from "primevue/row";
 import { Head, useForm, usePage } from "@inertiajs/inertia-vue3";
 import { onMounted, ref, computed, reactive } from "vue";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
-// import CreateOrUpdateModal from "./components/CreateOrUpdateModal.vue";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import Badge from "primevue/badge";
@@ -37,19 +34,29 @@ const props = defineProps({
   rl_Post: String,
   rad_Post: String,
   rpv_Post: String,
+  rau_PostReject: String,
 });
 const filtersForm = useForm({
   search: props?.params?.search,
 });
-const createOrUpdateModelVisible = ref(false);
-const postDetails = ref({});
 
 const onClickAddNew = () => {
   Inertia.get(route(props.rc_Post));
 };
 
-const onClickPreviewPost = (postId) => {
-  window.open(route(props.rpv_Post, { id: postId }), "_blank");
+const onClickRejectPosts = (postId) => {
+  confirm.require({
+    message: "Bạn có chắc chắn muốn ẩn bài viết không?",
+    header: "Thông báo",
+    icon: "pi pi-info-circle",
+    acceptClass: "p-button-danger",
+    acceptLabel: "Đồng ý",
+    rejectLabel: "Huỷ",
+    accept: () => {
+      Inertia.put(route(props.rau_PostReject, { id: postId }));
+    },
+    reject: () => {},
+  });
 };
 
 const onSearch = () => {
@@ -163,21 +170,24 @@ onMounted(() => {});
 
         <Column field="published" header="Trạng thái" class="w-12rem">
           <template #body="slotProps">
-            <Badge value="'Chưa duyệt" />
+            <Badge
+              :severity="`${slotProps.data.published === 0 ? 'danger' : ''}`"
+              :value="`${slotProps.data.published === 0 ? 'Chưa duyệt' : 'Đã duyệt'}`"
+            />
           </template>
         </Column>
         <Column header="Chức năng" class="w-10rem">
           <template #body="slotProps">
             <Button
-              icon="pi pi-eye"
-              class="p-button-rounded p-button-text"
-              @click="onClickPreviewPost(slotProps.data.id)"
-            />
-
-            <Button
               icon="pi pi-file-edit"
               class="p-button-rounded p-button-text"
               @click="onClickPostDetails(slotProps.data.id)"
+            />
+
+            <Button
+              icon="pi pi-eye-slash"
+              class="p-button-rounded p-button-text p-button-warning"
+              @click="onClickRejectPosts(slotProps.data.id)"
             />
 
             <Button
@@ -190,11 +200,4 @@ onMounted(() => {});
       </DataTable>
     </div>
   </AdminLayout>
-
-  <!-- <CreateOrUpdateModal
-    v-model="createOrUpdateModelVisible"
-    :errors="errors"
-    :categories="categories"
-    :details="postDetails"
-  /> -->
 </template>

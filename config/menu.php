@@ -32,7 +32,15 @@ return [
                     ['name' => 'Quản lý bài viết', 'route' => 'admin.posts'],
                     ['name' => 'Quản lý thông báo', 'route' => 'admin.notice'],
                     ['name' => 'Quản lý trang tĩnh', 'route' => 'admin.pages'],
-                    ['name' => 'Kiểm duyệt bài viết', 'route' => 'admin.posts.verify'],
+                    ['name' => 'Kiểm duyệt nội dung', 'route' => 'admin.posts.verify.list'],
+                ]
+            ],
+            [
+                "name" => "Tuyển sinh & Hướng nghiệp",
+                "child" => [
+                    ['name' => 'Quản lý tuyển sinh', 'route' => 'admin.admissions'],
+                    ['name' => 'Quản lý hướng nghiệp', 'route' => 'admin.career_direction'],
+                    ['name' => 'Quản lý ngành học', 'route' => 'admin.majors'],
                 ]
             ],
             [
@@ -43,13 +51,7 @@ return [
                     ['name' => 'Quản lý menu', 'route' => 'system.menu'],
                 ]
             ],
-            [
-                "name" => "Tuyển sinh & tư vấn",
-                "child" => [
-                    ['name' => 'Đăng ký tuyển sinh', 'route' => 'admin.admissions'],
-                    ['name' => 'Đăng ký hướng nghiệp', 'route' => 'system.permission'],
-                ]
-            ],
+
         ],
 
         'ADMIN' => [

@@ -57,6 +57,21 @@ export const stringDateTimeByFormat = (value, format) => {
     return value;
 };
 
+// Format 2022-11-01T00:00:00.00Z to format (d-M-y | y-m-d)
+export const timeToDateTime = (value) => {
+    const arr = value.split(':');
+    var m = moment();
+    m.set({hour:arr[0],minute:arr[1],second:0,millisecond:0})
+    m.toISOString()
+    m.format()
+    return m.toISOString();
+};
+
+export const dateTimeToTime = (value) => {
+    const isoTime = timeToDateTime(value);
+    return stringDateTimeByFormat(isoTime, 'HH:mm a');
+};
+
 // convert sang không dấu
 export const stringWithoutAccents = (value) => {
     if (!value) return value;
