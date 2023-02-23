@@ -15,17 +15,23 @@ class MajorController extends Controller
     const rl_Majors = 'admin.majors';
     const rau_Majors = 'admin.majors.update';
     const rad_Majors = 'admin.majors.delete';
+    const rar_Majors = 'admin.majors.restore';
 
-    public function index()
+    public function index(Request $request)
     {
         $majors = Majors::with(['user_created'])->get();
+
+        if (isset($request->isDeleted) && $request->isDeleted) {
+            $majors = Majors::with(['user_created'])->onlyTrashed()->get();
+        }
 
         return Inertia::render('Admin/Majors/Majors', [
             'majors'    => $majors,
             'rl_Majors' => self::rl_Majors,
             'rac_Majors'  => self::rac_Majors,
             'rau_Majors'    => self::rau_Majors,
-            'rad_Majors'    => self::rad_Majors
+            'rad_Majors'    => self::rad_Majors,
+            'rar_Majors'    => self::rar_Majors
         ]);
     }
 
@@ -75,5 +81,13 @@ class MajorController extends Controller
 
         if ($result) return redirect()->back()->with('toast.success', 'Đã xoá ngành học');
         return redirect()->back()->with('toast.error', 'Xoá ngành học thất bại');
+    }
+
+    public function restore(string $id)
+    {
+        $result = Majors::withTrashed()->find($id)->restore();
+
+        if ($result) return redirect()->back()->with('toast.success', 'Đã khôi phục ngành học');
+        return redirect()->back()->with('toast.error', 'Khôi phục ngành học thất bại');
     }
 }

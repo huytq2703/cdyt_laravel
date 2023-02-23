@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\Admin\AdminController;
@@ -119,6 +120,18 @@ Route::middleware('auth')->group(function () {
         Route::put('{id}/cap-nhat', [MajorController::class, 'save'])->name('admin.majors.update');
 
         Route::delete('{id}/xoa', [MajorController::class, 'delete'])->name('admin.majors.delete');
+        Route::put('{id}/khoi-phuc', [MajorController::class, 'restore'])->name('admin.majors.restore');
+    });
+
+    // Departments
+    Route::group(['prefix' => 'phong-ban', 'middleware' => 'role_reject'], function () {
+        Route::get('', [DepartmentController::class, 'index'])->name('admin.departments');
+        Route::post('them-phong-ban', [DepartmentController::class, 'save'])->name('admin.departments.create');
+
+        Route::put('{id}/cap-nhat', [DepartmentController::class, 'save'])->name('admin.departments.update');
+        Route::delete('{id}/xoa', [DepartmentController::class, 'delete'])->name('admin.departments.delete');
+
+        Route::put('{id}/khoi-phuc', [DepartmentController::class, 'restore'])->name('admin.departments.restore');
     });
 
     // Static pages

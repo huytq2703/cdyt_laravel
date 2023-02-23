@@ -22,7 +22,7 @@ return [
                     ['name' => 'Lịch giảng viên', 'route' => 'training.schedule'],
                     ['name' => 'Lịch thi hết môn', 'route' => 'training.schedule.end_course_test'],
                     ['name' => 'Văn bản đào tạo', 'route' => 'training.training_doc'],
-
+                    ['name' => 'Quản lý phòng ban', 'route' => 'admin.departments'],
                 ]
             ],
             [

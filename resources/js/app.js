@@ -21,6 +21,7 @@ import ConfirmationService from "primevue/confirmationservice";
 import ToastService from 'primevue/toastservice';
 import locale from './utils/locale';
 import VueSocialSharing from 'vue-social-sharing'
+import Tooltip from 'primevue/tooltip';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Trường cao đẳng Y tế';
 
@@ -38,6 +39,8 @@ createInertiaApp({
 
             vApp.component('AdminLayout', AdminLayout);
             vApp.component('AppLayout', AppVue);
+
+            vApp.directive('tooltip', Tooltip);
             vApp.mount(el);
         return vApp;
     },

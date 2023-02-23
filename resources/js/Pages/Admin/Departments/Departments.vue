@@ -1,63 +1,62 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
 import { useForm } from "@inertiajs/inertia-vue3";
-import InputText from "primevue/inputtext";
+import { formatStringDateHour } from "@/utils/utils";
 import Button from "primevue/button";
-import { slugify, formatStringDateHour } from "@/utils/utils";
+import Column from "primevue/column";
+import DataTable from "primevue/datatable";
+import InputText from "primevue/inputtext";
+import TabPanel from "primevue/tabpanel";
+import TabView from "primevue/tabview";
 import { Inertia } from "@inertiajs/inertia";
 import { useConfirm } from "primevue/useconfirm";
-import TabView from "primevue/tabview";
-import TabPanel from "primevue/tabpanel";
 
 const confirm = useConfirm();
 const props = defineProps({
-  majors: {
-    type: Array,
-    required: false,
-    default: () => [],
-  },
-  rac_Majors: String,
-  rau_Majors: String,
-  rad_Majors: String,
-  rl_Majors: String,
-  rar_Majors: String,
+  rl_Department: String,
+  rau_Department: String,
+  rac_Department: String,
+  rad_Department: String,
+  rar_Department: String,
+  departments: Array,
 });
-const majorForm = useForm({
-  id: "",
+const isUpdate = ref(false);
+const departmentForm = useForm({
+  phone_number: "",
   name: "",
-  majors_code: "",
-  slug: "",
+  code: "",
+  id: null,
 });
+
 const activeIndex = ref(0);
 
-const onSubmitSaveMajors = () => {
-  majorForm.slug = slugify(majorForm.name);
-  majorForm.post(route(props.rac_Majors), {
+const onSubmitSave = () => {
+  departmentForm.post(route(props.rac_Department), {
     onSuccess: () => {
-      majorForm.reset();
+      departmentForm.reset();
     },
   });
 };
 
 const onShowDetails = (data) => {
-  majorForm.id = data?.id;
-  majorForm.name = data?.name;
-  majorForm.majors_code = data?.majors_code;
-  majorForm.slug = data?.slug;
+  departmentForm.id = data?.id;
+  departmentForm.code = data?.code;
+  departmentForm.name = data?.name;
+  departmentForm.phone_number = data?.phone_number;
+  isUpdate.value = true;
 };
 
-const onUpdateMajors = () => {
-  majorForm.put(route(props.rau_Majors, { id: majorForm.id }), {
+const onUpdate = () => {
+  departmentForm.put(route(props.rau_Department, { id: departmentForm.id }), {
     onSuccess: () => {
-      majorForm.reset();
+      departmentForm.reset();
     },
   });
 };
 
 const refreshForm = () => {
-  majorForm.reset();
+  departmentForm.reset();
+  isUpdate.value = false;
 };
 
 const onDelete = (data) => {
@@ -69,7 +68,7 @@ const onDelete = (data) => {
     acceptLabel: "Xoá",
     rejectLabel: "Huỷ",
     accept: () => {
-      Inertia.delete(route(props.rad_Majors, { id: data.id }));
+      Inertia.delete(route(props.rad_Department, { id: data.id }));
     },
     reject: () => {},
   });
@@ -84,7 +83,7 @@ const onRestore = (data) => {
     acceptLabel: "Khôi phục",
     rejectLabel: "Huỷ",
     accept: () => {
-      Inertia.put(route(props.rar_Majors, { id: data.id }));
+      Inertia.put(route(props.rar_Department, { id: data.id }));
     },
     reject: () => {},
   });
@@ -92,9 +91,9 @@ const onRestore = (data) => {
 
 watch(activeIndex, (index) => {
   Inertia.get(
-    route(props.rl_Majors),
+    route(props.rl_Department),
     {
-      isDeleted: index,
+      deleted: index,
     },
     {
       preserveState: true,
@@ -102,9 +101,7 @@ watch(activeIndex, (index) => {
   );
 });
 
-onMounted(() => {
-  //   console.log(props.majors);
-});
+onMounted(() => {});
 </script>
 
 <template>
@@ -112,53 +109,71 @@ onMounted(() => {
     <div class="grid">
       <div class="lg:col-4 col-12">
         <div class="card">
-          <h5 class="font-bold">Thông tin ngành học</h5>
+          <h5 class="font-bold">Thông tin phòng ban</h5>
 
-          <form @submit.prevent="onSubmitSaveMajors" class="flex flex-column gap-2">
+          <form @submit.prevent="onSubmitSave" class="flex flex-column gap-2">
             <!-- Majors code -->
             <div class="flex flex-column">
-              <label for="majorsCode">Mã ngành</label>
+              <label for="code">Mã phòng ban</label>
               <InputText
-                id="majorsCode"
+                id="code"
                 maxlength="180"
-                v-model="majorForm.majors_code"
+                v-model="departmentForm.code"
                 aria-describedby="majorsCode-help"
-                :class="majorForm?.errors?.majors_code && 'p-invalid'"
+                :class="departmentForm?.errors?.code && 'p-invalid'"
               />
               <small
-                v-if="majorForm?.errors?.majors_code"
+                v-if="departmentForm?.errors?.code"
                 id="majorsCode-help"
                 class="p-error"
-                >{{ majorForm?.errors?.majors_code }}</small
+                >{{ departmentForm?.errors?.code }}</small
               >
             </div>
 
             <!-- Majors name -->
             <div class="flex flex-column">
-              <label for="name">Tên ngành</label>
+              <label for="name">Tên phòng ban</label>
               <InputText
                 id="name"
                 maxlength="180"
-                v-model="majorForm.name"
+                v-model="departmentForm.name"
                 aria-describedby="name-help"
-                :class="majorForm?.errors?.name && 'p-invalid'"
+                :class="departmentForm?.errors?.name && 'p-invalid'"
               />
-              <small v-if="majorForm?.errors?.name" id="name-help" class="p-error">{{
-                majorForm?.errors?.name
+              <small v-if="departmentForm?.errors?.name" id="name-help" class="p-error">{{
+                departmentForm?.errors?.name
               }}</small>
             </div>
 
-            <div class="flex justify-content-end pt-3">
-              <Button v-if="!majorForm?.id" type="submit" label="Tạo ngành học" />
+            <!-- Majors code -->
+            <div class="flex flex-column">
+              <label for="phone">Số điện thoại</label>
+              <InputText
+                id="phone"
+                maxlength="20"
+                v-model="departmentForm.phone_number"
+                aria-describedby="phone-help"
+                :class="departmentForm?.errors?.phone_number && 'p-invalid'"
+              />
+              <small
+                v-if="departmentForm?.errors?.phone_number"
+                id="phone-help"
+                class="p-error"
+                >{{ departmentForm?.errors?.phone_number }}</small
+              >
+            </div>
 
-              <div v-if="majorForm?.id" class="flex gap-2">
+            <div class="flex justify-content-end pt-3">
+              <Button v-if="!isUpdate" type="submit" label="Tạo phòng ban" />
+
+              <div v-else class="flex gap-2">
                 <Button
                   icon="pi pi-times"
                   label="Huỷ"
                   class="p-button-outlined"
                   @click="refreshForm"
                 />
-                <Button :label="`${'Cập nhật'}`" @click="onUpdateMajors" />
+                <Button :label="`${'Cập nhật'}`" @click="onUpdate" />
               </div>
             </div>
           </form>
@@ -167,14 +182,14 @@ onMounted(() => {
 
       <div class="lg:col-8 col-12">
         <div class="card">
-          <h5 class="font-bold">Danh sách ngành học</h5>
+          <h5 class="font-bold">Danh sách phòng ban</h5>
 
           <TabView v-model:activeIndex="activeIndex">
             <TabPanel header="Đang hoạt động"></TabPanel>
             <TabPanel header="Đã xoá"></TabPanel>
           </TabView>
           <DataTable
-            :value="majors"
+            :value="departments"
             :sortField="null"
             :sortOrder="null"
             dataKey="id"
@@ -186,9 +201,13 @@ onMounted(() => {
               <p class="text-center">Không tìm thấy dữ liệu</p>
             </template>
             <Column field="id" header="id" class="w-3rem"></Column>
-            <Column field="majors_code" header="Mã ngành" class="w-7rem"></Column>
-            <Column field="name" header="Tên ngành"></Column>
-            <Column field="user_created.username" header="Người tạo"></Column>
+            <Column field="code" header="Mã PB" class="w-7rem"></Column>
+            <Column field="name" header="Tên Phòng ban"></Column>
+            <Column field="phone_number" header="Số điện thoại"></Column>
+            <Column
+              field="user.username"
+              :header="activeIndex == 0 ? 'Người tạo' : 'Người xoá'"
+            ></Column>
             <Column
               :field="`${activeIndex == 0 ? 'created_at' : 'deleted_at'}`"
               :header="`${activeIndex == 0 ? 'Tạo ngày' : 'Xoá ngày'}`"
