@@ -75,8 +75,9 @@ class HomeController extends Controller
                     ]);
                 case 'page':
                     $menuId = Menu::select(['parent_id'])->wherePostId($post->id)->first();
+                    // dd($post->id);
                     $category = Posts::join('menus as m', 'm.post_id', 'posts.id')
-                    ->where('m.parent_id', $menuId->parent_id)->get();
+                    ->where('m.parent_id', $menuId?->parent_id)->get();
 
                     return Inertia::render('Posts/PostDetails', [
                         'post'  => $post,
