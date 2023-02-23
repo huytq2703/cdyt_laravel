@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, computed, ref } from "vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import PostsByCategory from "./Components/PostsByCategory.vue";
 import HighlightPosts from "./Components/HighlightPosts.vue";
@@ -18,6 +18,23 @@ const props = defineProps({
   },
 });
 
+const minSize = 14;
+const maxSize = 34;
+const fontSize = ref(18);
+
+const urlSharing = computed(() => props?.ziggy?.location);
+
+const onClickChangeSize = (upSize) => {
+  if (upSize && fontSize.value >= maxSize) return;
+  if (!upSize && fontSize.value <= minSize) return;
+
+  if (upSize) {
+    fontSize.value += 4;
+    return;
+  }
+
+  fontSize.value -= 4;
+};
 onMounted(() => {
   //   console.log(props.category);
 });
@@ -37,6 +54,55 @@ onMounted(() => {
               >
                 {{ notice?.meta_title ?? notice?.title }}
               </h3>
+
+              <div class="flex justify-content-between py-3 align-items-center">
+                <div class="flex gap-2 align-items-center">
+                  <span class="font-bold text-lg">Cỡ chữ:</span>
+                  <Button
+                    icon="pi pi-plus"
+                    class="p-button-rounded p-button-secondary p-button-outlined w-2rem h-2rem"
+                    @click="onClickChangeSize(true)"
+                  />
+                  <Button
+                    icon="pi pi-minus"
+                    class="p-button-rounded p-button-secondary p-button-outlined w-2rem h-2rem"
+                    @click="onClickChangeSize(false)"
+                  />
+                </div>
+
+                <div class="flex">
+                  <ShareNetwork
+                    network="email"
+                    :url="urlSharing"
+                    :title="post?.title"
+                    :description="post?.summary"
+                    :quote="post?.meta_title"
+                    class="py-2 px-2 surface-600 text-white"
+                  >
+                    <v-icon name="co-gmail" animation="pulse" />
+                  </ShareNetwork>
+                  <ShareNetwork
+                    network="facebook"
+                    :url="urlSharing"
+                    :title="post?.title"
+                    :description="post?.summary"
+                    :quote="post?.meta_title"
+                    class="py-2 px-2 bg-blue-700 text-white"
+                  >
+                    <v-icon name="fa-facebook-f" animation="pulse" />
+                  </ShareNetwork>
+                  <ShareNetwork
+                    network="twitter"
+                    :url="urlSharing"
+                    :title="post?.title"
+                    :description="post?.summary"
+                    :quote="post?.meta_title"
+                    class="py-2 px-2 bg-blue-500 text-white"
+                  >
+                    <v-icon name="bi-twitter" animation="pulse" />
+                  </ShareNetwork>
+                </div>
+              </div>
               <!-- Here content -->
               <div v-if="notice.content" v-html="notice.content"></div>
               <div v-else><p>Nội dung đang được cập nhật</p></div>

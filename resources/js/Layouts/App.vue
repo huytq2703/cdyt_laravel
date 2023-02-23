@@ -8,6 +8,9 @@ import { Inertia } from "@inertiajs/inertia";
 import { Link, usePage } from "@inertiajs/inertia-vue3";
 import { useToast } from "primevue/usetoast";
 import Toast from "primevue/toast";
+import SearchAllPage from "./SearchAllPage.vue";
+import SpeedDial from "primevue/speeddial";
+import Button from "primevue/button";
 
 const page = usePage();
 const toast = useToast();
@@ -15,6 +18,44 @@ const toDate = moment().format("DD/MM/YYYY");
 const marqueeText = ref(
   "Trường Cao Đẳng Y tế Đắk Lắk - 32 Y Ngông, phường Tân Tiến, thành phố Buôn Ma Thuột, tỉnh Đắk Lắk."
 );
+
+const items = [
+  {
+    label: "Add",
+    icon: "pi pi-pencil",
+    command: () => {
+      this.$toast.add({ severity: "info", summary: "Add", detail: "Data Added" });
+    },
+  },
+  {
+    label: "Update",
+    icon: "pi pi-refresh",
+    command: () => {
+      this.$toast.add({ severity: "success", summary: "Update", detail: "Data Updated" });
+    },
+  },
+  {
+    label: "Delete",
+    icon: "pi pi-trash",
+    command: () => {
+      this.$toast.add({ severity: "error", summary: "Delete", detail: "Data Deleted" });
+    },
+  },
+  {
+    label: "Upload",
+    icon: "pi pi-upload",
+    command: () => {
+      this.$router.push("fileupload");
+    },
+  },
+  {
+    label: "Vue Website",
+    icon: "pi pi-external-link",
+    command: () => {
+      window.location.href = "https://vuejs.org/";
+    },
+  },
+];
 
 let removeFinishEventListener = Inertia.on("finish", () => {
   const t = page.props.value?.toast;
@@ -32,17 +73,39 @@ let removeFinishEventListener = Inertia.on("finish", () => {
     });
   }
 });
-
+document.documentElement.style.fontSize = "15px";
 onUnmounted(() => {
   removeFinishEventListener();
 });
 </script>
 
 <template>
+  <SpeedDial :model="items" direction="up" class="z-4 fixed right-0 bottom-0 mr-3 mb-8">
+    <template #button>
+      <Button
+        class="border-circle w-4rem h-4rem flex justify-content-center align-items-center custom-messages-button"
+      >
+        <v-icon
+          name="ri-message-3-line"
+          style="font-size: 12px"
+          animation="ring"
+          scale="1.5"
+        ></v-icon>
+      </Button>
+    </template>
+
+    <template #item="props">
+      <div class="w-2rem h-2rem bg-primary z-5">sdf</div></template
+    >
+  </SpeedDial>
+
   <Toast />
   <div class="container mx-auto">
-    <div class="border-bottom-1 w-full py-2 flex justify-content-between xl:px-0 px-3">
-      <a href="#" class="flex align-items-center hover-custom gap-1 font-bold">
+    <div class="border-bottom-1 w-full py-2 flex justify-content-between xl:px-0 pr-6">
+      <a
+        href="tel:02623845678"
+        class="flex align-items-center hover-custom gap-1 font-bold"
+      >
         <i class="pi pi-phone"></i><span>Hotline: 02623.845.678</span>
       </a>
 
@@ -69,11 +132,8 @@ onUnmounted(() => {
       </Link>
 
       <div class="flex align-items-center gap-3">
-        <span class="p-input-icon-right">
-          <i class="pi pi-search" />
-          <InputText type="text" />
-        </span>
-        <a href="#" class="hover-custom-2">
+        <SearchAllPage />
+        <!-- <a href="#" class="hover-custom-2">
           <i class="pi pi-facebook" style="font-size: 1.5rem"></i>
         </a>
 
@@ -83,7 +143,7 @@ onUnmounted(() => {
 
         <a href="#" class="hover-custom-2">
           <i class="pi pi-phone" style="font-size: 1.5rem"></i>
-        </a>
+        </a> -->
       </div>
     </div>
   </div>
@@ -148,6 +208,29 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss">
+.custom-messages-button {
+  opacity: 0.5;
+  background-color: #b83234;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px,
+    rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px,
+    rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  outline: none;
+  transition: all 0.2s ease;
+
+  &:hover {
+    opacity: 1;
+    border: none !important;
+    background: #b83234 !important;
+  }
+  &:focus {
+    box-shadow: none;
+  }
+  .p-button:enabled:hover {
+    border: none !important;
+    background: #b83234 !important;
+  }
+}
 .hover-custom {
   color: #2a8b6c;
   transition: all 0.3s ease;

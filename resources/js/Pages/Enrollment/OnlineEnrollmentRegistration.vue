@@ -4,16 +4,18 @@ import App from "@/Layouts/App.vue";
 import EnrollmentNewsComponent from "@/Components/Posts/EnrollmentNewsComponent.vue";
 import { Head, useForm } from "@inertiajs/inertia-vue3";
 import RegistrationForm from "./components/RegistrationForm.vue";
+import PostsByCategory from "../Posts/Components/PostsByCategory.vue";
 
 const props = defineProps({
   ra_SubmitFormRegister: String,
   majors: Array,
   levels: Array,
   genders: Array,
+  admissionNews: Object,
 });
 
 onMounted(() => {
-  //   console.log(props.ra_SubmitFormRegister);
+  console.log(props.admissionNews);
 });
 </script>
 
@@ -40,14 +42,14 @@ onMounted(() => {
       </h3>
       <div class="flex lg:flex-row flex-column justify-content-between gap-3 w-full mt-2">
         <div
-          class="border-round-md bg-primary w-full lg:w-20rem h-11rem flex flex-column justify-content-center align-items-center"
+          class="border-round-md bg-primary w-full lg:w-20rem h-13rem flex flex-column justify-content-center align-items-center px-3"
         >
           <i class="pi pi-heart pt-2" style="font-size: 3rem"></i>
           <h4 class="font-bold text-center px-2">Đội ngũ cán bộ, giảng viên tận tâm</h4>
         </div>
 
         <div
-          class="border-round-md bg-orange-300 lg:w-20rem h-11rem flex flex-column justify-content-center align-items-center"
+          class="border-round-md bg-orange-300 lg:w-20rem h-13rem flex flex-column justify-content-center align-items-center px-3"
         >
           <i class="pi pi-chart-line pt-2" style="font-size: 3rem"></i>
           <h4 class="font-bold text-center py-0 px-2">
@@ -56,7 +58,7 @@ onMounted(() => {
         </div>
 
         <div
-          class="border-round-md bg-red-600 lg:w-20rem h-11rem flex flex-column justify-content-center align-items-center text-white"
+          class="border-round-md bg-red-600 lg:w-20rem h-13rem flex flex-column justify-content-center align-items-center text-white px-2"
         >
           <i class="pi pi-phone pt-2" style="font-size: 3rem"></i>
           <h4 class="font-bold text-center py-0 px-2">
@@ -65,7 +67,7 @@ onMounted(() => {
         </div>
 
         <div
-          class="border-round-md bg-blue-500 lg:w-20rem h-10rem h-11rem flex flex-column justify-content-center align-items-center text-white"
+          class="border-round-md bg-blue-500 lg:w-20rem h-10rem h-13rem flex flex-column justify-content-center align-items-center text-white px-3"
         >
           <i class="pi pi-upload pt-2" style="font-size: 3rem"></i>
           <h4 class="font-bold text-center py-0 px-2">
@@ -96,7 +98,7 @@ onMounted(() => {
             />
           </div>
 
-          <EnrollmentNewsComponent />
+          <PostsByCategory :category="admissionNews" />
         </div>
 
         <div class="xl:col-4 col-12">

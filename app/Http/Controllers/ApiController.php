@@ -6,6 +6,9 @@ use App\Models\Province;
 use App\Models\District;
 use App\Models\Ward;
 use App\Models\TimeSlot;
+use App\Models\Posts;
+
+use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
@@ -72,6 +75,29 @@ class ApiController extends Controller
 
         return response()->json([
             'data' => $wards,
+            'statusValue' => 'Gọi api thành công!',
+            'statusCode' => 200,
+            'success'  => true
+        ]);
+    }
+
+    public function searchAllPages (Request $request)
+    {
+        $postBuilder = [];
+        if ($request?->search) {
+            $search = $request->search;
+
+            $postBuilder = Posts::where(function ($posts) use($search) {
+                $posts->where('title', 'like', "%{$search}%")
+                ->orWhere('meta_title', 'like', "%{$search}%")
+                ->orWhere('slug', 'like', "%{$search}%")
+                ->orWhere('content', 'like', "%{$search}%")
+                ->orWhere('summary', 'like', "%{$search}%");
+            })->wherePublished(1)->limit(10)->get()->toArray();
+        }
+
+        return response()->json([
+            'data' => $postBuilder,
             'statusValue' => 'Gọi api thành công!',
             'statusCode' => 200,
             'success'  => true

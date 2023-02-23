@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
@@ -15,16 +16,23 @@ class AdmissionsController extends Controller
     const ra_SubmitFormRegister = "online_enrollment_registration.action";
     public function noticeAdmission (Request $request)
     {
+
         return Inertia::render("Enrollment/EnrollmentNotice");
     }
     public function registerAdmissions(Request $request)
     {
         if ($request->isMethod('GET')) {
+            $admissionNews = Categories::with(['posts' => function ($post) {
+                $post->wherePublished(1);
+            }])->whereSlug('tin-tuc-tuyen-sinh')->first();
+
+
             return Inertia::render("Enrollment/OnlineEnrollmentRegistration", [
                 'ra_SubmitFormRegister' => self::ra_SubmitFormRegister,
                 'majors'    => Majors::get(),
                 'levels'    => ['THCS', 'THPT'],
                 'genders'    => [['id' => 1, 'name' => 'Nam'], ['id' => 0, 'name' => 'Nữ']],
+                'admissionNews' => $admissionNews
             ]);
         }
 

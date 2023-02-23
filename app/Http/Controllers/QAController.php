@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
+use App\Models\QA;
+
 class QAController extends Controller
 {
     public function index ()
@@ -14,22 +16,30 @@ class QAController extends Controller
         return Inertia::render('QAForm/QAForm');
     }
 
-    public function createQuestion (Request $request)
+    public function submitQuestions (Request $request)
     {
         Validator::make($request->all(), [
-            'fullName'      => ['required'],
-            'phoneNumber'   => ['required'],
+            'full_name'      => ['required'],
+            'phone_number'   => ['required'],
             'email'         => ['required'],
-            'content'       => ['required']
+            'q_content'       => ['required']
 
         ],
         [
-            'fullName'      => 'Vui lòng nhập họ tên',
-            'phoneNumber'   => 'Vui lòng nhập số điện thoại',
+            'full_name'      => 'Vui lòng nhập họ tên',
+            'phone_number'   => 'Vui lòng nhập số điện thoại',
             'email'         => 'Vui lòng nhập email',
-            'content'       => 'Vui lòng nhập nội dung'
+            'q_content'       => 'Vui lòng nhập nội dung'
         ])->validate();
 
-        return redirect()->route('qaform');
+        $inputs = $request->only(['full_name', 'phone_number', 'email','q_content']);
+
+        $question = new QA($inputs);
+
+        $result = $question->save();
+
+        if ($result)
+        return redirect()->back()->with('toast.success', 'Đã gửi gửi câu hỏi');
+        return redirect()->back()->with('toast.error', 'Chưa thể gửi câu hỏi. Vui lòng gửi lại sau');
     }
 }

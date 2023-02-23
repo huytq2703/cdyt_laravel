@@ -29,6 +29,7 @@
     "dependencies": {
         "mdb-vue-ui-kit": "^3.1.1",
         "moment": "^2.29.4",
+        "oh-vue-icons": "^1.0.0-rc3",
         "primeflex": "^3.3.0",
         "primeicons": "^6.0.1",
         "primevue": "^3.22.3",

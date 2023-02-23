@@ -12,6 +12,7 @@ const props = defineProps({
 </script>
 <template>
   <h3
+    v-if="category"
     class="border-top bg-title bg-title-right text-2xl font-bold text-primary py-2 border-bottom-1 uppercase"
   >
     {{ category?.meta_title ?? category?.title }}

@@ -23,6 +23,11 @@ import locale from './utils/locale';
 import VueSocialSharing from 'vue-social-sharing'
 import Tooltip from 'primevue/tooltip';
 
+import { OhVueIcon, addIcons } from "oh-vue-icons";
+import { FaFlag, RiZhihuFill, FaFacebookF, CoGmail, BiTwitter, RiMessage3Line } from "oh-vue-icons/icons";
+
+addIcons(FaFlag, RiZhihuFill, FaFacebookF, CoGmail, BiTwitter, RiMessage3Line);
+
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Trường cao đẳng Y tế';
 
 createInertiaApp({
@@ -39,6 +44,7 @@ createInertiaApp({
 
             vApp.component('AdminLayout', AdminLayout);
             vApp.component('AppLayout', AppVue);
+            vApp.component("v-icon", OhVueIcon);
 
             vApp.directive('tooltip', Tooltip);
             vApp.mount(el);

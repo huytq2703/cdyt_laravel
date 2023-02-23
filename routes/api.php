@@ -32,4 +32,7 @@ Route::group([
     });
 
     Route::get('time-slot', [ApiController::class, 'getTimeSlots']);
+    Route::get('search-all-pages', [ApiController::class, 'searchAllPages']);
+
 });
+

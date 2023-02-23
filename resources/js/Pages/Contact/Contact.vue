@@ -9,22 +9,27 @@ import { Inertia } from "@inertiajs/inertia";
 
 const props = defineProps({
   errors: Object,
+  departments: Array,
 });
 const contactForm = useForm({
-  fullName: "",
-  phoneNumber: "",
+  full_name: "",
+  phone_number: "",
   email: "",
-  department: "",
+  department_id: "",
   content: "",
 });
 
 const onClickSendInfo = () => {
-  contactForm.post(route("contact.create"));
+  contactForm.post(route("contact.create"), {
+    onSuccess: () => {
+      contactForm.reset();
+    },
+  });
 };
 </script>
 
 <template>
-  <Head title="Hỏi đáp" />
+  <Head title="Liên hệ" />
   <App>
     <div class="container mx-auto py-3">
       <h3
@@ -43,31 +48,34 @@ const onClickSendInfo = () => {
             <!-- Row -->
             <div class="flex flex-row w-full gap-5">
               <div class="field flex-1 flex flex-column">
-                <label for="fullName" class="font-bold">Họ và tên</label>
+                <label for="full_name" class="font-bold">Họ và tên</label>
                 <InputText
-                  v-model="contactForm.fullName"
-                  id="fullName"
-                  aria-describedby="fullName-help"
-                  :class="[errors.fullName && 'p-invalid']"
-                  placeholder="Nhập họ và tên..."
+                  v-model="contactForm.full_name"
+                  id="full_name"
+                  aria-describedby="full_name-help"
+                  :class="[errors.full_name && 'p-invalid']"
+                  placeholder="Nhập họ và tên"
                 />
-                <small v-if="errors?.fullName" id="fullName-help" class="p-error">{{
-                  errors.fullName
+                <small v-if="errors?.full_name" id="full_name-help" class="p-error">{{
+                  errors.full_name
                 }}</small>
               </div>
 
               <div class="field flex-1 flex flex-column">
-                <label for="phoneNumber" class="font-bold">Số điện thoại</label>
+                <label for="phone_number" class="font-bold">Số điện thoại</label>
                 <InputText
-                  v-model="contactForm.phoneNumber"
-                  id="phoneNumber"
-                  aria-describedby="phoneNumber-help"
-                  :class="[errors.phoneNumber && 'p-invalid']"
-                  placeholder="Nhập họ và tên..."
+                  v-model="contactForm.phone_number"
+                  id="phone_number"
+                  aria-describedby="phone_number-help"
+                  :class="[errors.phone_number && 'p-invalid']"
+                  placeholder="Nhập số điện thoại"
                 />
-                <small v-if="errors.phoneNumber" id="phoneNumber-help" class="p-error">{{
-                  errors.phoneNumber
-                }}</small>
+                <small
+                  v-if="errors.phone_number"
+                  id="phone_number-help"
+                  class="p-error"
+                  >{{ errors.phone_number }}</small
+                >
               </div>
             </div>
 
@@ -89,22 +97,26 @@ const onClickSendInfo = () => {
 
             <!-- Row -->
             <div class="field flex-1 flex flex-column">
-              <label for="department" class="font-bold">Đơn vị liên hệ công tác</label>
+              <label for="department_id" class="font-bold">Đơn vị liên hệ công tác</label>
 
               <Dropdown
-                id="department"
-                v-model="contactForm.department"
-                :options="[]"
-                optionLabel="department"
+                id="department_id"
+                v-model="contactForm.department_id"
+                :options="departments"
+                optionLabel="name"
+                optionValue="id"
                 placeholder="Phòng tổ chức - hành chính"
-                aria-describedby="department-help"
-                :class="[errors.department && 'p-invalid']"
+                aria-describedby="department_id-help"
+                :class="[contactForm.errors.department_id && 'p-invalid']"
                 :filter="true"
                 filterPlaceholder=""
               />
-              <small v-if="errors.department" id="department-help" class="p-error">{{
-                errors.department
-              }}</small>
+              <small
+                v-if="contactForm.errors.department_id"
+                id="department_id-help"
+                class="p-error"
+                >{{ contactForm.errors.department_id }}</small
+              >
             </div>
 
             <!-- Row -->

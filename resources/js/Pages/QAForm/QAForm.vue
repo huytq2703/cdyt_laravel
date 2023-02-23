@@ -1,6 +1,6 @@
 <script setup>
 import App from "@/Layouts/App.vue";
-import { useForm } from "@inertiajs/inertia-vue3";
+import { Head, useForm } from "@inertiajs/inertia-vue3";
 import Accordion from "primevue/accordion";
 import AccordionTab from "primevue/accordiontab";
 import Button from "primevue/button";
@@ -12,24 +12,30 @@ const props = defineProps({
 });
 
 const questionForm = useForm({
-  fullName: "",
-  phoneNumber: "",
+  full_name: "",
+  phone_number: "",
   email: "",
-  content: "",
+  q_content: "",
 });
 
 const onClickSendQuestion = () => {
-  questionForm.post(route("qaform.createQuestion"));
+  questionForm.post(route("qaform.submit"), {
+    preserveScroll: true,
+    onSuccess: () => {
+      questionForm.reset();
+    },
+  });
 };
 </script>
 <template>
   <App>
+    <Head title="Hỏi đáp" />
     <template #header>
       <div class="relative">
         <img src="/storage/images/banner/Photo-03.jpg" alt="" class="header-image" />
 
         <div
-          class="absolute top-0 flex w-full justify-content-center align-items-center h-full"
+          class="absolute top-0 flex w-full justify-q_content-center align-items-center h-full"
         >
           <div class="text-center p-4 bg-overlay">
             <h1 class="font-bold">NHỮNG CÂU HỎI THƯỜNG GẶP</h1>
@@ -137,32 +143,38 @@ const onClickSendQuestion = () => {
 
           <div class="flex flex-column">
             <div class="field flex-1 flex flex-column">
-              <label for="fullName" class="font-bold">Họ và tên</label>
+              <label for="full_name" class="font-bold">Họ và tên</label>
               <InputText
-                v-model="questionForm.fullName"
-                id="fullName"
-                aria-describedby="fullName-help"
-                :class="[errors.fullName && 'p-invalid']"
+                v-model="questionForm.full_name"
+                id="full_name"
+                aria-describedby="full_name-help"
+                :class="[questionForm.errors.full_name && 'p-invalid']"
                 placeholder="Nhập họ và tên..."
               />
-              <small v-if="errors.fullName" id="fullName-help" class="p-error">{{
-                errors.fullName
-              }}</small>
+              <small
+                v-if="questionForm.errors.full_name"
+                id="full_name-help"
+                class="p-error"
+                >{{ questionForm.errors.full_name }}</small
+              >
             </div>
 
             <div class="field flex-1 flex flex-column">
-              <label for="phoneNumber" class="font-bold">Số điện thoại</label>
+              <label for="phone_number" class="font-bold">Số điện thoại</label>
               <InputText
-                v-model="questionForm.phoneNumber"
-                id="phoneNumber"
+                v-model="questionForm.phone_number"
+                id="phone_number"
                 type="username"
-                aria-describedby="phoneNumber-help"
-                :class="[errors.phoneNumber && 'p-invalid']"
+                aria-describedby="phone_number-help"
+                :class="[questionForm.errors.phone_number && 'p-invalid']"
                 placeholder="Nhập số điện thoại..."
               />
-              <small v-if="errors.phoneNumber" id="phoneNumber-help" class="p-error">{{
-                errors.phoneNumber
-              }}</small>
+              <small
+                v-if="questionForm.errors.phone_number"
+                id="phone_number-help"
+                class="p-error"
+                >{{ questionForm.errors.phone_number }}</small
+              >
             </div>
 
             <div class="field flex-1 flex flex-column">
@@ -172,32 +184,35 @@ const onClickSendQuestion = () => {
                 id="email"
                 type="username"
                 aria-describedby="email-help"
-                :class="[errors.email && 'p-invalid']"
+                :class="[questionForm.errors.email && 'p-invalid']"
                 placeholder="Nhập email..."
               />
-              <small v-if="errors.email" id="email-help" class="p-error">{{
-                errors.email
+              <small v-if="questionForm.errors.email" id="email-help" class="p-error">{{
+                questionForm.errors.email
               }}</small>
             </div>
 
             <div class="field flex-1 flex flex-column">
               <label for="question" class="font-bold">Câu hỏi</label>
               <Textarea
-                v-model="questionForm.content"
+                v-model="questionForm.q_content"
                 rows="5"
                 cols="30"
-                :class="[errors.content && 'p-invalid']"
+                :class="[questionForm.errors.q_content && 'p-invalid']"
                 aria-describedby="question-help"
                 placeholder="Nhập nội dung câu hỏi"
               />
-              <small v-if="errors.content" id="question-help" class="p-error">{{
-                errors.content
-              }}</small>
+              <small
+                v-if="questionForm.errors.q_content"
+                id="question-help"
+                class="p-error"
+                >{{ questionForm.errors.q_content }}</small
+              >
             </div>
 
             <div class="field flex-1 flex flex-column">
               <Button
-                class="p-button-web font-bold flex justify-content-center"
+                class="p-button-web font-bold flex justify-q_content-center"
                 @click="onClickSendQuestion"
                 >GỬI CÂU HỎI</Button
               >

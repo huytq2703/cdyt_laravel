@@ -7,31 +7,45 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
+use App\Models\Departments;
+use App\Models\ContactInfo;
+
 class ContactController extends Controller
 {
     public function index ()
     {
-        return Inertia::render('Contact/Contact');
+        $departments = Departments::whereStatus(1)->get();
+
+        return Inertia::render('Contact/Contact', [
+            'departments' => $departments
+        ]);
     }
 
     public function createContact (Request $request)
     {
         Validator::make($request->all(), [
-            'fullName'      => ['required'],
-            'phoneNumber'   => ['required'],
+            'full_name'      => ['required'],
+            'phone_number'   => ['required'],
             'email'         => ['required'],
-            'department'    => ['required'],
+            'department_id'    => ['required'],
             'content'       => ['required']
 
         ],
         [
-            'fullName'      => 'Vui lòng nhập họ tên',
-            'phoneNumber'   => 'Vui lòng nhập số điện thoại',
+            'full_name'      => 'Vui lòng nhập họ tên',
+            'phone_number'   => 'Vui lòng nhập số điện thoại',
             'email'         => 'Vui lòng nhập email',
-            'department'    => 'Vui lòng chọn đơn vị công tác',
+            'department_id'    => 'Vui lòng chọn đơn vị công tác',
             'content'       => 'Vui lòng nhập nội dung'
         ])->validate();
 
-        return redirect()->route('contact');
+        $inputs = $request->only(['full_name', 'phone_number', 'email', 'department_id', 'content']);
+
+        $contact = new ContactInfo($inputs);
+
+        $result = $contact->save();
+        if ($result)
+        return redirect()->back()->with('toast.success', 'Đã gửi thông tin liên hệ');
+        return redirect()->back()->with('toast.error', 'Chưa thể gửi thông tin. Vui lòng gửi lại sau');
     }
 }

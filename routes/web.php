@@ -51,8 +51,12 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('dang-nhap', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('dang-nhap', [AuthenticatedSessionController::class, 'store']);
+
 Route::get('/hoi-dap', [QAController::class, 'index'])->name('qaform');
+Route::post('/hoi-dap/gui-cau-hoi', [QAController::class, 'submitQuestions'])->name('qaform.submit');
+
 Route::get('lien-he', [ContactController::class, 'index'])->name('contact');
+Route::post('lien-he/gui-thong-tin', [ContactController::class, 'createContact'])->name('contact.create');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/trang-chu', [HomeController::class, 'index']);
