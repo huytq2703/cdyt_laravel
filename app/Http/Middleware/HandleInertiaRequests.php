@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -36,8 +37,8 @@ class HandleInertiaRequests extends Middleware
         $catModel = Menu::with(['post', 'category', 'subMenus' => function ($sub) {
             $sub->with(['post', 'category']);
         }])->whereNull('parent_id')->get();
+        $setting = new Setting();
 
-        // $webMenu = SystemDefine::where('name', 'menu')->first()?->values;
         $menu = config("menu.admin.{$request->user()?->role_code}") ?? [];
         return array_merge(parent::share($request), [
             'auth' => [
@@ -50,8 +51,12 @@ class HandleInertiaRequests extends Middleware
             },
             'toast' => session('toast'),
             'menu' => $menu,
-            // 'webMenu' => $webMenu,
-            'webMenu2' => $catModel
+            'webMenu2' => $catModel,
+            'address'   => $setting->valueByKey('address'),
+            'phone_number'   => $setting->valueByKey('phone_number'),
+            'email'   => $setting->valueByKey('email'),
+            'url'   => $setting->valueByKey('url'),
+            'toaster'   => $setting->valueByKey('toaster'),
         ]);
     }
 }

@@ -56,7 +56,7 @@ watch(
 onMounted(async () => {
   provinces.value = await getProvinces();
   timeSlots.value = await getTimeSlots();
-  console.log(timeSlots.value);
+
   timeSlots.value = timeSlots.value?.map((time) => ({
     label: `${dateTimeToTime(time.from_time)} - ${dateTimeToTime(time.to_time)}`,
     id: time.id,

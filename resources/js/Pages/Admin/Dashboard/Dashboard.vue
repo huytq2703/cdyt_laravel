@@ -89,12 +89,7 @@ onMounted(() => {
             >Huỷ</Button
           >
         </div>
-        <Editor
-          :key="update"
-          id="content"
-          v-model="taskContent"
-          editorStyle="min-height: 500px"
-        />
+        <Editor id="content" v-model="taskContent" editorStyle="min-height: 500px" />
       </div>
     </div>
   </AdminLayout>

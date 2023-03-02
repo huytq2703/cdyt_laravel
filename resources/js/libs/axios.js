@@ -2,6 +2,7 @@ import axios from "axios";
 import NProgress from 'nprogress'
 
 export const AxiosInstance = axios.create({
+    // baseURL: "https://www.dmc.edu.vn/api"
     baseURL: import.meta.env.VITE_API_URL,
     // timeout: 1000,
     // headers: {

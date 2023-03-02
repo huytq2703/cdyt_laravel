@@ -88,7 +88,10 @@ onUnmounted(() => {
       <span>Hệ thống quản lý</span>
     </Link>
 
-    <div class="lg:flex lg:flex-1 lg:justify-content-end layout-topbar-menu-button">
+    <div
+      class="lg:flex lg:flex-1 lg:justify-content-end layout-topbar-menu-button align-items-center gap-2"
+    >
+      <a href="/">Trang chủ</a>
       <Button
         icon="pi pi-sign-out"
         class="p-button-rounded p-button-text p-button-plain"

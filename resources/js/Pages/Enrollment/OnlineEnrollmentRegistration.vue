@@ -15,7 +15,7 @@ const props = defineProps({
 });
 
 onMounted(() => {
-  console.log(props.admissionNews);
+  //   console.log(props.admissionNews);
 });
 </script>
 

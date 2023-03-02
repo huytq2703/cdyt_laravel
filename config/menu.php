@@ -46,6 +46,7 @@ return [
             [
                 "name" => "Hệ thống",
                 "child" => [
+                    ['name' => 'Thông tin chung', 'route' => 'system.setting'],
                     ['name' => 'Quản lý tài khoản', 'route' => 'system.user'],
                     ['name' => 'Quản lý quyền', 'route' => 'system.permission'],
                     ['name' => 'Quản lý menu', 'route' => 'system.menu'],

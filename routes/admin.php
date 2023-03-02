@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\PagesController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CareerDirectionController;
 use App\Http\Controllers\Admin\MajorController;
+use App\Http\Controllers\Admin\SettingController;
 
 use Inertia\Inertia;
 
@@ -164,7 +165,9 @@ Route::middleware('auth')->group(function () {
         Route::post('cap-nhat-sub-menu', [AdminController::class, 'saveSubMenu'])->name('system.submenu.update');
 
         // Cấu hình
-        Route::get('cau-hinh', [AdminController::class, 'menu'])->name('system.menu');
+        Route::get('cau-hinh', [SettingController::class, 'index'])->name('system.setting');
+        Route::post('cau-hinh/luu-thong-tin-chung', [SettingController::class, 'saveGeneralInfo'])->name('system.setting.save_general_info');
+        Route::post('cau-hinh/luu-thong-tin-thong-bao-chay', [SettingController::class, 'saveToasterMessage'])->name('system.setting.save_toaster_message');
     });
 
     // Others

@@ -178,8 +178,10 @@ onMounted(() => {});
         <Column field="published" header="Trạng thái" class="w-12rem">
           <template #body="slotProps">
             <Badge
-              :severity="`${slotProps.data.published === 0 ? 'danger' : ''}`"
-              :value="`${slotProps.data.published === 0 ? 'Chưa duyệt' : 'Đã duyệt'}`"
+              :severity="`${Number(slotProps.data.published) === 0 ? 'danger' : ''}`"
+              :value="`${
+                Number(slotProps.data.published) === 0 ? 'Chưa duyệt' : 'Đã duyệt'
+              }`"
             />
           </template>
         </Column>

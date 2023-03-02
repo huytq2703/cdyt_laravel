@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onUnmounted } from "vue";
+import { ref, onUnmounted, computed } from "vue";
 // import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import NavBar from "./NavBar.vue";
@@ -15,9 +15,10 @@ import Button from "primevue/button";
 const page = usePage();
 const toast = useToast();
 const toDate = moment().format("DD/MM/YYYY");
-const marqueeText = ref(
-  "Trường Cao Đẳng Y tế Đắk Lắk - 32 Y Ngông, phường Tân Tiến, thành phố Buôn Ma Thuột, tỉnh Đắk Lắk."
-);
+const marqueeText = computed(() => {
+  return page?.props?.value?.toaster;
+});
+const pageInfo = computed(() => page?.props?.value);
 
 const items = [
   {
@@ -103,10 +104,10 @@ onUnmounted(() => {
   <div class="container mx-auto">
     <div class="border-bottom-1 w-full py-2 flex justify-content-between xl:px-0 pr-6">
       <a
-        href="tel:02623845678"
+        :href="`tel:${pageInfo.phone_number}`"
         class="flex align-items-center hover-custom gap-1 font-bold"
       >
-        <i class="pi pi-phone"></i><span>Hotline: 02623.845.678</span>
+        <i class="pi pi-phone"></i><span>Hotline: {{ pageInfo.phone_number }}</span>
       </a>
 
       <div class="flex gap-3">
@@ -128,7 +129,7 @@ onUnmounted(() => {
       class="flex md:justify-content-between md:flex-row flex-column align-items-center xl:px-0 px-3"
     >
       <Link :href="route('home')" class="">
-        <img src="../../assets/images/logo/logo-01.png" alt="" class="w-15rem" />
+        <img src="../../assets/images/logo/logo-01.png" alt="" class="w-20rem" />
       </Link>
 
       <div class="flex align-items-center gap-3">
@@ -176,10 +177,13 @@ onUnmounted(() => {
             style="max-width: 300px"
             alt=""
           />
-          <p>Địa chỉ: 32 Y Ngông - P. Tân Tiến - Tp.Buôn Ma Thuột - Tỉnh Đắk Lắk</p>
-          <p>Điện thoại: 0262 3 845 678</p>
-          <p>Email: caodangytedaklak@gmail.com</p>
-          <p>Website: http://dmc.edu.vn</p>
+          <p>Địa chỉ: {{ pageInfo.address }}</p>
+          <p>Điện thoại: {{ pageInfo.phone_number }}</p>
+          <p>Email: {{ pageInfo.email }}</p>
+          <p>
+            Website:
+            <a class="text-white" :href="pageInfo.url" _blank>{{ pageInfo.url }}</a>
+          </p>
         </div>
 
         <div class="">
