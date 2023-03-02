@@ -34,7 +34,7 @@ class AuthenticatedSessionController extends Controller
         $credentials = $request->getCredentials();
 
         if(!Auth::validate($credentials)):
-            return redirect()->to('login')->withErrors(['password' => "Mật khẩu không đúng"]);
+            return redirect()->back()->withErrors(['password' => "Mật khẩu không đúng"]);
         endif;
 
         $user = Auth::getProvider()->retrieveByCredentials($credentials);

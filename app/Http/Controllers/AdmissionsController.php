@@ -92,9 +92,13 @@ class AdmissionsController extends Controller
         $admissionModel = new Admissions($inputs);
         $result = $admissionModel->save();
 
-        // $inputs['link'] = route('admin.admissions.show', [$admissionModel->id]);
+        $inputs['link'] = route('admin.admissions.show', [$admissionModel->id]);
 
-        // dispatch(new sendAdmissionsMailJob($inputs, 'huytq270397@gmail.com'));
+       try {
+        dispatch(new sendAdmissionsMailJob($inputs, 'huytq270397@gmail.com'));
+       } catch (\Throwable $th) {
+        //throw $th;
+       }
 
         if ($result) return redirect()->back()->with('toast.success', 'Đã gửi thông tin đăng ký');
         return redirect()->back()->with('toast.error', 'Lỗi gửi thông tin đăng ký');

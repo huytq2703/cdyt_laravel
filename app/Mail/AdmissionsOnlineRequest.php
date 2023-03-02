@@ -33,7 +33,7 @@ class AdmissionsOnlineRequest extends Mailable
     public function envelope()
     {
         return new Envelope(
-            from: new Address('cdytdaklak@edu.com'),
+            from: new Address('huytq270397@tqhdev.com'),
             subject: 'CDYT Đắk Lắk',
         );
     }
