@@ -162,6 +162,9 @@ Route::middleware('auth')->group(function () {
         Route::post('cap-nhat-menu', [AdminController::class, 'saveMenu'])->name('system.menu.update');
 
         Route::post('cap-nhat-sub-menu', [AdminController::class, 'saveSubMenu'])->name('system.submenu.update');
+
+        // Cấu hình
+        Route::get('cau-hinh', [AdminController::class, 'menu'])->name('system.menu');
     });
 
     // Others
