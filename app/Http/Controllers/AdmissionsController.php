@@ -16,7 +16,6 @@ class AdmissionsController extends Controller
     const ra_SubmitFormRegister = "online_enrollment_registration.action";
     public function noticeAdmission (Request $request)
     {
-
         return Inertia::render("Enrollment/EnrollmentNotice");
     }
     public function registerAdmissions(Request $request)
@@ -60,7 +59,7 @@ class AdmissionsController extends Controller
             "religion",
             "nation" => ['required'],
             "level" => ['required'],
-            "priority_object",
+            "priority_object" => ['required'],
             "majors_id" => ['required'],
             "email" => ['required', 'unique:admissions'],
             "phone_number" => ['required', 'unique:admissions'],
@@ -76,7 +75,7 @@ class AdmissionsController extends Controller
             "religion",
             "nation" => ['required' => "Vui lòng nhập dân tộc"],
             "level" => ['required' => "Vui lòng chọn trình độ"],
-            "priority_object",
+            "priority_object" => ["required" => "Vui lòng chọn đối tượng ưu tiên"],
             "majors_id" => ['required' => "Vui lòng chọn ngành học"],
             "email" => ['required' => "Vui lòng nhập email", 'unique' => 'Email đã đăng ký'],
             "phone_number" => ['required' => "Vui lòng nhập số điện thoại", 'unique' => 'Số điện thoại đã đăng ký'],
@@ -90,6 +89,8 @@ class AdmissionsController extends Controller
         $inputs['verify_email_code'] = Hash::make($inputs['email']);
 
         $admissionModel = new Admissions($inputs);
+
+        // dd($admissionModel->toArray());
         $result = $admissionModel->save();
 
         $inputs['link'] = route('admin.admissions.show', [$admissionModel->id]);

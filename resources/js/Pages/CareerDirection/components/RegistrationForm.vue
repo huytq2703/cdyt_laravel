@@ -53,6 +53,8 @@ watch(
   }
 );
 
+const test = ref("Test");
+
 onMounted(async () => {
   provinces.value = await getProvinces();
   timeSlots.value = await getTimeSlots();

@@ -41,3 +41,17 @@ export const getWards = async (districtId) => {
         return null;
     });
 }
+
+export const getCommonData = async () => {
+    return await AxiosInstance({
+        url: `/v1/common-data`,
+        method: "get",
+    }).then(response => response)
+    .then(res => {
+        return res?.data?.data
+    })
+    .catch((e) => {
+        console.log(e);
+        return null;
+    });
+}

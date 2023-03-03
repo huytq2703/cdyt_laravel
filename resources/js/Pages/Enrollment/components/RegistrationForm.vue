@@ -4,12 +4,17 @@ import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import Calendar from "primevue/calendar";
-import { onMounted, ref, computed, watch } from "vue";
-import { getProvinces, getDistrict, getWards } from "../service";
+import { onMounted, ref, computed, watch, reactive } from "vue";
+import { getProvinces, getDistrict, getWards, getCommonData } from "../service";
 
 const provinces = ref([]);
 const districts = ref([]);
 const wards = ref([]);
+const commonData = reactive({
+  genders: [],
+  levels: [],
+  priorities: [],
+});
 const props = defineProps({
   errors: Object,
   ra_SubmitFormRegister: String,
@@ -80,7 +85,11 @@ const onSubmitForm = () => {
 
 onMounted(async () => {
   provinces.value = await getProvinces();
-  //   console.log(props.levels);
+  const commons = await getCommonData();
+
+  commonData.genders = commons?.gender;
+  commonData.levels = commons?.levels;
+  commonData.priorities = commons?.priority_objects;
 });
 </script>
 
@@ -132,9 +141,9 @@ onMounted(async () => {
         <Dropdown
           id="gender"
           v-model="enrolmentForm.gender"
-          :options="genders"
+          :options="commonData.genders"
           optionLabel="name"
-          optionValue="id"
+          optionValue="code"
           placeholder="Giới tính"
           aria-describedby="gender-help"
           :class="[enrolmentForm?.errors?.gender && 'p-invalid']"
@@ -186,7 +195,9 @@ onMounted(async () => {
         <Dropdown
           id="level"
           v-model="enrolmentForm.level"
-          :options="levels"
+          :options="commonData.levels"
+          optionLabel="code"
+          optionValue="code"
           placeholder=""
           aria-describedby="level-help"
           :class="[enrolmentForm?.errors?.level && 'p-invalid']"
@@ -198,17 +209,23 @@ onMounted(async () => {
       </div>
 
       <div class="field flex-1 flex flex-column">
-        <label for="priority" class="font-bold">Đối tượng ưu tiên</label>
-        <InputText
+        <label for="level" class="font-bold"
+          >Đối tượng ưu tiên <span class="text-red">*</span></label
+        >
+        <Dropdown
+          id="level"
           v-model="enrolmentForm.priority_object"
-          id="priority"
-          aria-describedby="priority-help"
+          :options="commonData.priorities"
+          optionLabel="name"
+          optionValue="name"
+          placeholder=""
+          aria-describedby="level-help"
           :class="[enrolmentForm?.errors?.priority_object && 'p-invalid']"
-          placeholder="Đối tượng ưu tiên"
-        />
+        >
+        </Dropdown>
         <small
           v-if="enrolmentForm?.errors?.priority_object"
-          id="priority-help"
+          id="level-help"
           class="p-error"
           >{{ enrolmentForm?.errors?.priority_object }}</small
         >
@@ -229,12 +246,12 @@ onMounted(async () => {
         optionValue="id"
         placeholder="Chọn ngành học"
         aria-describedby="Majors-help"
-        :class="[enrolmentForm?.errors?.majors && 'p-invalid']"
+        :class="[enrolmentForm?.errors?.majors_id && 'p-invalid']"
         :filter="true"
         filterPlaceholder=""
       />
-      <small v-if="enrolmentForm?.errors?.majors" id="Majors-help" class="p-error">{{
-        enrolmentForm?.errors?.majors
+      <small v-if="enrolmentForm?.errors?.majors_id" id="Majors-help" class="p-error">{{
+        enrolmentForm?.errors?.majors_id
       }}</small>
     </div>
 

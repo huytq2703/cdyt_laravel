@@ -7,6 +7,7 @@ use App\Models\District;
 use App\Models\Ward;
 use App\Models\TimeSlot;
 use App\Models\Posts;
+use App\Models\Setting;
 
 use Illuminate\Http\Request;
 
@@ -99,6 +100,19 @@ class ApiController extends Controller
         return response()->json([
             'data' => $postBuilder,
             'statusValue' => 'Gọi api thành công!',
+            'statusCode' => 200,
+            'success'  => true
+        ]);
+    }
+
+    public function getCommonData ()
+    {
+        $commons = Setting::where('key', 'commons')->first();
+        $commons = json_decode($commons->value);
+
+        return response()->json([
+            'data' => $commons,
+            'statusValue' => 'Danh sách dữ liệu chung',
             'statusCode' => 200,
             'success'  => true
         ]);
