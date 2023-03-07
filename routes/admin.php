@@ -111,7 +111,14 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'tuyen-sinh', 'middleware' => 'role_reject'], function () {
         Route::get('', [AdmissionsController::class, 'index'])->name('admin.admissions');
 
+        Route::get('chi-tiet', [AdmissionsController::class, 'show'])->name('admin.admissions.create');
         Route::get('chi-tiet/{id}', [AdmissionsController::class, 'show'])->name('admin.admissions.show');
+        Route::put('chi-tiet/{id}/cap-nhat', [AdmissionsController::class, 'update'])->name('admin.admissions.update_action');
+        Route::put('chi-tiet/{id}/xu-ly', [AdmissionsController::class, 'handleAdmissionRequest'])->name('admin.admissions.handle');
+        Route::delete('chi-tiet/{id}/xoa', [AdmissionsController::class, 'delete'])->name('admin.admissions.delete');
+        Route::put('chi-tiet/{id}/khoi-phuc', [AdmissionsController::class, 'restore'])->name('admin.admissions.restore');
+
+        Route::post('/tao-moi', [AdmissionsController::class, 'create'])->name('admin.admissions.create_action');
     });
 
     // Majors

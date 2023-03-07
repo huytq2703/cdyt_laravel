@@ -14,4 +14,9 @@ class Setting extends Model
     {
         return $this->where('key', $key)->first()?->value;
     }
+
+    public function byKey(String $key)
+    {
+        return $this->where('key', $key)->first();
+    }
 }

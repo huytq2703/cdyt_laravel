@@ -1,5 +1,5 @@
 <script setup>
-import InputText from "primevue/inputtext";
+import Calendar from "primevue/calendar";
 
 const emits = defineEmits(["update:modelValue"]);
 const props = defineProps({
@@ -8,30 +8,29 @@ const props = defineProps({
     required: false,
     default: "",
   },
+  modelValue: {
+    type: [Array, String, Object],
+    required: true,
+  },
   label: {
     type: String,
     required: false,
     default: "",
   },
-  modelValue: {
+  required: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  dateFormat: {
     type: String,
     required: false,
-    default: "",
+    default: "mm-dd-yy",
   },
   errorMessage: {
     type: String,
     required: false,
     default: "",
-  },
-  maxlength: {
-    type: Number,
-    required: false,
-    default: 255,
-  },
-  required: {
-    type: Boolean,
-    required: false,
-    default: false,
   },
   placeholder: {
     type: String,
@@ -40,26 +39,26 @@ const props = defineProps({
   },
 });
 
-const onInput = (e) => {
-  const value = e.target.value;
+const onDateSelect = (value) => {
   emits("update:modelValue", value);
 };
 </script>
 
 <template>
-  <div class="flex flex-column">
-    <label v-if="label" :for="id"
+  <div class="w-full flex flex-column">
+    <label :for="id" class=""
       >{{ label }} <span v-if="required" class="text-red">*</span></label
     >
-    <InputText
-      :id="id"
-      :maxlength="maxlength"
-      :value="modelValue"
-      :class="errorMessage && 'p-invalid'"
+    <Calendar
+      :inputId="id"
+      :modelValue="modelValue"
+      :dateFormat="dateFormat"
+      :class="[errorMessage && 'p-invalid']"
       :placeholder="placeholder"
-      class="w-full"
-      @input="onInput"
+      @date-select="onDateSelect"
     />
-    <small v-if="errorMessage" class="p-error">{{ errorMessage }}</small>
+    <small v-if="errorMessage" id="birthday-help" class="p-error">{{
+      errorMessage
+    }}</small>
   </div>
 </template>

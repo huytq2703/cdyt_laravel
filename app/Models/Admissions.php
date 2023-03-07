@@ -11,6 +11,9 @@ class Admissions extends Model
 {
     use HasFactory, SoftDeletes;
 
+    const default = 0;
+    const processed = 1;
+
     protected $fillable = [
         "full_name" ,
         "birthday",
@@ -36,7 +39,8 @@ class Admissions extends Model
         "processor_phone_number",
         "fist_send_email",
         "status",
-        "verify_email_code"
+        "verify_email_code",
+        "notes"
     ];
 
     public function majors ()

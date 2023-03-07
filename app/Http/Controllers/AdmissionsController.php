@@ -25,7 +25,6 @@ class AdmissionsController extends Controller
                 $post->wherePublished(1);
             }])->whereSlug('tin-tuc-tuyen-sinh')->first();
 
-
             return Inertia::render("Enrollment/OnlineEnrollmentRegistration", [
                 'ra_SubmitFormRegister' => self::ra_SubmitFormRegister,
                 'majors'    => Majors::get(),
@@ -34,7 +33,6 @@ class AdmissionsController extends Controller
                 'admissionNews' => $admissionNews
             ]);
         }
-
 
         $inputs = $request->only([
             "full_name",
@@ -52,6 +50,7 @@ class AdmissionsController extends Controller
             "district_id",
             "ward_id",
         ]);
+
         Validator::make($inputs , [
             "full_name" => ['required'],
             "birthday" => ['required'],
@@ -90,16 +89,14 @@ class AdmissionsController extends Controller
 
         $admissionModel = new Admissions($inputs);
 
-        // dd($admissionModel->toArray());
         $result = $admissionModel->save();
 
         $inputs['link'] = route('admin.admissions.show', [$admissionModel->id]);
 
-       try {
-        dispatch(new sendAdmissionsMailJob($inputs, 'huytq270397@gmail.com'));
-       } catch (\Throwable $th) {
-        //throw $th;
-       }
+        try {
+            dispatch(new sendAdmissionsMailJob($inputs, 'huytq270397@gmail.com'));
+        } catch (\Throwable $th) {
+        }
 
         if ($result) return redirect()->back()->with('toast.success', 'Đã gửi thông tin đăng ký');
         return redirect()->back()->with('toast.error', 'Lỗi gửi thông tin đăng ký');
