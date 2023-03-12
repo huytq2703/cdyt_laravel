@@ -27,7 +27,7 @@ class HomeController extends Controller
         $hoatDongChuyenMon      = $this->_getPostsByCategorySlug($hoatDongChuyenMonSlug, 3);
         $hoatDongThiVaTuyenSinh = $this->_getPostsByCategorySlug($hoatDongThiVaTuyenSinhSlug, 3);
         $hoatDongDoanThanhNien  = $this->_getPostsByCategorySlug($hoatDongDoanThanhNienSlug, 3);
-// dd($hoatDongDoanThanhNien->toArray());
+
         $postHeaderSlider = Posts::with('categories')->whereType('post')->wherePublished(Posts::status_published)->whereHas('categories')->latest('created_at')->get();
 
         $notifications = Posts::whereType('notice')->wherePublished(Posts::status_published)->latest('created_at')->get();
@@ -75,7 +75,7 @@ class HomeController extends Controller
                     ]);
                 case 'page':
                     $menuId = Menu::select(['parent_id'])->wherePostId($post->id)->first();
-                    // dd($post->id);
+
                     $category = Posts::join('menus as m', 'm.post_id', 'posts.id')
                     ->where('m.parent_id', $menuId?->parent_id)->get();
 
@@ -87,6 +87,11 @@ class HomeController extends Controller
                     return Inertia::render('Posts/PostDetails', [
                         'post'  => $post,
                         'noticeList' => Posts::whereType('notice')->wherePublished(Posts::status_published)->latest('created_at')->get(),
+                    ]);
+                case 'schedule':
+                    return Inertia::render('Posts/PostFullWidth', [
+                        'post'  => $post,
+                        // 'noticeList' => Posts::whereType('notice')->wherePublished(Posts::status_published)->latest('created_at')->get(),
                     ]);
             }
         }

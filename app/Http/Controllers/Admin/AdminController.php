@@ -11,6 +11,8 @@ use App\Models\Categories;
 use App\Models\Posts;
 use App\Models\Menu;
 use App\Models\SystemDefine;
+use Analytics;
+use Spatie\Analytics\Period;
 
 class AdminController extends Controller
 {
@@ -21,6 +23,11 @@ class AdminController extends Controller
      */
     public function index(Request $request)
     {
+        // dd(public_path('cd-y-te-1da19728157b.json'));
+
+        // $analyticsData = Analytics::fetchVisitorsAndPageViews(Period::days(7));
+        // dd($analyticsData);
+
         if ($request->isMethod('GET')) {
             $task = SystemDefine::whereName('task')->first();
 
@@ -111,7 +118,7 @@ class AdminController extends Controller
     public function menu()
     {
         $menuModel = new Categories();
-        $allPosts = Posts::where('type', 'page')->get();
+        $allPosts = Posts::whereIn('type', ['page', 'schedule'])->get();
 
         $currentMenu = Menu::with(['post', 'category', 'subMenus' => function ($sub) {
             $sub->with(['post', 'category',]);
@@ -122,9 +129,7 @@ class AdminController extends Controller
         $istSubCat = Categories::whereType('category')->get();
 
         // $istSubMenuPost = Posts::leftJoin('menus as m', 'm.post_id', 'posts.id')->addSelect(['posts.*', 'm.parent_id'])->get();
-        $istSubMenuPost = Posts::whereType("page")->get();
-
-
+        $istSubMenuPost = Posts::whereIn('type', ['page', 'schedule'])->latest('created_at')->get();
 
         return Inertia::render('Admin/Menu/Menu', [
             'currentMenu' => $currentMenu,

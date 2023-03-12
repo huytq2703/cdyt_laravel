@@ -12,6 +12,8 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable, SoftDeletes;
 
+    const active = 1;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,6 +25,7 @@ class User extends Authenticatable implements JWTSubject
         'username',
         'profile_id',
         'role_id',
+        'status'
     ];
 
     /**

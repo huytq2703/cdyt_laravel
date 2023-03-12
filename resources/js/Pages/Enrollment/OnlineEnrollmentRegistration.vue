@@ -83,11 +83,18 @@ onMounted(() => {
           >
             ĐĂNG KÝ TUYỂN SINH
           </h3>
-          <p class="text-justify font-bold">
-            Bạn vui lòng điền đầy đủ thông tin cá nhân vào bảng đăng ký xét tuyển trực
+          <p class="text-justify font-bold font-italic m-o mt-2">
+            Thực hiện theo
+            <a
+              class="underline text-primary"
+              href="https://thuvienphapluat.vn/van-ban/Giao-duc/Thong-tu-05-2022-TT-BLDTBXH-lien-ket-to-chuc-chuong-trinh-dao-tao-giao-duc-nghe-nghiep-509294.aspx"
+              target="_blank"
+              >THÔNG TƯ 05</a
+            >
+            <!-- Bạn vui lòng điền đầy đủ thông tin cá nhân vào bảng đăng ký xét tuyển trực
             tuyến bên cạnh để tư vấn viên của trường liên hệ với bạn giải đáp các thắc mắc
             hoàn toàn miễn phí. Chúng tôi sẽ chủ động liên hệ lại với bạn trong vòng 24h
-            kể từ khi nhận được thông tin đăng ký.
+            kể từ khi nhận được thông tin đăng ký. -->
           </p>
           <div class="border flex flex-column p-5">
             <RegistrationForm

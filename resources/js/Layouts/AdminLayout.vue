@@ -60,6 +60,8 @@ const onMouseEnterMenu = () => {
   visibleLeft.value = true;
 };
 
+onMounted(() => {});
+
 onUnmounted(() => {
   removeFinishEventListener();
 });

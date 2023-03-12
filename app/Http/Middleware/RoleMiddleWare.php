@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Roles;
+use App;
 
 class RoleMiddleWare
 {
@@ -17,14 +19,15 @@ class RoleMiddleWare
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {
-        $userId     = $request->user()->id;
-        $user       = User::find($userId);
-        $roleCode   = $user->role_code;
+        $roleCode     = $request->user()->role_code;
+        $role       = Roles::whereCode($roleCode)->first();
+        $userPermissions = $role->permissions;
 
         if (count($guards) > 0) {
-            if (in_array($roleCode, $guards)) return $next($request);
+            $isContain = count(array_intersect($userPermissions, $guards)) > 0;
+            if ($isContain ) return $next($request);
         }
 
-        return redirect()->back()->with('toast.warn', 'Không có quyền truy cập');
+        return App::abort(404);
     }
 }

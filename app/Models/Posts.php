@@ -51,7 +51,7 @@ class Posts extends Model
 
     const status_created = 0;
     const status_published = 1;
-
+    const schedules_type = "schedule";
 
     public function categories ()
     {

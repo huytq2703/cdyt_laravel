@@ -7,7 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\QAController;
-use App\Http\Controllers\PostsController;
+use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\AdmissionsController;
 use Illuminate\Support\Facades\Route;
@@ -82,12 +82,11 @@ Route::group(['prefix' => ''], function () {
     Route::get('/chuong-trinh-dao-tao', function () {
         return Inertia::render("Training/TrainingProgram");
     })->name('training_program');
-    Route::get('/lich-giang-vien', function () {
-        return Inertia::render("Training/LecturerSchedule");
-    })->middleware(['auth', 'verified'])->name('lecturer_schedule');
-    Route::get('/lich-thi-het-mon', function () {
-        return Inertia::render("Training/FinalExamSchedule");
-    })->middleware(['auth', 'verified'])->name('final_exam_schedule');
+
+    // Route::get('/lich-giang-vien', [TrainingController::class, 'lecturerScheduleIndex'])->name('lecturer_schedule');
+
+    // Route::get('/lich-thi-het-mon', [TrainingController::class, 'finalExamScheduleIndex'])->name('final_exam_schedule');
+
     Route::get('/van-ban-dao-tao', function () {
         return Inertia::render("Training/TrainingDocument");
     })->middleware(['auth', 'verified'])->name('training_document');

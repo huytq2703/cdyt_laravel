@@ -119,8 +119,8 @@ onMounted(() => {
 
           <!-- Here content -->
           <div
-            v-if="post.content"
-            v-html="post.content"
+            v-if="post?.content"
+            v-html="post?.content"
             :style="{ 'font-size': `${fontSize}px` }"
           ></div>
         </div>

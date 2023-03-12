@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CareerDirectionController;
 use App\Http\Controllers\Admin\MajorController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\TrainingController;
 
 use Inertia\Inertia;
 
@@ -41,23 +42,22 @@ Route::middleware('auth')->group(function () {
     });
 
     // Training
-    Route::group(['prefix' => 'dao-tao'], function () {
-        Route::get('chuong-trinh-dao-tao', function () {
-            return Inertia::render('Admin/Train/TrainingManagement');
-        })->name('training.program');
-        Route::get('lich-giang-vien', function () {
-            return Inertia::render('Admin/LecturerSchedule/LecturerSchedule');
-        })->name('training.schedule');
-        Route::get('lich-thi-het-mon', function () {
-            return Inertia::render('Admin/TestSchedule/EndCourseTestSchedule');
-        })->name('training.schedule.end_course_test');
+    Route::group(['prefix' => 'dao-tao', 'middleware' => 'role_accept:training_manager'], function () {
+        Route::middleware('role_accept:schedules')->group(function() {
+            Route::get('lich-giang-day', [TrainingController::class,  "schedules"])->name('training.schedules');
+            Route::put('lich-giang-day/{id}/cap-nhat', [TrainingController::class,  "updateSchedule"])->name('training.schedule.update');
+            Route::post('lich-giang-day/tao-lich', [TrainingController::class,  "createSchedule"])->name('training.schedule.create');
+            Route::post('lich-giang-day/{id}/xoa', [TrainingController::class,  "deleteSchedule"])->name('training.schedule.delete');
+            Route::get('lich-thi-het-mon', [TrainingController::class,  "finalExamScheduleIndex"])->name('training.schedule.end_course_test');
+        });
+
         Route::get('van-ban-dao-tao', function () {
             return Inertia::render('Admin/Document/TrainingDoc');
         })->name('training.training_doc');
     });
 
     // Posts
-    Route::group(['prefix' => 'bai-viet', 'middleware' => 'role_reject'], function () {
+    Route::group(['prefix' => 'bai-viet', 'middleware' => 'role_accept:post'], function () {
         Route::get('', [PostController::class, 'index'])->name('admin.posts');
 
         Route::get('them-moi', [PostController::class, 'create'])->name('admin.posts.create.index');
@@ -71,12 +71,12 @@ Route::middleware('auth')->group(function () {
         Route::delete('{id}/delete', [PostController::class, 'deletePost'])->name('admin.posts.delete');
         Route::put('{id}/reject', [PostController::class, 'rejectPosts'])->name('admin.posts.reject');
 
-        Route::middleware('role_reject:POST_WRITER')->get('kiem-duyet-noi-dung', [PostController::class, 'postsCreated'])->name('admin.posts.verify.list');
-        Route::middleware('role_reject:POST_WRITER')->put('duyet-noi-dung', [PostController::class, 'publishedPosts'])->name('admin.posts.approved');
+        Route::middleware('role_accept:content_verify')->get('kiem-duyet-noi-dung', [PostController::class, 'postsCreated'])->name('admin.posts.verify.list');
+        Route::middleware('role_accept:content_verify')->put('duyet-noi-dung', [PostController::class, 'publishedPosts'])->name('admin.posts.approved');
     });
 
     // Category
-    Route::group(['prefix' => 'danh-muc'], function () {
+    Route::group(['prefix' => 'danh-muc', 'middleware' => 'role_accept:category'], function () {
         Route::post('them-moi', [PostController::class, 'saveCategory'])->name('admin.category.create');
 
         Route::get('', [CategoryController::class, 'index'])->name('admin.category');
@@ -86,7 +86,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // Notifications
-    Route::group(['prefix' => 'thong-bao', 'middleware' => 'role_reject'], function () {
+    Route::group(['prefix' => 'thong-bao', 'middleware' => 'role_accept:notice'], function () {
         Route::get('', [NotificationsController::class, 'index'])->name('admin.notice');
 
         Route::get('them-moi', [NotificationsController::class, 'create'])->name('admin.notice.create.index');
@@ -99,7 +99,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // Career direction
-    Route::group(['prefix' => 'huong-nghiep', 'middleware' => 'role_reject'], function () {
+    Route::group(['prefix' => 'huong-nghiep', 'middleware' => 'role_accept:career_direction'], function () {
         Route::get('', [CareerDirectionController::class, 'index'])->name('admin.career_direction');
         Route::post('', [CareerDirectionController::class, 'createTimeSlots'])->name('admin.time_slots.create');
 
@@ -108,7 +108,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // Admissions
-    Route::group(['prefix' => 'tuyen-sinh', 'middleware' => 'role_reject'], function () {
+    Route::group(['prefix' => 'tuyen-sinh', 'middleware' => 'accept:admissions'], function () {
         Route::get('', [AdmissionsController::class, 'index'])->name('admin.admissions');
 
         Route::get('chi-tiet', [AdmissionsController::class, 'show'])->name('admin.admissions.create');
@@ -122,7 +122,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // Majors
-    Route::group(['prefix' => 'nganh-hoc', 'middleware' => 'role_reject'], function () {
+    Route::group(['prefix' => 'nganh-hoc', 'middleware' => 'role_accept:majors_manage'], function () {
         Route::get('', [MajorController::class, 'index'])->name('admin.majors');
         Route::post('', [MajorController::class, 'save'])->name('admin.majors.save');
         Route::put('{id}/cap-nhat', [MajorController::class, 'save'])->name('admin.majors.update');
@@ -132,7 +132,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // Departments
-    Route::group(['prefix' => 'phong-ban', 'middleware' => 'role_reject'], function () {
+    Route::group(['prefix' => 'phong-ban', 'middleware' => 'role_accept:departments'], function () {
         Route::get('', [DepartmentController::class, 'index'])->name('admin.departments');
         Route::post('them-phong-ban', [DepartmentController::class, 'save'])->name('admin.departments.create');
 
@@ -143,7 +143,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // Static pages
-    Route::group(['prefix' => 'trang-tinh', 'middleware' => 'role_reject'], function () {
+    Route::group(['prefix' => 'trang-tinh', 'middleware' => 'role_accept:page'], function () {
         Route::get('', [PagesController::class, 'index'])->name('admin.pages');
 
         Route::get('them-moi', [PagesController::class, 'create'])->name('admin.pages.create.index');
@@ -158,20 +158,30 @@ Route::middleware('auth')->group(function () {
 
     });
 
-    // System
-    Route::middleware('role_accept:SUPER_ADMIN,ADMIN')->group(function () {
-        Route::get('tai-khoan', [UserController::class, 'index'])->name('system.user');
-        Route::post('tao-tai-khoan', [UserController::class, 'saveUser'])->name('system.user.create');
-        Route::get('phan-quyen', [PermissionController::class, 'index'])->name('system.permission');
+    // Permission and account
+    Route::middleware('role_accept:account,permission')->get('phan-quyen-va-tai-khoan', [PermissionController::class, 'index'])->name('system.permission');
+    Route::middleware('role_accept:permission')->group(function() {
         Route::post('phan-quyen', [PermissionController::class, 'saveRole'])->name('system.permission.create');
+        Route::delete('phan-quyen/{id}/xoa', [PermissionController::class, 'deleteRole'])->name('system.permission.delete');
+        Route::put('phan-quyen/{id}/khoi-phuc', [PermissionController::class, 'restoreRole'])->name('system.permission.restore');
 
+    });
+
+    Route::middleware('role_accept:account')->group(function() {
+        Route::post('tao-tai-khoan', [UserController::class, 'saveUser'])->name('system.user.create');
+        Route::put('tai-khoan/{id}/cap-nhat', [UserController::class, 'saveUser'])->name('system.user.update');
+        Route::put('tai-khoan/{id}/doi-mat-khau', [UserController::class, 'changePassword'])->name('system.user.change_password');
+        Route::delete('tai-khoan/{id}/xoa', [UserController::class, 'deleteUser'])->name('system.user.delete');
+        Route::put('tai-khoan/{id}/khoi-phuc', [UserController::class, 'restoreUser'])->name('system.user.restore');
+    });
+
+    Route::middleware('role_accept:menu')->group(function () {
         Route::get('quan-ly-menu', [AdminController::class, 'menu'])->name('system.menu');
         Route::post('tao-menu', [AdminController::class, 'createMenu'])->name('system.menu.create');
         Route::post('cap-nhat-menu', [AdminController::class, 'saveMenu'])->name('system.menu.update');
-
         Route::post('cap-nhat-sub-menu', [AdminController::class, 'saveSubMenu'])->name('system.submenu.update');
-
-        // Cấu hình
+    });
+    Route::middleware('role_accept:general_info')->group(function () {
         Route::get('cau-hinh', [SettingController::class, 'index'])->name('system.setting');
         Route::post('cau-hinh/luu-thong-tin-chung', [SettingController::class, 'saveGeneralInfo'])->name('system.setting.save_general_info');
         Route::post('cau-hinh/luu-thong-tin-thong-bao-chay', [SettingController::class, 'saveToasterMessage'])->name('system.setting.save_toaster_message');
