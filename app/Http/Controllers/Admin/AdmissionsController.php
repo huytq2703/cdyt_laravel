@@ -10,6 +10,8 @@ use Inertia\Inertia;
 use App\Models\Admissions;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use App\Exports\AdmissionsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdmissionsController extends Controller
 {
@@ -266,5 +268,10 @@ class AdmissionsController extends Controller
             "district_id" => ['required' => "Vui lòng chọn quận/huyện/TP"],
             "ward_id"=> ['required' => "Vui lòng chọn phường xã"],
         ])->validate();
+    }
+
+    public function exportAdmission()
+    {
+        return Excel::download(new AdmissionsExport, 'ds_dang_ky_tuyen_sinh.xlsx');
     }
 }

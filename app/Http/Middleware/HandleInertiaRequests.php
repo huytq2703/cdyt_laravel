@@ -10,6 +10,7 @@ use App\Models\Menu;
 use App\Models\Roles;
 use App\Models\SystemDefine;
 use App\Models\Categories;
+use App\Http\Controllers\Analytics;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -41,6 +42,7 @@ class HandleInertiaRequests extends Middleware
         $setting = new Setting();
 
         $menu = $this->getMenu($request->user());
+        $analytics = new Analytics();
 
         return array_merge(parent::share($request), [
             'auth' => [
@@ -59,6 +61,9 @@ class HandleInertiaRequests extends Middleware
             'email'   => $setting->valueByKey('email'),
             'url'   => $setting->valueByKey('url'),
             'toaster'   => $setting->valueByKey('toaster'),
+            'visitorsToday' => $analytics->getTotalVisitorsToday(),
+            'totalVisitors' => $analytics->getTotalVisitors(),
+            'visitorsTomorrow' => $analytics->getTotalVisitorsTomorrow()
         ]);
     }
 

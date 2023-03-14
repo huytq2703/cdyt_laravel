@@ -72,6 +72,10 @@ const onClickRestoreAdmission = (id) => {
   });
 };
 
+const onClickExportExcel = () => {
+  window.open(route("admin.admissions.export"), "_blank");
+};
+
 watch(activeIndex, (tab) => {
   Inertia.get(
     route(props.rl_Admissions),
@@ -109,6 +113,11 @@ watch(activeIndex, (tab) => {
                 @click="onClickRefreshPage"
               />
               <Button icon="pi pi-plus" label="Tạo mới" @click="onClickAddNew" />
+              <Button
+                icon="pi pi-file-export"
+                label="Xuất file"
+                @click="onClickExportExcel"
+              />
             </div>
 
             <span class="p-input-icon-left w-20rem">

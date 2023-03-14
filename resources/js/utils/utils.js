@@ -72,6 +72,14 @@ export const dateTimeToTime = (value) => {
     return stringDateTimeByFormat(isoTime, 'HH:mm a');
 };
 
+//Format uses comma as decimal separator and period for thousands
+export const formatCommaPeriodNumber = (value) => {
+    if (value) {
+      return new Intl.NumberFormat("ja-JP").format(value);
+    }
+    return value;
+  };
+
 // convert sang không dấu
 export const stringWithoutAccents = (value) => {
     if (!value) return value;

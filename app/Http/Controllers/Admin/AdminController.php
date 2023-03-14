@@ -23,11 +23,6 @@ class AdminController extends Controller
      */
     public function index(Request $request)
     {
-        // dd(public_path('cd-y-te-1da19728157b.json'));
-
-        // $analyticsData = Analytics::fetchVisitorsAndPageViews(Period::days(7));
-        // dd($analyticsData);
-
         if ($request->isMethod('GET')) {
             $task = SystemDefine::whereName('task')->first();
 

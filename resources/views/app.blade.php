@@ -15,13 +15,15 @@
         @inertiaHead
     </head>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CYG6TRMSVN"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-260022406-1"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
-    gtag('config', 'G-CYG6TRMSVN');
+    gtag('config', 'UA-260022406-1');
+    </script>
+
     </script>
     <body class="font-sans antialiased">
         @inertia

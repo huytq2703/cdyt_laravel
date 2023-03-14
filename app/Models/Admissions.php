@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Majors;
+use App\Models\Province;
+use App\Models\District;
+use App\Models\Ward;
 
 class Admissions extends Model
 {
@@ -46,5 +49,18 @@ class Admissions extends Model
     public function majors ()
     {
         return $this->hasOne(Majors::class, 'id', 'majors_id');
+    }
+
+    public function province ()
+    {
+        return $this->hasOne(Province::class, 'id', 'province_id');
+    }
+    public function district ()
+    {
+        return $this->hasOne(District::class, 'id', 'district_id');
+    }
+    public function ward ()
+    {
+        return $this->hasOne(Ward::class, 'id', 'ward_id');
     }
 }

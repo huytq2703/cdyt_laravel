@@ -24,9 +24,9 @@ import VueSocialSharing from 'vue-social-sharing'
 import Tooltip from 'primevue/tooltip';
 
 import { OhVueIcon, addIcons } from "oh-vue-icons";
-import { FaFlag, RiZhihuFill, FaFacebookF, CoGmail, BiTwitter, RiMessage3Line } from "oh-vue-icons/icons";
+import { FaFlag, RiZhihuFill, FaFacebookF, CoGmail, BiTwitter, RiMessage3Line, BiMessenger } from "oh-vue-icons/icons";
 
-addIcons(FaFlag, RiZhihuFill, FaFacebookF, CoGmail, BiTwitter, RiMessage3Line);
+addIcons(FaFlag, RiZhihuFill, FaFacebookF, CoGmail, BiTwitter, RiMessage3Line, BiMessenger);
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Trường cao đẳng Y tế';
 

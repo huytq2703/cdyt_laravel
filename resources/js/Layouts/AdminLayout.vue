@@ -70,11 +70,11 @@ onUnmounted(() => {
 <template>
   <ConfirmDialog></ConfirmDialog>
   <div
-    class="absolute h-full w-2rem top-0 flex align-items-center"
-    @mouseenter="onMouseEnterMenu"
+    class="h-full w-2rem top-0 hover-menu"
     style="z-index: 999"
+    @click="onMouseEnterMenu"
   >
-    <i class="pi pi-angle-right" style="font-size: 1.5rem"></i>
+    <i class="pi pi-angle-double-right" style="font-size: 1.5rem"></i>
   </div>
   <!-- START: Header -->
   <div class="layout-topbar">
@@ -137,5 +137,27 @@ onUnmounted(() => {
 <style lang="scss">
 body {
   background-color: #f8f9fa;
+}
+
+.hover-menu {
+  position: fixed;
+  display: block;
+  cursor: e-resize;
+  transition: all 0.5s ease;
+
+  i.pi-angle-double-right {
+    position: absolute;
+    left: -20px;
+    transition: all 0.5s;
+    top: 30%;
+  }
+
+  &:hover {
+    background: linear-gradient(90deg, #2f2f2f7a, transparent);
+    width: 50px !important;
+    i.pi-angle-double-right {
+      left: 20px;
+    }
+  }
 }
 </style>

@@ -58,8 +58,8 @@ Route::post('/hoi-dap/gui-cau-hoi', [QAController::class, 'submitQuestions'])->n
 Route::get('lien-he', [ContactController::class, 'index'])->name('contact');
 Route::post('lien-he/gui-thong-tin', [ContactController::class, 'createContact'])->name('contact.create');
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/trang-chu', [HomeController::class, 'index']);
+Route::middleware('visit_counter')->get('/', [HomeController::class, 'index'])->name('home');
+Route::middleware('visit_counter')->get('/trang-chu', [HomeController::class, 'index']);
 // Hướng nghiệp
 Route::get('/huong-nghiep', function () {
     return Inertia::render("CareerDirection/CareerDirection");

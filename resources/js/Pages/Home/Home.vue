@@ -7,6 +7,7 @@ import { Head } from "@inertiajs/inertia-vue3";
 import { onMounted } from "vue";
 import PostItemsHomePage from "./Components/PostItemsHomePage.vue";
 import Notifications from "../../Components/NotificationsComponent.vue";
+import LinksComponent from "./Components/LinksComponent.vue";
 
 const props = defineProps({
   postsTab1: Object,
@@ -44,7 +45,9 @@ onMounted(() => {
           />
         </div>
       </div>
-
+      <div class="flex">
+        <LinksComponent />
+      </div>
       <div class="grid">
         <!-- START: Category tab 1-->
         <div class="col-12 xl:col-4">

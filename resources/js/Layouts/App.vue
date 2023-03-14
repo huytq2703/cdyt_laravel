@@ -1,7 +1,5 @@
 <script setup>
-import { ref, onUnmounted, computed } from "vue";
-// import Button from "primevue/button";
-import InputText from "primevue/inputtext";
+import { ref, onUnmounted, computed, onMounted } from "vue";
 import NavBar from "./NavBar.vue";
 import moment from "moment";
 import { Inertia } from "@inertiajs/inertia";
@@ -9,8 +7,7 @@ import { Link, usePage } from "@inertiajs/inertia-vue3";
 import { useToast } from "primevue/usetoast";
 import Toast from "primevue/toast";
 import SearchAllPage from "./SearchAllPage.vue";
-import SpeedDial from "primevue/speeddial";
-import Button from "primevue/button";
+import { formatCommaPeriodNumber } from "@/utils/utils"
 
 const page = usePage();
 const toast = useToast();
@@ -20,43 +17,43 @@ const marqueeText = computed(() => {
 });
 const pageInfo = computed(() => page?.props?.value);
 
-const items = [
-  {
-    label: "Add",
-    icon: "pi pi-pencil",
-    command: () => {
-      this.$toast.add({ severity: "info", summary: "Add", detail: "Data Added" });
-    },
-  },
-  {
-    label: "Update",
-    icon: "pi pi-refresh",
-    command: () => {
-      this.$toast.add({ severity: "success", summary: "Update", detail: "Data Updated" });
-    },
-  },
-  {
-    label: "Delete",
-    icon: "pi pi-trash",
-    command: () => {
-      this.$toast.add({ severity: "error", summary: "Delete", detail: "Data Deleted" });
-    },
-  },
-  {
-    label: "Upload",
-    icon: "pi pi-upload",
-    command: () => {
-      this.$router.push("fileupload");
-    },
-  },
-  {
-    label: "Vue Website",
-    icon: "pi pi-external-link",
-    command: () => {
-      window.location.href = "https://vuejs.org/";
-    },
-  },
-];
+// const items = [
+//   {
+//     label: "Add",
+//     icon: "pi pi-pencil",
+//     command: () => {
+//       this.$toast.add({ severity: "info", summary: "Add", detail: "Data Added" });
+//     },
+//   },
+//   {
+//     label: "Update",
+//     icon: "pi pi-refresh",
+//     command: () => {
+//       this.$toast.add({ severity: "success", summary: "Update", detail: "Data Updated" });
+//     },
+//   },
+//   {
+//     label: "Delete",
+//     icon: "pi pi-trash",
+//     command: () => {
+//       this.$toast.add({ severity: "error", summary: "Delete", detail: "Data Deleted" });
+//     },
+//   },
+//   {
+//     label: "Upload",
+//     icon: "pi pi-upload",
+//     command: () => {
+//       this.$router.push("fileupload");
+//     },
+//   },
+//   {
+//     label: "Vue Website",
+//     icon: "pi pi-external-link",
+//     command: () => {
+//       window.location.href = "https://vuejs.org/";
+//     },
+//   },
+// ];
 
 let removeFinishEventListener = Inertia.on("finish", () => {
   const t = page.props.value?.toast;
@@ -75,31 +72,29 @@ let removeFinishEventListener = Inertia.on("finish", () => {
   }
 });
 document.documentElement.style.fontSize = "15px";
+
+const onClickMessage = () => {
+  window.open(
+    "https://www.facebook.com/profile.php?id=100066723495495&paipv=0&eav=AfZ3fqZ4g2XdWqTbZtymTtWIzFzypxpGdVUaurSpdQYob2Olg68aqXFO-4UTv8Y4KRk",
+    "_blank"
+  );
+};
 onUnmounted(() => {
   removeFinishEventListener();
 });
+onMounted(() => {
+    console.log(pageInfo.value);
+})
 </script>
 
 <template>
-  <SpeedDial :model="items" direction="up" class="z-4 fixed right-0 bottom-0 mr-3 mb-8">
-    <template #button>
-      <Button
-        class="border-circle w-4rem h-4rem flex justify-content-center align-items-center custom-messages-button"
-      >
-        <v-icon
-          name="ri-message-3-line"
-          style="font-size: 12px"
-          animation="ring"
-          scale="1.5"
-        ></v-icon>
-      </Button>
-    </template>
-
-    <template #item="props">
-      <div class="w-2rem h-2rem bg-primary z-5">sdf</div></template
-    >
-  </SpeedDial>
-
+  <Teleport to="body">
+    <div class=" bottom-10 right-7 social-fixed">
+      <span class="cursor-pointer custom-hover-mess" @click="onClickMessage">
+        <img src="/storage/images/icons/messenger.png" alt="" class="w-3rem" />
+      </span>
+    </div>
+  </Teleport>
   <Toast />
   <div class="container mx-auto">
     <div class="border-bottom-1 w-full py-2 flex justify-content-between xl:px-0 pr-6">
@@ -191,16 +186,13 @@ onUnmounted(() => {
 
           <div class="flex flex-column text-white mt-3">
             <p class="flex align-items-center gap-2">
-              <i class="pi pi-users"></i>Tổng truy cập: 300.000
+              <i class="pi pi-users"></i>Tổng truy cập: {{ formatCommaPeriodNumber(pageInfo?.totalVisitors) }}
             </p>
             <p class="flex align-items-center gap-2">
-              <i class="pi pi-user"></i>Đang online: 300
+              <i class="pi pi-calendar"></i>Trong ngày: {{ formatCommaPeriodNumber(pageInfo?.visitorsToday) }}
             </p>
             <p class="flex align-items-center gap-2">
-              <i class="pi pi-calendar"></i>Trong ngày: 6.000
-            </p>
-            <p class="flex align-items-center gap-2">
-              <i class="pi pi-calendar-minus"></i>Hôm qua: 7.000
+              <i class="pi pi-calendar-minus"></i>Hôm qua: {{ formatCommaPeriodNumber(pageInfo?.visitorsTomorrow) }}
             </p>
           </div>
         </div>
@@ -306,5 +298,20 @@ a {
   &:hover {
     color: #b83234;
   }
+}
+.custom-hover-mess {
+  opacity: 0.3;
+  transition: all 0.3s ease;
+  z-index: 9999999;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.social-fixed{
+    z-index: 9;
+
+    position: fixed;
 }
 </style>

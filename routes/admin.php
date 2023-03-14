@@ -108,7 +108,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // Admissions
-    Route::group(['prefix' => 'tuyen-sinh', 'middleware' => 'accept:admissions'], function () {
+    Route::group(['prefix' => 'tuyen-sinh', 'middleware' => 'role_accept:admissions'], function () {
         Route::get('', [AdmissionsController::class, 'index'])->name('admin.admissions');
 
         Route::get('chi-tiet', [AdmissionsController::class, 'show'])->name('admin.admissions.create');
@@ -119,6 +119,7 @@ Route::middleware('auth')->group(function () {
         Route::put('chi-tiet/{id}/khoi-phuc', [AdmissionsController::class, 'restore'])->name('admin.admissions.restore');
 
         Route::post('/tao-moi', [AdmissionsController::class, 'create'])->name('admin.admissions.create_action');
+        Route::get('/xuat-file-excel', [AdmissionsController::class, 'exportAdmission'])->name('admin.admissions.export');
     });
 
     // Majors

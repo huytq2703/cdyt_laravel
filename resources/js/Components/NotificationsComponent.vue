@@ -33,7 +33,7 @@ const props = defineProps({
       {{ title }}
     </h3>
 
-    <ScrollPanel style="width: 100%; height: 490px">
+    <ScrollPanel style="width: 100%; height: 500px">
       <div class="flex flex-column gap-3">
         <Link
           :href="`${baseUrl}/${notify.slug}`"

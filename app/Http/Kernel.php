@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'role_reject' => \App\Http\Middleware\RoleRejectMiddleWere::class,
         'super_admin' => \App\Http\Middleware\SystemRequest::class,
         'role_accept' => \App\Http\Middleware\RoleMiddleWare::class,
+        'visit_counter' => \App\Http\Middleware\VisitCounter::class
     ];
 }
