@@ -23,10 +23,7 @@ const props = defineProps({
         <Link
           :href="`${baseUrl}/${slotProps.data?.categories?.[0]?.slug}/${slotProps.data.slug}`"
         >
-          <img
-            :src="slotProps.data.cover_image"
-            style="height: 370px; width: 100%; object-fit: cover"
-          />
+          <img :src="slotProps.data.cover_image" class="carousel-image" />
           <div class="w-full h-13rem p-3">
             <h3 class="text-xl font-bold text-fixed clamp-2 text-justify">
               {{ slotProps.data.title }}
@@ -40,3 +37,16 @@ const props = defineProps({
     </Carousel>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.carousel-image {
+  width: 100%;
+  height: 370px;
+  object-fit: cover;
+  @media all and (max-width: 480px) {
+    object-fit: contain;
+    max-height: 300px;
+    height: auto;
+  }
+}
+</style>

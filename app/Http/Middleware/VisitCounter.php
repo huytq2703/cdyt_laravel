@@ -29,6 +29,8 @@ class VisitCounter
                 $v->date = $today;
                 $v->count = 1;
                 $v->status = Visit::today;
+
+                $v->save();
             }
 
             if (Visit::whereNull('date')->whereStatus(Visit::total)->exists())
